@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendman — Hero video integration</title>
+<style>
+  :root{
+    --navy-900:#050e1a;
+    --navy-800:#0a2236;
+    --teal:#22d3ee;
+    --mint:#86efac;
+    --ink:#e8f4ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--navy-900);color:var(--ink);
+       font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif}
+
+  /* ============================================================
+     OPTION A — full-bleed background video behind the hero
+     Replaces your current hero background entirely.
+     ============================================================ */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .hero__video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:-2;
+    /* poster shows instantly while the video buffers */
+  }
+  .hero__scrim{
+    position:absolute; inset:0; z-index:-1;
+    background:linear-gradient(90deg,
+      rgba(5,14,26,.92) 0%,
+      rgba(5,14,26,.72) 38%,
+      rgba(5,14,26,.10) 68%,
+      rgba(5,14,26,.35) 100%);
+  }
+  .hero__inner{
+    width:min(1200px,92vw);
+    margin-inline:auto;
+    padding:6rem 0;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:.6rem;
+    font:500 .78rem/1 "JetBrains Mono",ui-monospace,monospace;
+    letter-spacing:.16em; text-transform:uppercase;
+    color:var(--teal);
+    border:1px solid rgba(34,211,238,.35);
+    background:rgba(34,211,238,.07);
+    padding:.6rem 1.1rem; border-radius:999px;
+  }
+  .eyebrow::before{
+    content:""; width:7px; height:7px; border-radius:50%;
+    background:var(--mint); box-shadow:0 0 12px var(--mint);
+  }
+  h1{
+    margin:1.6rem 0 1.2rem;
+    font-size:clamp(2.6rem,5.6vw,4.4rem);
+    line-height:1.03; letter-spacing:-.02em; font-weight:700;
+    max-width:15ch;
+  }
+  h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg,var(--teal),var(--mint));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .lede{max-width:46ch; font-size:1.06rem; line-height:1.65; color:#b9cfe4}
+  .cta{display:flex; gap:1rem; flex-wrap:wrap; margin-top:2.2rem}
+  .btn{
+    padding:1rem 1.9rem; border-radius:999px; font-weight:600;
+    text-decoration:none; display:inline-flex; align-items:center; gap:.6rem;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn--primary{background:linear-gradient(135deg,#0ea5e9,#22d3ee); color:#04121f;
+    box-shadow:0 12px 40px -12px rgba(34,211,238,.8)}
+  .btn--ghost{background:rgba(255,255,255,.94); color:#04121f}
+  .btn:hover{transform:translateY(-2px)}
+
+  /* ============================================================
+     OPTION B — transparent machine loop inside your existing hero
+     Keeps your current background; swaps only the machine image.
+     Put this where <img src="hero-machine.jpg"> currently sits.
+     ============================================================ */
+  .machine-stage{
+    position:relative;
+    display:grid; place-items:end center;
+  }
+  .machine-stage__glow{
+    position:absolute; inset:auto 0 6% 0; height:70%;
+    background:radial-gradient(60% 60% at 50% 70%,
+      rgba(34,211,238,.28), transparent 70%);
+    filter:blur(28px); pointer-events:none;
+  }
+  .machine-stage video{
+    width:100%; max-width:460px; height:auto; display:block;
+    filter:drop-shadow(0 40px 60px rgba(0,0,0,.55));
+  }
+
+  /* respect users who ask for less motion */
+  @media (prefers-reduced-motion:reduce){
+    .hero__video, .machine-stage video{display:none}
+    .hero{background:#050e1a url("video/vendman-hero-poster.jpg") center/cover}
+  }
+
+  .demo-label{
+    width:min(1200px,92vw); margin:4rem auto 1rem;
+    font:600 .8rem/1 "JetBrains Mono",monospace; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--teal);
+  }
+  .split{
+    width:min(1200px,92vw); margin:0 auto 6rem; padding:3rem;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:3rem; align-items:center;
+    background:linear-gradient(160deg,#0a2236,#050e1a);
+    border:1px solid rgba(34,211,238,.14); border-radius:28px;
+  }
+  @media (max-width:860px){ .split{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- ===================== OPTION A ===================== -->
+<section class="hero">
+  <video class="hero__video"
+         autoplay muted loop playsinline preload="metadata"
+         poster="video/vendman-hero-poster.jpg">
+    <!-- WebM first: smaller file, Chrome/Firefox/Edge pick it up -->
+    <source src="video/vendman-hero-1920x1080.webm" type="video/webm">
+    <source src="video/vendman-hero-1920x1080.mp4"  type="video/mp4">
+  </video>
+  <div class="hero__scrim"></div>
+
+  <div class="hero__inner">
+    <span class="eyebrow">Smart cashless vending · UAE</span>
+    <h1>Smart vending, fully managed — <em>across the UAE.</em></h1>
+    <p class="lede">
+      Vendman installs, stocks and maintains cashless snack, drink and
+      fresh-bean coffee machines for hospitals, gyms, offices and hospitality
+      — at zero cost to your location.
+    </p>
+    <div class="cta">
+      <a class="btn btn--primary" href="#quote">Get a free quote →</a>
+      <a class="btn btn--ghost"   href="#machines">See the machines</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== OPTION B ===================== -->
+<p class="demo-label">Option B — transparent machine loop in your existing layout</p>
+<section class="split">
+  <div>
+    <span class="eyebrow">Smart cashless vending · UAE</span>
+    <h1>Smart vending, fully managed — <em>across the UAE.</em></h1>
+    <p class="lede">
+      Keep your current hero background and swap only the machine image
+      for this transparent WebM loop.
+    </p>
+  </div>
+  <div class="machine-stage">
+    <div class="machine-stage__glow"></div>
+    <video autoplay muted loop playsinline preload="metadata"
+           poster="images/snack-machine-hero.png">
+      <source src="video/vendman-machine-transparent.webm" type="video/webm">
+      <!-- Safari < 16 has no VP9-alpha: it falls back to the poster image -->
+    </video>
+  </div>
+</section>
+
+<script>
+/* Some mobile browsers block autoplay until the element is in view.
+   This nudges every hero video to play once it becomes visible. */
+document.querySelectorAll('video[autoplay]').forEach(v=>{
+  v.muted = true;                       // required for autoplay on iOS
+  const io = new IntersectionObserver(([e])=>{
+    if(e.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); }
+  },{threshold:.15});
+  io.observe(v);
+});
+</script>
+</body>
+</html>

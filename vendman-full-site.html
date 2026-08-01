@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendman — Smart Cashless Vending & Fresh Bean Coffee | UAE</title>
+<meta name="description" content="Vendman installs, stocks and maintains smart cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hospitality across the UAE.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1A3F; --navy-2:#0E2350; --navy-3:#122C63; --navy-deep:#060F2A;
+  --teal:#0E5C54; --teal-deep:#10403A;
+  --cyan:#22B8DC; --cyan-2:#4FD3EF; --blue:#1B4DB1; --lime:#9BD62E;
+  --paper:#F4F7F9; --paper-2:#EAF0F3; --card:#FFFFFF;
+  --ink:#0A1A3F; --muted:#5A6B7B; --muted-2:#7B8A98;
+  --line:rgba(10,26,63,.10); --line-2:rgba(255,255,255,.14);
+  --shadow:0 18px 50px -24px rgba(10,26,63,.35); --shadow-sm:0 8px 24px -14px rgba(10,26,63,.30);
+  --r:18px; --r-sm:12px;
+  --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'Space Mono',monospace;
+  --maxw:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden;overflow-anchor:none}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:600;line-height:1.06;margin:0;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+.section{padding:clamp(64px,9vw,110px) 0}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);display:inline-flex;align-items:center;gap:9px;margin:0 0 18px}
+.eyebrow::before{content:"";width:26px;height:1.5px;background:linear-gradient(90deg,var(--cyan),var(--teal))}
+.eyebrow.center{justify-content:center}
+.eyebrow.on-dark{color:var(--cyan-2)}
+.eyebrow.on-dark::before{background:linear-gradient(90deg,var(--lime),var(--cyan))}
+.h-xl{font-size:clamp(2.4rem,6vw,4.2rem)}
+.h-lg{font-size:clamp(2rem,4.4vw,3.05rem)}
+.lead{font-size:clamp(1.02rem,1.4vw,1.16rem);color:var(--muted);max-width:58ch}
+.on-dark .lead,.lead.on-dark{color:rgba(255,255,255,.72)}
+.grad-text{background:linear-gradient(100deg,var(--cyan-2),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:600;font-size:.98rem;padding:14px 26px;border-radius:100px;border:1.5px solid transparent;cursor:pointer;transition:.25s cubic-bezier(.4,0,.2,1);white-space:nowrap}
+.btn svg{width:17px;height:17px;transition:transform .25s}
+.btn-primary{background:linear-gradient(100deg,var(--cyan),var(--blue));color:#fff;box-shadow:0 10px 30px -10px rgba(34,184,220,.6)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px -10px rgba(34,184,220,.7)}
+.btn-primary:hover svg{transform:translateX(4px)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:transparent}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--teal)}
+.btn-ghost.on-dark{border-color:var(--line-2);color:#fff}
+.btn-ghost.on-dark:hover{border-color:var(--cyan-2);color:var(--cyan-2)}
+.btn-lime{background:var(--lime);color:var(--navy)}
+.btn-lime:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(155,214,46,.7)}
+
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:.3s ease}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;margin-top:12px;padding:0 22px;border-radius:100px;border:1px solid transparent;transition:.3s ease}
+header.solid .nav,header.scrolled .nav{background:rgba(255,255,255,.85);backdrop-filter:blur(16px) saturate(1.4);border-color:var(--line);box-shadow:var(--shadow-sm);margin-top:10px;height:64px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:700;font-size:1.22rem;letter-spacing:.02em;color:#fff;transition:color .3s,transform .3s;cursor:pointer}
+.brand:hover{transform:translateY(-1px)}
+header.solid .brand,header.scrolled .brand{color:var(--navy)}
+.brand .logo{width:32px;height:30px;flex:none}
+.site-logo{display:block;width:150px;max-width:150px;height:auto;object-fit:contain;flex-shrink:0}
+.footer-logo{display:block;width:170px;max-width:170px;height:auto;object-fit:contain}
+@media(max-width:768px){
+  .site-logo{width:125px}
+  .footer-logo{width:145px}
+}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{font-family:var(--disp);font-weight:500;font-size:.93rem;color:rgba(255,255,255,.82);padding:9px 14px;border-radius:100px;transition:.2s;cursor:pointer}
+header.solid .nav-links a,header.scrolled .nav-links a{color:var(--muted)}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.12)}
+header.solid .nav-links a:hover,header.scrolled .nav-links a:hover{color:var(--teal);background:var(--paper-2)}
+.nav-links a.active{color:var(--cyan-2)}
+header.solid .nav-links a.active,header.scrolled .nav-links a.active{color:var(--teal);background:var(--paper-2)}
+.nav-cta{display:flex;align-items:center;gap:10px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);background:transparent;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+header.solid .burger,header.scrolled .burger{border-color:var(--line)}
+.burger span{width:20px;height:2px;background:#fff;transition:.3s;border-radius:2px}
+header.solid .burger span,header.scrolled .burger span{background:var(--navy)}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* pages / router */
+.page{display:none}
+.page.active{display:block;animation:pageIn .55s cubic-bezier(.19,1,.22,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* page hero (inner pages) */
+.phero{background:radial-gradient(120% 130% at 80% 0%,#123069 0%,var(--navy) 48%,#060F2A 100%);color:#fff;padding:150px 0 84px;position:relative;overflow:hidden}
+.phero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(80% 70% at 60% 30%,#000,transparent 78%);pointer-events:none}
+.phero .lead{color:rgba(255,255,255,.75);margin-top:10px}
+.phero h1{font-size:clamp(2.3rem,5vw,3.7rem);font-weight:700}
+.hero-glow{position:absolute;z-index:1;width:480px;height:480px;border-radius:50%;filter:blur(110px);opacity:.45;pointer-events:none}
+.hero-glow.a{background:var(--cyan);top:-140px;right:-40px}
+.hero-glow.b{background:var(--teal);bottom:-200px;left:-120px;opacity:.4}
+
+/* home hero */
+.hero{background:radial-gradient(120% 120% at 80% 0%,#123069 0%,var(--navy) 45%,#060F2A 100%);color:#fff;padding:148px 0 76px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(80% 70% at 60% 30%,#000,transparent 78%);pointer-events:none}
+/* hero background video */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.hero-video.ready{opacity:1}
+.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(6,15,42,.82) 0%,rgba(6,15,42,.74) 30%,rgba(6,15,42,.60) 48%,rgba(6,15,42,.30) 60%,rgba(6,15,42,.15) 72%,rgba(6,15,42,.14) 85%,rgba(6,15,42,.45) 100%)}
+.hero-scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,15,42,.55) 0%,transparent 22%,transparent 72%,rgba(6,15,42,.75) 100%)}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;z-index:3}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan-2);background:rgba(34,184,220,.1);border:1px solid rgba(34,184,220,.28);padding:8px 15px;border-radius:100px;margin-bottom:24px}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(155,214,46,.55)}70%{box-shadow:0 0 0 10px rgba(155,214,46,0)}100%{box-shadow:0 0 0 0 rgba(155,214,46,0)}}
+.hero h1{font-size:clamp(2.5rem,5.4vw,4.2rem);font-weight:700;margin-bottom:20px}
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line span{display:block;transform:translateY(105%);animation:riseIn .9s cubic-bezier(.19,1,.22,1) forwards}
+.hero h1 .line:nth-child(2) span{animation-delay:.12s}.hero h1 .line:nth-child(3) span{animation-delay:.24s}
+@keyframes riseIn{to{transform:translateY(0)}}
+.hero p.lead{color:rgba(255,255,255,.76);margin-bottom:32px;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .66s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero-trust{margin-top:36px;font-size:.82rem;color:rgba(255,255,255,.5);font-family:var(--mono);opacity:0;animation:fadeUp .8s ease .8s forwards}
+.hero-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:470px}
+.chip{position:absolute;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);color:var(--navy);font-weight:600;font-size:.83rem;padding:9px 14px;border-radius:100px;box-shadow:var(--shadow);opacity:0;animation:chipIn .7s cubic-bezier(.19,1,.22,1) forwards}
+.chip .d{width:9px;height:9px;border-radius:50%;background:var(--teal)}
+.chip.c1{top:12%;left:-4%;animation-delay:.9s}.chip.c2{top:44%;right:-8%;animation-delay:1.05s}.chip.c3{bottom:14%;left:-6%;animation-delay:1.2s}
+@keyframes chipIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}
+.nfc{position:absolute;z-index:3;right:6%;top:26%;width:64px;height:64px;display:grid;place-items:center;opacity:0;animation:chipIn .7s ease 1.35s forwards}
+.nfc .core{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(34,184,220,.7);color:#fff}
+.nfc .core svg{width:20px;height:20px}
+.nfc .ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--cyan);animation:ripple 2.4s ease-out infinite}
+.nfc .ring:nth-child(2){animation-delay:.8s}.nfc .ring:nth-child(3){animation-delay:1.6s}
+@keyframes ripple{0%{transform:scale(.55);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+
+/* marquee */
+.marquee-band{background:var(--navy);padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
+.marquee-label{text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:16px}
+.marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;gap:52px;padding-right:52px;flex:none;animation:scroll 34s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{font-family:var(--disp);font-weight:500;font-size:1.05rem;color:rgba(255,255,255,.62);white-space:nowrap;display:flex;align-items:center;gap:52px}
+.marquee-track span::after{content:"›";color:var(--cyan);opacity:.5}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.19,1,.22,1),transform .7s cubic-bezier(.19,1,.22,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+.sec-head{max-width:640px;margin-bottom:48px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head .lead{margin-top:16px}.sec-head.center .lead{margin-left:auto;margin-right:auto}
+
+/* machines cards */
+.mach-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.tabs{display:inline-flex;background:var(--paper-2);border-radius:100px;padding:5px;gap:4px}
+.tab{font-family:var(--disp);font-weight:600;font-size:.92rem;padding:10px 20px;border-radius:100px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:.25s}
+.tab.active{background:#fff;color:var(--teal);box-shadow:var(--shadow-sm)}
+.mach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.mach-set{display:none}.mach-set.active{display:grid}
+.mach-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.19,1,.22,1),box-shadow .35s}
+.mach-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
+.mach-media{position:relative;background:linear-gradient(160deg,#fff,#eef3f6);height:290px;overflow:hidden}
+.mach-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;transform:scale(1.01);transition:transform .7s cubic-bezier(.19,1,.22,1)}
+.mach-card:hover .mach-media img{transform:scale(1.09)}
+.mach-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,15,42,.32),transparent 45%);pointer-events:none}
+.mach-led{position:absolute;top:18px;right:18px;display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);background:rgba(155,214,46,.14);padding:5px 10px;border-radius:100px}
+.mach-led i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.mach-body{padding:24px;display:flex;flex-direction:column;flex:1}
+.mach-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.mach-body h3{font-size:1.28rem;margin-bottom:8px}
+.mach-body p{font-size:.92rem;color:var(--muted);margin:0 0 18px}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-top:auto}
+.spec{background:#fff;padding:11px 13px}
+.spec .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
+.spec .v{font-family:var(--disp);font-weight:600;font-size:.92rem;color:var(--navy)}
+
+/* full machine row (machines page) */
+.mrow{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:center;padding:44px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:none}
+.mrow.flip .m-media{order:2}
+.m-media{background:linear-gradient(160deg,#fff,#e9eff3);border:1px solid var(--line);border-radius:var(--r);height:440px;position:relative;overflow:hidden;cursor:zoom-in}
+.m-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.01);transition:transform .8s cubic-bezier(.19,1,.22,1)}
+.mrow:hover .m-media img{transform:scale(1.06)}
+.m-media::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,15,42,.38),transparent 40%);pointer-events:none}
+.m-zoom{position:absolute;bottom:18px;right:18px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--navy);opacity:0;transform:scale(.7);transition:.3s;pointer-events:none}
+.mrow:hover .m-zoom{opacity:1;transform:scale(1)}
+.m-zoom svg{width:17px;height:17px}
+.m-info .mach-kicker{margin-bottom:10px}
+.m-info h2{font-size:clamp(1.6rem,2.6vw,2.1rem);margin-bottom:12px}
+.m-info p{color:var(--muted);margin:0 0 22px;max-width:52ch}
+.m-specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-bottom:22px}
+.m-specs .spec{padding:13px 15px}
+.m-tags{display:flex;flex-wrap:wrap;gap:8px}
+.m-tag{font-family:var(--mono);font-size:11px;color:var(--teal);background:var(--paper-2);border-radius:100px;padding:6px 13px}
+
+/* coffee model carousel */
+.coffee-carousel{margin-top:20px;padding-top:44px;border-top:1px solid var(--line)}
+.cc-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:24px}
+.cc-head h3{font-size:1.4rem;margin-bottom:6px}
+.cc-head p{font-size:.92rem;color:var(--muted);margin:0;max-width:46ch}
+.cc-arrows{display:flex;gap:10px;flex:none}
+.cc-arrow{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer;transition:.25s;color:var(--navy)}
+.cc-arrow:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-2px)}
+.cc-arrow:active{transform:translateY(0) scale(.94)}
+.cc-arrow svg{width:18px;height:18px}
+.cc-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x proximity;padding:4px 4px 14px;margin:0 -4px;cursor:grab;scrollbar-width:none;-ms-overflow-style:none;user-select:none}
+.cc-track::-webkit-scrollbar{display:none}
+.cc-track.dragging{cursor:grabbing;scroll-snap-type:none}
+.cc-slide{flex:0 0 auto;width:250px;scroll-snap-align:start;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#fff;transition:transform .35s cubic-bezier(.19,1,.22,1),box-shadow .35s}
+.cc-slide:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.ccimg{height:200px;overflow:hidden;position:relative;background:linear-gradient(160deg,#fff,#eef3f6)}
+.cc-slide img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.19,1,.22,1);pointer-events:none;-webkit-user-drag:none}
+.cc-slide:hover img{transform:scale(1.08)}
+.cc-info{padding:16px 18px}
+.cc-info h4{font-size:.98rem;margin-bottom:6px;font-family:var(--disp);font-weight:600;color:var(--navy)}
+.cc-info p{font-size:.82rem;color:var(--muted);margin:0}
+.cc-dots{display:flex;gap:7px;justify-content:center;margin-top:8px}
+.cc-dot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:.3s;cursor:pointer;border:none;padding:0}
+.cc-dot.active{background:var(--teal);width:24px;border-radius:4px}
+@media(max-width:600px){.cc-slide{width:78vw}}
+
+/* generic grids */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;background:linear-gradient(180deg,#fff,#fbfdfe);transition:.3s;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--cyan),var(--teal));transform:scaleY(0);transform-origin:top;transition:transform .35s}
+.card:hover{border-color:transparent;box-shadow:var(--shadow);transform:translateY(-4px)}
+.card:hover::before{transform:scaleY(1)}
+.card .ico{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;background:linear-gradient(140deg,rgba(34,184,220,.14),rgba(14,92,84,.12));color:var(--teal)}
+.card .ico svg{width:24px;height:24px}
+.card h3{font-size:1.12rem;margin-bottom:7px}
+.card p{font-size:.9rem;color:var(--muted);margin:0}
+.card.sm{padding:22px 22px}
+.card.sm .ico{width:42px;height:42px;margin-bottom:14px}
+.card.sm .ico svg{width:20px;height:20px}
+.card.sm h3{font-size:1rem}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.step-n{font-family:var(--mono);font-weight:700;font-size:.9rem;color:var(--cyan);letter-spacing:.1em}
+.step-line{height:2px;background:var(--line);margin:16px 0 20px;position:relative;overflow:hidden}
+.step-line::after{content:"";position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--cyan),var(--teal));transition:width 1s ease}
+.step.in .step-line::after{width:100%}
+.step h3{font-size:1.16rem;margin-bottom:8px}.step p{font-size:.92rem;color:var(--muted);margin:0}
+
+/* dark why */
+.dark-sec{background:radial-gradient(120% 100% at 20% 0%,#123069,var(--navy) 55%,#060F2A);color:#fff;position:relative;overflow:hidden}
+.why-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center;position:relative;z-index:2}
+.why-list{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(255,255,255,.08);border:1px solid var(--line-2);border-radius:var(--r);overflow:hidden}
+.why-item{background:rgba(255,255,255,.02);padding:26px 24px;transition:.3s}
+.why-item:hover{background:rgba(34,184,220,.08)}
+.why-ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px;background:rgba(34,184,220,.14);color:var(--cyan-2)}
+.why-ico svg{width:21px;height:21px}
+.why-item h3{font-size:1.06rem;margin-bottom:6px}.why-item p{font-size:.86rem;color:rgba(255,255,255,.62);margin:0}
+.why-cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+
+/* payments */
+/* capability strip */
+.cap-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.cap{text-align:center;padding:32px 22px 28px;border:1px solid var(--line-2);border-radius:var(--r);background:rgba(255,255,255,.03);transition:.3s}
+.cap:hover{background:rgba(34,184,220,.08);transform:translateY(-4px);border-color:rgba(79,211,239,.35)}
+.cap img{width:60px;height:60px;object-fit:contain;margin:0 auto 18px;display:block;transition:transform .35s cubic-bezier(.19,1,.22,1)}
+.cap:hover img{transform:scale(1.08)}
+.cap h3{color:#fff;font-size:1.06rem;margin-bottom:8px}
+.cap p{color:rgba(255,255,255,.6);font-size:.86rem;margin:0;line-height:1.6}
+@media(max-width:900px){.cap-strip{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.cap-strip{grid-template-columns:1fr}}
+
+.payment-row{display:flex;justify-content:center;margin-top:44px}
+.payment-row img{max-width:520px;width:100%;height:auto;border-radius:var(--r);box-shadow:0 26px 50px -20px rgba(0,0,0,.5)}
+.payment-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px;position:relative;z-index:2}
+.payment-feat{background:rgba(255,255,255,.03);border:1px solid var(--line-2);border-radius:var(--r);padding:26px 24px;text-align:center;transition:.3s}
+.payment-feat:hover{background:rgba(34,184,220,.08);transform:translateY(-4px)}
+.payment-feat .why-ico{margin:0 auto 14px}
+.payment-feat h3{color:#fff;font-size:1.08rem;margin-bottom:8px}
+.payment-feat p{color:rgba(255,255,255,.62);font-size:.9rem;margin:0}
+
+/* coffee */
+.coffee-sec{background:linear-gradient(160deg,var(--teal-deep),var(--teal));color:#fff;overflow:hidden}
+.coffee-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.coffee-pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.pill{font-family:var(--disp);font-weight:500;font-size:.92rem;padding:9px 17px;border-radius:100px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.06);transition:.25s}
+.pill:hover{background:var(--lime);color:var(--navy);border-color:var(--lime);transform:translateY(-2px)}
+.coffee-visual{position:relative;display:flex;justify-content:center}
+.coffee-visual img{max-height:420px;width:auto;border-radius:var(--r);filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.coffee-tag{position:absolute;bottom:24px;left:-8px;background:#fff;color:var(--navy);border-radius:14px;padding:14px 18px;box-shadow:var(--shadow)}
+.coffee-tag .n{font-family:var(--disp);font-weight:700;font-size:1.5rem}.coffee-tag .l{font-size:.78rem;color:var(--muted)}
+
+/* stats */
+.stats{background:var(--navy);color:#fff;padding:56px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stat{text-align:center;position:relative}
+.stat:not(:last-child)::after{content:"";position:absolute;right:0;top:14%;height:72%;width:1px;background:rgba(255,255,255,.12)}
+.stat .num{font-family:var(--disp);font-weight:700;font-size:clamp(2.4rem,4vw,3.2rem);background:linear-gradient(120deg,var(--cyan-2),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stat .lbl{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:8px;font-family:var(--mono)}
+
+/* clients */
+.sector{margin-bottom:30px}
+.sector-h{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.sector-h span{height:1px;flex:1;background:var(--line)}
+.logo-row{display:flex;flex-wrap:wrap;gap:12px}
+.logo-chip{background:#fff;border:1px solid var(--line);border-radius:100px;padding:12px 22px;font-family:var(--disp);font-weight:600;font-size:.96rem;color:var(--navy);transition:.25s}
+.logo-chip:hover{border-color:var(--cyan);color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+
+/* faq */
+.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+.faq-list{border-top:1px solid var(--line)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;padding:22px 0;display:flex;justify-content:space-between;gap:20px;align-items:center;font-family:var(--disp);font-weight:600;font-size:1.08rem;color:var(--navy)}
+.faq-q .ic{width:30px;height:30px;flex:none;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;transition:.3s;color:var(--teal);position:relative}
+.faq-q .ic::before,.faq-q .ic::after{content:"";position:absolute;background:currentColor;border-radius:2px}
+.faq-q .ic::before{width:12px;height:2px}.faq-q .ic::after{width:2px;height:12px;transition:.3s}
+.faq-item.open .faq-q .ic{background:var(--teal);border-color:var(--teal);color:#fff;transform:rotate(90deg)}
+.faq-item.open .faq-q .ic::after{transform:scaleY(0)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a p{margin:0 0 22px;color:var(--muted);font-size:.96rem;max-width:60ch}
+
+/* contact */
+.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px}
+.info-list{margin-top:28px;display:flex;flex-direction:column}
+.info-row{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.info-row .ic{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;background:linear-gradient(140deg,rgba(34,184,220,.14),rgba(14,92,84,.12));color:var(--teal)}
+.info-row .ic svg{width:20px;height:20px}
+.info-row .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
+.info-row .v{font-family:var(--disp);font-weight:600;font-size:1rem;color:var(--navy)}
+.info-row .v a:hover{color:var(--teal)}
+.hours-note{margin-top:16px;font-size:.85rem;color:var(--muted);font-style:italic}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:clamp(26px,4vw,40px);box-shadow:var(--shadow);position:relative}
+.form-card h3{font-size:1.4rem;margin-bottom:6px}.form-card .sub{font-size:.92rem;color:var(--muted);margin:0 0 24px}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:var(--body);font-size:.96rem;color:var(--navy);background:var(--paper);transition:.2s;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);background:#fff;box-shadow:0 0 0 4px rgba(34,184,220,.12)}
+.field textarea{resize:vertical;min-height:96px}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-success{display:none;text-align:center;padding:30px 10px}
+.form-success.show{display:block;animation:fadeUp .5s ease}
+.form-success .check{width:64px;height:64px;margin:0 auto 18px;border-radius:50%;background:linear-gradient(140deg,var(--lime),var(--teal));display:grid;place-items:center;color:#fff}
+.form-success .check svg{width:30px;height:30px}
+.form-success h3{margin-bottom:8px}.form-success p{color:var(--muted);font-size:.94rem}
+
+/* cta band */
+.cta-band{background:radial-gradient(120% 140% at 80% 0%,#123069,var(--navy) 55%,#060F2A);color:#fff;border-radius:26px;padding:clamp(40px,6vw,72px);text-align:center;position:relative;overflow:hidden}
+.cta-band h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin-bottom:14px}
+.cta-band p{color:rgba(255,255,255,.72);max-width:52ch;margin:0 auto 28px}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2}
+
+/* scroll progress */
+.scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:200;transition:width .1s linear}
+
+/* back to top */
+.back-to-top{position:fixed;right:24px;bottom:24px;width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;border:none;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);z-index:90;opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;transition:opacity .3s,transform .3s,background .25s}
+.back-to-top.show{opacity:1;transform:none;pointer-events:auto}
+.back-to-top:hover{background:var(--teal)}
+.back-to-top svg{width:19px;height:19px}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(6,10,20,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:6vh 5vw;opacity:0;visibility:hidden;transition:opacity .3s ease}
+.lightbox.open{opacity:1;visibility:visible}
+.lightbox img{max-width:100%;max-height:88vh;border-radius:14px;box-shadow:0 40px 80px -20px rgba(0,0,0,.6);transform:scale(.94);transition:transform .35s cubic-bezier(.19,1,.22,1)}
+.lightbox.open img{transform:none}
+.lightbox-close{position:absolute;top:26px;right:26px;width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;cursor:pointer;transition:.25s}
+.lightbox-close:hover{background:rgba(255,255,255,.2);transform:rotate(90deg)}
+.lightbox-close svg{width:20px;height:20px}
+
+/* tilt targets */
+.mach-card,.cc-slide{will-change:transform}
+
+/* legal pages */
+.legal{max-width:740px}
+.legal .updated{font-family:var(--mono);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-2);margin-bottom:30px}
+.legal h2{font-size:1.28rem;margin:38px 0 14px}
+.legal h2:first-of-type{margin-top:0}
+.legal p{color:var(--muted);margin:0 0 16px;line-height:1.75}
+.legal ul{margin:0 0 16px;padding-left:22px;color:var(--muted)}
+.legal li{margin-bottom:9px;line-height:1.65}
+.legal strong{color:var(--navy)}
+
+/* footer */
+footer{background:#060F2A;color:#fff;padding:72px 0 30px}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.09)}
+.foot-brand .brand{margin-bottom:16px}
+.foot-brand p{color:rgba(255,255,255,.6);font-size:.92rem;max-width:34ch;margin:0 0 20px}
+.foot-social{display:flex;gap:10px}
+.foot-social a{width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:rgba(255,255,255,.75);transition:.25s;cursor:pointer}
+.foot-social a:hover{background:var(--cyan);border-color:var(--cyan);color:#fff;transform:translateY(-2px)}
+.foot-social svg{width:18px;height:18px}
+.foot-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan-2);font-weight:400;margin-bottom:18px}
+.foot-col a,.foot-col p{display:block;color:rgba(255,255,255,.62);font-size:.9rem;padding:5px 0;margin:0;transition:.2s;cursor:pointer}
+.foot-col a:hover{color:#fff;padding-left:4px}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;font-size:.82rem;color:rgba(255,255,255,.42);font-family:var(--mono)}
+.foot-legal{display:flex;gap:20px}
+.foot-legal a{color:rgba(255,255,255,.42);cursor:pointer;transition:.2s}
+.foot-legal a:hover{color:#fff}
+
+.mobile-panel{position:fixed;inset:0;z-index:99;background:rgba(6,15,42,.97);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:center;gap:6px;padding:40px;transform:translateX(100%);transition:.4s cubic-bezier(.19,1,.22,1);visibility:hidden}
+.mobile-panel.open{transform:none;visibility:visible}
+.mobile-panel a{font-family:var(--disp);font-weight:600;font-size:1.6rem;color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
+.mobile-panel a:last-of-type{border:none}.mobile-panel .btn{margin-top:24px;justify-content:center}
+
+@media(max-width:960px){
+  .hero-grid,.why-grid,.coffee-grid,.faq-grid,.contact-grid,.mrow{grid-template-columns:1fr}
+  .mrow.flip .m-media{order:0}
+  .hero-stage{min-height:300px;margin-top:20px}
+  .hero-scrim{background:linear-gradient(180deg,rgba(6,15,42,.90) 0%,rgba(6,15,42,.72) 45%,rgba(6,15,42,.55) 70%,rgba(6,15,42,.88) 100%)}
+  .mach-grid,.grid-3,.grid-4,.steps,.stats-grid{grid-template-columns:1fr 1fr}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}.burger{display:flex}
+  .m-media{height:340px}
+}
+@media(max-width:600px){
+  .mach-grid,.grid-3,.grid-4,.steps,.stats-grid,.row-2,.why-list,.foot-top,.payment-feats{grid-template-columns:1fr}
+  .stat:not(:last-child)::after{display:none}.stat{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1)}
+  .mach-head{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1;transform:none}.hero h1 .line span{transform:none}
+  .hero-video{display:none}
+  .hero{background:var(--navy) url("assets/video/vendman-hero-poster.jpg") center/cover}}
+:focus-visible{outline:2.5px solid var(--cyan);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" id="lightboxClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><img id="lightboxImg" src="" alt=""></div>
+
+<!-- ===== HEADER ===== -->
+<header id="hdr">
+  <div class="wrap">
+    <nav class="nav">
+      <div class="brand" data-page="home">
+        <img src="assets/vendman-logo-clean-transparent.png" alt="Vendman" class="site-logo">
+      </div>
+      <div class="nav-links">
+        <a data-page="home">Home</a><a data-page="machines">Machines</a><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-primary" data-page="contact">Get a quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="mobile-panel" id="mpanel">
+  <a data-page="home">Home</a><a data-page="machines">Machines</a><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
+  <a class="btn btn-primary" data-page="contact">Get a free quote</a>
+</div>
+
+<main id="app">
+
+<!-- ================= HOME ================= -->
+<section class="page active" id="page-home">
+  <div class="hero">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"
+           poster="assets/video/vendman-hero-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="assets/video/vendman-hero-1920x1080.webm" type="video/webm">
+      <source src="assets/video/vendman-hero-1920x1080.mp4" type="video/mp4">
+    </video>
+    <div class="hero-scrim"></div>
+    <div class="hero-glow a"></div><div class="hero-glow b"></div>
+    <div class="wrap"><div class="hero-grid">
+      <div>
+        <span class="hero-badge"><span class="dot"></span>Smart cashless vending • UAE</span>
+        <h1><span class="line"><span>Smart vending,</span></span><span class="line"><span>fully managed —</span></span><span class="line"><span class="grad-text">across the UAE.</span></span></h1>
+        <p class="lead">Vendman installs, stocks and maintains cashless snack, drink and fresh‑bean coffee machines for hospitals, gyms, offices and hospitality — at zero cost to your location.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" data-page="contact">Get a free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-ghost on-dark" data-page="machines">See the machines</a>
+        </div>
+        <p class="hero-trust">Trusted by leading UAE hospitals, clinics, gyms &amp; universities</p>
+      </div>
+      <div class="hero-stage">
+        <div class="chip c1"><span class="d"></span>Zero cost to host</div>
+        <div class="chip c2"><span class="d"></span>Apple Pay · Cards · NFC</div>
+        <div class="chip c3"><span class="d"></span>Stocked &amp; monitored 24/7</div>
+        <div class="nfc"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8.8a10 10 0 0 1 0 6.4M9.5 6.5a15 15 0 0 1 0 11M13 4.5a20 20 0 0 1 0 15"/></svg></span></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="marquee-band"><div class="marquee-label">Powering breakrooms &amp; lobbies for</div>
+    <div class="marquee"><div class="marquee-track">
+      <span>Medcare Hospitals</span><span>Mediclinic</span><span>King's College Hospital Dubai</span><span>Anytime Fitness</span><span>HULT University</span><span>FIFA Medical Centre</span><span>Mayweather Boxing &amp; Fitness</span><span>HealthBay</span>
+      <span aria-hidden="true">Medcare Hospitals</span><span aria-hidden="true">Mediclinic</span><span aria-hidden="true">King's College Hospital Dubai</span><span aria-hidden="true">Anytime Fitness</span><span aria-hidden="true">HULT University</span><span aria-hidden="true">FIFA Medical Centre</span><span aria-hidden="true">Mayweather Boxing &amp; Fitness</span><span aria-hidden="true">HealthBay</span>
+    </div></div>
+  </div>
+
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)">
+    <div class="wrap">
+      <div class="mach-head">
+        <div class="sec-head reveal" style="margin-bottom:0"><span class="eyebrow">The range</span><h2 class="h-lg">Machines built for<br>high‑traffic spaces</h2></div>
+        <a class="btn btn-ghost reveal d1" data-page="machines">View all machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="mach-grid">
+        <article class="mach-card reveal"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing machine"></div><div class="mach-body"><div class="mach-kicker">Snack &amp; Beverage · 6 Facings</div><h3>Compact 36‑Select</h3><p>For lobbies, clinics and smaller breakrooms — chilled snacks and drinks in one unit.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">36</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">731 mm</div></div><div class="spec"><div class="k">Temp</div><div class="v">4–25 °C</div></div></div></div></article>
+        <article class="mach-card reveal d1"><div class="mach-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="coffee machine"></div><div class="mach-body"><div class="mach-kicker">Fresh Bean Coffee · Tabletop</div><h3>Countertop Barista</h3><p>A 10.1″ touch machine for reception desks and small offices — up to 12 drinks.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">Up to 12</div></div><div class="spec"><div class="k">Screen</div><div class="v">10.1″</div></div><div class="spec"><div class="k">Canisters</div><div class="v">3</div></div><div class="spec"><div class="k">Weight</div><div class="v">40 kg</div></div></div></div></article>
+        <article class="mach-card reveal d2"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-48.jpg" alt="8-facing machine"></div><div class="mach-body"><div class="mach-kicker">Snack &amp; Beverage · 8 Facings</div><h3>High‑Capacity 48‑Select</h3><p>Wider bays and 48 selections for hospitals, gyms and offices with serious footfall.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">48</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">240 kg</div></div></div></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff">
+    <div class="wrap">
+      <div class="sec-head center reveal"><span class="eyebrow center">By industry</span><h2 class="h-lg">Fitted to the way your space runs</h2><p class="lead">We tailor the machine, product mix and placement to each environment — from a hospital atrium to a factory floor.</p></div>
+      <div class="grid-3">
+        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg></div><h3>Hospitals &amp; Clinics</h3><p>24/7 refreshment for staff, patients and visitors — quiet, hygienic, always stocked.</p></div>
+        <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9v6M7 5v14M17 5v14M21 9v6M7 12h10"/></svg></div><h3>Gyms &amp; Fitness</h3><p>Protein shakes, drinks and healthy snacks members reach for before and after training.</p></div>
+        <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4" stroke-linecap="round"/></svg></div><h3>Offices &amp; Corporate</h3><p>Barista‑style coffee stations and snack machines that lift breakrooms with zero admin.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:linear-gradient(180deg,#fff,var(--paper))">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">From survey to sip</span><h2 class="h-lg">Live in your space in four steps</h2></div>
+      <div class="steps">
+        <div class="step reveal"><div class="step-n">01</div><div class="step-line"></div><h3>Free site survey</h3><p>We assess footfall, space and the product mix that fits your audience.</p></div>
+        <div class="step reveal d1"><div class="step-n">02</div><div class="step-line"></div><h3>Install &amp; connect</h3><p>We deliver, place and connect the machine — cashless from day one.</p></div>
+        <div class="step reveal d2"><div class="step-n">03</div><div class="step-line"></div><h3>Stock &amp; service</h3><p>Scheduled replenishment, cleaning and preventive maintenance.</p></div>
+        <div class="step reveal d3"><div class="step-n">04</div><div class="step-line"></div><h3>Monitor 24/7</h3><p>Nayax payments and real‑time alerts keep it always on.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section dark-sec">
+    <div class="hero-glow a" style="top:-120px;left:-80px;right:auto"></div>
+    <div class="wrap"><div class="why-grid">
+      <div class="reveal"><span class="eyebrow on-dark">Why partner with us</span><h2 class="h-lg" style="color:#fff">A vending partner, not just a machine.</h2><p class="lead on-dark" style="margin-top:18px">You get the refreshment offer without the workload. We fund, install, stock and maintain everything — you keep the space and the goodwill.</p><div class="why-cta"><a class="btn btn-primary" data-page="contact">Start a partnership <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost on-dark" data-page="services">Our services</a></div></div>
+      <div class="why-list reveal d1">
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Zero cost to host</h3><p>Free‑on‑loan &amp; revenue‑share options — no capital outlay.</p></div>
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z"/></svg></div><h3>Fully managed</h3><p>Stocking, cleaning, maintenance and support included.</p></div>
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><h3>Cashless by default</h3><p>Cards, Apple Pay, Google Pay &amp; NFC via Nayax.</p></div>
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div><h3>Real‑time monitoring</h3><p>Smart alerts flag low stock and faults early.</p></div>
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Flexible product mix</h3><p>Healthy, local and seasonal options for your audience.</p></div>
+        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg></div><h3>UAE‑wide coverage</h3><p>All seven emirates plus Al Ain.</p></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section coffee-sec">
+    <div class="wrap"><div class="coffee-grid">
+      <div class="reveal"><span class="eyebrow on-dark" style="color:var(--lime)">Fresh bean coffee</span><h2 class="h-lg" style="color:#fff">Barista‑style drinks,<br>on demand.</h2><p class="lead" style="color:rgba(255,255,255,.8);margin-top:16px">Real ground beans, a full drinks menu and a touch screen anyone can use — the café experience, without the café.</p>
+        <div class="coffee-pills"><span class="pill">Espresso</span><span class="pill">Americano</span><span class="pill">Cappuccino</span><span class="pill">Latte</span><span class="pill">Flat White</span><span class="pill">Mocha</span><span class="pill">Hot Chocolate</span><span class="pill">Karak Tea</span><span class="pill">Lemon Tea</span></div>
+      </div>
+      <div class="coffee-visual reveal d1"><img src="assets/coffee-hero.jpg" alt="coffee machine"><div class="coffee-tag"><div class="n">97°C</div><div class="l">Fresh‑brewed, every cup</div></div></div>
+    </div></div>
+  </section>
+
+  <div class="stats"><div class="wrap"><div class="stats-grid">
+    <div class="stat reveal"><div class="num" data-count="25" data-suffix="+">0</div><div class="lbl">Machines installed</div></div>
+    <div class="stat reveal d1"><div class="num" data-count="15" data-suffix="+">0</div><div class="lbl">Leading UAE clients</div></div>
+    <div class="stat reveal d2"><div class="num" data-count="8" data-suffix="">0</div><div class="lbl">Emirates &amp; regions</div></div>
+    <div class="stat reveal d3"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Cashless payments</div></div>
+  </div></div></div>
+
+  <section class="section" style="background:var(--paper)">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="eyebrow">Trusted across the UAE</span><h2 class="h-lg">Chosen by healthcare, fitness<br>&amp; education leaders</h2></div>
+      <div class="sector reveal"><div class="sector-h">Healthcare<span></span></div><div class="logo-row"><div class="logo-chip">Medcare Hospitals</div><div class="logo-chip">Mediclinic</div><div class="logo-chip">King's College Hospital Dubai</div><div class="logo-chip">HealthBay</div><div class="logo-chip">HMS Mirdif Hospital</div><div class="logo-chip">FIFA Medical Centre</div><div class="logo-chip">Northwest Clinic</div><div class="logo-chip">Al Manara Specialized Medical Center</div></div></div>
+      <div class="sector reveal d1"><div class="sector-h">Fitness<span></span></div><div class="logo-row"><div class="logo-chip">Anytime Fitness</div><div class="logo-chip">Metrofitt</div><div class="logo-chip">Prime Fitness</div><div class="logo-chip">Yalla Fitness</div><div class="logo-chip">Sands Fitness</div><div class="logo-chip">Mayweather Boxing &amp; Fitness</div></div></div>
+      <div class="sector reveal d2"><div class="sector-h">Education<span></span></div><div class="logo-row"><div class="logo-chip">HULT University</div></div></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff"><div class="wrap"><div class="cta-band reveal"><div class="hero-glow a" style="top:-100px;right:-40px"></div><h2>Let's put a machine in your space.</h2><p>Book a free site survey and we'll recommend the machine, product mix and payment setup for your footfall — then install in days.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Get a free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost on-dark" data-page="machines">Browse machines</a></div></div></div></section>
+</section>
+
+<!-- ================= MACHINES ================= -->
+<section class="page" id="page-machines">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">The full range</span><h1>Every machine, spec'd for the UAE</h1><p class="lead">Smart, cashless snack, drink and fresh‑bean coffee machines — plus protein‑shake and fresh‑smoothie vending — with full installation, stocking and support.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap">
+    <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Snack &amp; Beverage</span></div>
+    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing"></div><div class="m-info"><div class="mach-kicker">6 Facings · Brand New</div><h2>Compact 36‑Select</h2><p>The right footprint for lobbies, clinics and smaller breakrooms — chilled snacks and drinks in a single unit with cashless payment built in.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">36</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">731 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">215 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Nayax cashless</span></div></div></div>
+    <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-48.jpg" alt="8-facing"></div><div class="m-info"><div class="mach-kicker">8 Facings · Brand New</div><h2>High‑Capacity 48‑Select</h2><p>Wider bays and 48 selections for hospitals, gyms and offices with serious footfall — more capacity means fewer refills and fewer sell‑outs.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">48</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">882 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">240 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Nayax cashless</span></div></div></div>
+
+    <div class="coffee-carousel reveal">
+      <div class="cc-head"><div><h3>Compare both models side by side</h3><p>Same cashless platform, two footprints — swipe or use the arrows.</p></div><div class="cc-arrows"><button class="cc-arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg></button><button class="cc-arrow" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+      <div class="cc-track" data-carousel>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/snack-36.jpg" alt="Compact 36-select refrigerated snack and beverage machine" loading="lazy"></div><div class="cc-info"><h4>Compact 36‑Select</h4><p>6 facings · 731×790 mm · 215 kg · 4–25°C</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/snack-48.jpg" alt="High-capacity 48-select refrigerated snack and beverage machine" loading="lazy"></div><div class="cc-info"><h4>High‑Capacity 48‑Select</h4><p>8 facings · 790×882 mm · 240 kg · 4–25°C</p></div></div>
+      </div>
+      <div class="cc-dots" data-dots></div>
+    </div>
+  </div></section>
+  <section class="section" style="background:#fff"><div class="wrap">
+    <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Fresh Bean Coffee</span></div>
+    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="tabletop coffee"></div><div class="m-info"><div class="mach-kicker">Tabletop · 10.1″ Touch</div><h2>Countertop Barista</h2><p>A compact touch‑screen machine for reception desks and small offices — up to 12 barista‑style drinks from real ground beans.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">Up to 12</div></div><div class="spec"><div class="k">Screen</div><div class="v">10.1″ touch</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">810×500×450</div></div><div class="spec"><div class="k">Canisters</div><div class="v">3</div></div><div class="spec"><div class="k">Bean hopper</div><div class="v">1.2 kg</div></div><div class="spec"><div class="k">Weight</div><div class="v">40 kg</div></div></div><div class="m-tags"><span class="m-tag">97 °C brew</span><span class="m-tag">7–16g brewer</span><span class="m-tag">Optional payment</span></div></div></div>
+    <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-5.jpg" alt="tower coffee"></div><div class="m-info"><div class="mach-kicker">Floor Tower · Espresso boiler</div><h2>Floor Tower</h2><p>A freestanding tower with a dual boiler and four canisters for steady, all‑day coffee service in busier offices and lobbies.</p><div class="m-specs"><div class="spec"><div class="k">Canisters</div><div class="v">4 × 1.7 L</div></div><div class="spec"><div class="k">Boiler</div><div class="v">1.7 L + 0.5 L</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">750×420×590</div></div><div class="spec"><div class="k">Max temp</div><div class="v">97 °C</div></div><div class="spec"><div class="k">Power</div><div class="v">2.8 kW</div></div><div class="spec"><div class="k">Weight</div><div class="v">46 kg</div></div></div><div class="m-tags"><span class="m-tag">90–300V</span><span class="m-tag">Espresso + filter</span><span class="m-tag">Optional payment</span></div></div></div>
+    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-6.jpg" alt="grande coffee"></div><div class="m-info"><div class="mach-kicker">Grande · 21.5″ Touch</div><h2>High‑Volume Floor Machine</h2><p>A 160‑cup machine with a large 21.5″ touch screen and up to 16 drinks — built for lobbies, campuses and high‑traffic floors.</p><div class="m-specs"><div class="spec"><div class="k">Cup capacity</div><div class="v">160 cups</div></div><div class="spec"><div class="k">Selections</div><div class="v">Up to 16</div></div><div class="spec"><div class="k">Screen</div><div class="v">21.5″ touch</div></div><div class="spec"><div class="k">Canisters</div><div class="v">6</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">1940×735×790</div></div><div class="spec"><div class="k">Weight</div><div class="v">220 kg</div></div></div><div class="m-tags"><span class="m-tag">240V · 60Hz</span><span class="m-tag">7–16g brewer</span><span class="m-tag">Optional payment</span></div></div></div>
+
+    <div class="coffee-carousel reveal">
+      <div class="cc-head"><div><h3>The full coffee model line‑up</h3><p>Six machine formats, one 97°C fresh‑bean standard — drag or use the arrows to browse.</p></div><div class="cc-arrows"><button class="cc-arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg></button><button class="cc-arrow" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
+      <div class="cc-track" data-carousel>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-1.jpg" alt="14 inch touchscreen bean to cup machine with bean hopper" loading="lazy"></div><div class="cc-info"><h4>Barista 14″ · Hopper</h4><p>14″ touch · 1.5 kg bean hopper · 3×2 L canisters · 45 kg</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-2.jpg" alt="14 inch touchscreen bean to cup machine, 5 canisters" loading="lazy"></div><div class="cc-info"><h4>Barista 14″ · 5‑Canister</h4><p>14″ touch · 5×2 L canisters · 3 mixers · 42 kg</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-3.jpg" alt="10.1 inch touchscreen countertop coffee machine with cup dispenser" loading="lazy"></div><div class="cc-info"><h4>Countertop Barista</h4><p>10.1″ touch · 5×2 L canisters · cup dispenser · 40 kg</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-4.jpg" alt="Fresh milk refrigerator coffee machine, compact silver unit" loading="lazy"></div><div class="cc-info"><h4>Fresh Milk Refrigerator</h4><p>7″ touch · 4×1.7 L canisters · real milk · 17 kg</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-5.jpg" alt="Freestanding coffee tower with bean hopper" loading="lazy"></div><div class="cc-info"><h4>Floor Tower</h4><p>14″ touch · 4×1.7 L canisters · dual boiler · 46 kg</p></div></div>
+        <div class="cc-slide"><div class="ccimg"><img src="assets/coffee-6.jpg" alt="Grande 21.5 inch high volume floor coffee machine" loading="lazy"></div><div class="cc-info"><h4>Grande Floor Machine</h4><p>21.5″ touch · 6×4 L canisters · 160‑cup capacity · 220 kg</p></div></div>
+      </div>
+      <div class="cc-dots" data-dots></div>
+    </div>
+  </div></section>
+  <section class="section" style="background:linear-gradient(180deg,#fff,var(--paper))"><div class="wrap">
+    <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Protein &amp; Healthy</span></div>
+    <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/protein-machine.jpg" alt="Protein shake vending machine with touchscreen ordering and chilled storage"><div class="m-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div></div><div class="m-info"><div class="mach-kicker">27″ Touchscreen · Fitness‑Ready</div><h2>Shakes on tap for fitness spaces</h2><p>A cashless protein‑shake and healthy‑drink machine designed for gyms and fitness centres — fresh‑blended per serve from premium powder, in multiple flavours, with the perfect pre‑ and post‑workout grab fully stocked and managed by Vendman.</p><div class="m-specs"><div class="spec"><div class="k">Screen</div><div class="v">27″ touch</div></div><div class="spec"><div class="k">Mixing</div><div class="v">Independent system</div></div><div class="spec"><div class="k">Serving</div><div class="v">Adjustable size</div></div><div class="spec"><div class="k">Storage</div><div class="v">Refrigerated</div></div></div><div class="m-tags"><span class="m-tag">Multiple flavours</span><span class="m-tag">Fresh blend per serve</span><span class="m-tag">Easy‑clean system</span><span class="m-tag">Cashless</span></div><div style="margin-top:24px"><a class="btn btn-primary" data-page="contact">Ask about protein machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div>
+  </div></section>
+  <section class="section" style="background:var(--paper)"><div class="wrap">
+    <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Fresh Smoothies</span></div>
+    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh blend</span><img src="assets/smoothie-machine.jpg" alt="Fresh smoothie vending machine blending real frozen fruit on demand"><div class="m-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div></div><div class="m-info"><div class="mach-kicker">Fresh Smoothie Machine</div><h2>Real fruit smoothies, blended on demand</h2><p>Give your team fresh, healthy smoothies made from real frozen fruit — blended to order in under a minute, with no artificial preservatives. A vibrant, compact countertop addition to any wellness area, café corner or gym floor.</p><div class="m-tags"><span class="m-tag">Real frozen fruit</span><span class="m-tag">45‑second serve</span><span class="m-tag">No preservatives</span><span class="m-tag">Self‑cleaning cycle</span><span class="m-tag">Compact countertop</span></div><div style="margin-top:24px"><a class="btn btn-primary" data-page="contact">Ask about smoothie machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div>
+  </div></section>
+  <section class="section" style="background:#fff"><div class="wrap"><div class="cta-band reveal"><h2>Not sure which machine fits?</h2><p>Tell us the location and footfall — we'll spec the machine, product mix and payment setup, then install in days.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Book a site survey <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div></section>
+</section>
+
+<!-- ================= SOLUTIONS ================= -->
+<section class="page" id="page-solutions">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">Solutions by industry</span><h1>Refreshment fitted to your world</h1><p class="lead">From hospital atriums to factory floors, we match the machine, product mix and placement to how your space actually runs.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap"><div class="grid-3">
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg></div><h3>Hospitals</h3><p>24/7 refreshment for staff, patients and visitors across atriums, wards and waiting areas.</p></div>
+    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4 4.4.6-3.2 3.1.8 4.3L12 17l-3.9 2 .8-4.3L5.7 11.6 10 11z"/></svg></div><h3>Clinics</h3><p>Quiet, hygienic snack and coffee machines that keep clinics welcoming between appointments.</p></div>
+    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9v6M7 5v14M17 5v14M21 9v6M7 12h10"/></svg></div><h3>Fitness Centers</h3><p>Protein shakes, drinks and healthy snacks members reach for before and after a session.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4" stroke-linecap="round"/></svg></div><h3>Offices</h3><p>Corporate coffee stations and snack machines that lift the breakroom with zero admin.</p></div>
+    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4 2 9l10 5 10-5-10-5zM5 11v5c0 1.2 3.1 3 7 3s7-1.8 7-3v-5"/></svg></div><h3>Universities</h3><p>Campus‑ready machines with the cashless payment students and staff already use daily.</p></div>
+    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V8l8-5 8 5v12M9 20v-6h6v6" stroke-linejoin="round"/></svg></div><h3>Schools</h3><p>Age‑appropriate healthy vending with reliable service and simple cashless payment.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 9l9-5 9 5v11H3V9zM9 20v-6h6v6"/></svg></div><h3>Warehouses</h3><p>Rugged, high‑capacity units that keep shift workers fuelled around the clock.</p></div>
+    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 11h.01M15 11h.01"/></svg></div><h3>Factories</h3><p>Manufacturing‑floor machines built for volume, durability and minimal downtime.</p></div>
+    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9h16M5 9l1-4h12l1 4M5 9v11h14V9M10 20v-5h4v5"/></svg></div><h3>Commercial &amp; Retail</h3><p>Guest‑friendly coffee and snacks for lobbies, malls and waiting areas — a new revenue stream.</p></div>
+  </div></div></section>
+  <section class="section" style="background:#fff"><div class="wrap"><div class="cta-band reveal"><h2>Every emirate. One partner.</h2><p>Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain — with local service teams.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Talk to us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div></section>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="page" id="page-services">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">What we do</span><h1>End‑to‑end vending, fully managed</h1><p class="lead">From the first site survey to daily restocking, Vendman runs the whole operation so you never touch a machine.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Services</span><h2 class="h-lg">Everything, handled</h2></div>
+    <div class="grid-4">
+      <div class="card sm reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>Snack &amp; beverage vending</h3></div>
+      <div class="card sm reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9v6a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4zM15 5h2a2 2 0 0 1 0 4h-2M4 20h13" stroke-linecap="round"/></svg></div><h3>Fresh bean coffee machines</h3></div>
+      <div class="card sm reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9v6a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z" /><path d="M9 17c0 1 6 1 6 0" stroke-linecap="round"/></svg></div><h3>Instant coffee machines</h3></div>
+      <div class="card sm reveal d3"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8M9 2v3l2 3-2 8a3 3 0 0 0 3 4 3 3 0 0 0 3-4l-2-8 2-3V2"/></svg></div><h3>Protein shake machines</h3></div>
+      <div class="card sm reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/><path d="M9 11l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Healthy vending solutions</h3></div>
+      <div class="card sm reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><h3>Cashless payment integration</h3></div>
+      <div class="card sm reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v12H3zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><h3>Machine rental</h3></div>
+      <div class="card sm reveal d3"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Free‑on‑loan coffee programs</h3></div>
+      <div class="card sm reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div><h3>Revenue sharing</h3></div>
+      <div class="card sm reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7L9 18l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Vending machine sales</h3></div>
+      <div class="card sm reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2z"/></svg></div><h3>Installation &amp; setup</h3></div>
+      <div class="card sm reveal d3"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div><h3>Preventive maintenance</h3></div>
+      <div class="card sm reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h4l2 12h9l2-7H6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg></div><h3>Product restocking</h3></div>
+      <div class="card sm reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3" stroke-linecap="round"/></svg></div><h3>Technical support</h3></div>
+      <div class="card sm reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 5 5.6.5-4.2 3.7 1.3 5.5L12 19l-5.1 2.7 1.3-5.5L4 12.5 9.6 12z"/></svg></div><h3>Customized solutions</h3></div>
+      <div class="card sm reveal d3"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9v6a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4zM4 20h13M15 5h2a2 2 0 0 1 0 4h-2" stroke-linecap="round"/></svg></div><h3>Corporate coffee stations</h3></div>
+    </div>
+  </div></section>
+  <section class="section" style="background:#fff"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Rental &amp; management</span><h2 class="h-lg">Choose how you run it</h2></div>
+    <div class="grid-3">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Free‑on‑loan</h3><p>Qualifying locations get the machine at zero cost — we fund, install and manage it end to end.</p></div>
+      <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div><h3>Revenue sharing</h3><p>Turn unused space into passive income with a share of sales — no operational burden on you.</p></div>
+      <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18v12H3zM8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div><h3>Rental &amp; purchase</h3><p>Prefer to own or rent outright? We supply, install and support the machine on your terms.</p></div>
+    </div>
+    <p class="lead reveal" style="margin-top:24px">Pricing is a customized quotation based on machine type, location and consumption — every plan includes replenishment, cleaning, maintenance and technical support.</p>
+  </div></section>
+
+  <section class="section dark-sec" id="payments">
+    <div class="hero-glow a" style="top:-120px;right:-60px"></div>
+    <div class="wrap">
+      <div class="sec-head center reveal"><span class="eyebrow on-dark center">Payment solutions</span><h2 class="h-lg" style="color:#fff">Every machine accepts every payment.</h2><p class="lead on-dark" style="margin:16px auto 0">All our machines come equipped with the latest cashless payment technology. Accept tap &amp; go, credit cards, Apple Pay, Google Pay and Samsung Pay — with optional coin and note acceptors available on request.</p></div>
+      <div class="payment-row reveal d1"><img src="assets/payment-methods.png" alt="Accepted payment methods — Visa, Mastercard, Google Pay, Apple Pay and bank cards"></div>
+      <div class="payment-feats reveal d2">
+        <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><h3>Fast</h3><p>Tap &amp; go in under two seconds — no queues, no fumbling for change.</p></div>
+        <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Secure</h3><p>Bank‑grade encryption on every tap, powered by Nayax — the UAE's leading cashless provider.</p></div>
+        <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Convenient</h3><p>Cards, wallets, or coins and notes as a backup — every user, every location, covered.</p></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="page" id="page-about">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">About Vendman</span><h1>Premium vending, the UAE way</h1><p class="lead">Vendman Vending Machines LLC is a UAE‑based provider of premium vending and automated retail solutions — snack &amp; beverage machines, fresh‑bean coffee, protein‑shake vending and cashless payment systems.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap"><div class="why-grid">
+    <div class="reveal"><span class="eyebrow">Our mission</span><h2 class="h-lg">Everyday convenience, beautifully run</h2><p class="lead" style="margin-top:16px">We help businesses enhance employee and customer experiences through fully managed vending — tailored to hospitals, clinics, fitness centres, offices, universities, factories and commercial spaces. From installation and stocking to maintenance and technical support, we deliver reliable, hassle‑free vending across the UAE.</p><div class="why-cta"><a class="btn btn-primary" data-page="contact">Work with us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div>
+    <div class="reveal d1"><div class="grid-3" style="grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card"><h3 style="font-size:2rem;color:var(--teal)">25+</h3><p>Machines installed across the UAE</p></div>
+      <div class="card"><h3 style="font-size:2rem;color:var(--teal)">8</h3><p>Emirates &amp; regions served</p></div>
+      <div class="card"><h3 style="font-size:2rem;color:var(--teal)">15+</h3><p>Leading healthcare, fitness &amp; education clients</p></div>
+      <div class="card"><h3 style="font-size:2rem;color:var(--teal)">100%</h3><p>Cashless, fully managed operation</p></div>
+    </div></div>
+  </div></div></section>
+
+  <section class="section dark-sec" style="padding:clamp(52px,7vw,84px) 0">
+    <div class="hero-glow a" style="top:-160px;right:-60px"></div>
+    <div class="wrap">
+      <div class="sec-head center reveal" style="margin-bottom:38px"><span class="eyebrow on-dark center">What's included</span><h2 class="h-lg" style="color:#fff">Installed, serviced and monitored by us.</h2><p class="lead on-dark" style="margin:16px auto 0">Every Vendman placement is turnkey — we deliver and install the machine, keep it maintained and stocked, monitor it remotely and set up cashless payments. You provide the space, we handle the rest.</p></div>
+      <div class="cap-strip reveal d1">
+        <div class="cap"><img src="assets/icon-installation.png" alt="" aria-hidden="true"><h3>Installation</h3><p>Delivered, placed, powered and connected — usually in a single visit.</p></div>
+        <div class="cap"><img src="assets/icon-maintenance.png" alt="" aria-hidden="true"><h3>Maintenance</h3><p>Scheduled servicing, cleaning and repairs — parts and labour included.</p></div>
+        <div class="cap"><img src="assets/icon-monitoring.png" alt="" aria-hidden="true"><h3>Remote Monitoring</h3><p>Live telemetry on stock, sales and machine health, 24/7.</p></div>
+        <div class="cap"><img src="assets/icon-cashless.png" alt="" aria-hidden="true"><h3>Cashless Payments</h3><p>Tap &amp; go, cards, Apple Pay, Google Pay and Samsung Pay via Nayax.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#fff"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Coverage &amp; hours</span><h2 class="h-lg">Where and when we work</h2></div>
+    <div class="grid-3">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h3>Service areas</h3><p>Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain.</p></div>
+      <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div><h3>Business hours</h3><p>Mon–Fri 8:00am–6:00pm · Sat 9:00am–2:00pm. Emergency technical support for contracted clients.</p></div>
+      <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>Support</h3><p>One partner for installation, restocking, cleaning, maintenance and technical support.</p></div>
+    </div>
+  </div></section>
+  <section class="section" style="background:var(--paper)"><div class="wrap">
+    <div class="sec-head reveal"><span class="eyebrow">Trusted by</span><h2 class="h-lg">Clients we serve</h2></div>
+    <div class="sector reveal"><div class="sector-h">Healthcare<span></span></div><div class="logo-row"><div class="logo-chip">Medcare Hospitals</div><div class="logo-chip">Mediclinic</div><div class="logo-chip">King's College Hospital Dubai</div><div class="logo-chip">HealthBay</div><div class="logo-chip">HMS Mirdif Hospital</div><div class="logo-chip">FIFA Medical Centre</div><div class="logo-chip">Northwest Clinic</div><div class="logo-chip">Al Manara Specialized Medical Center</div></div></div>
+    <div class="sector reveal d1"><div class="sector-h">Fitness &amp; Education<span></span></div><div class="logo-row"><div class="logo-chip">Anytime Fitness</div><div class="logo-chip">Metrofitt</div><div class="logo-chip">Prime Fitness</div><div class="logo-chip">Yalla Fitness</div><div class="logo-chip">Sands Fitness</div><div class="logo-chip">Mayweather Boxing &amp; Fitness</div><div class="logo-chip">HULT University</div></div></div>
+  </div></section>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="page" id="page-contact">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">Get a quote</span><h1>Let's put a machine in your space</h1><p class="lead">Tell us about your location and we'll come back with a tailored recommendation and quote — usually within one business day.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap"><div class="contact-grid">
+    <div class="reveal">
+      <span class="eyebrow">Contact</span><h2 class="h-lg">Talk to Vendman</h2>
+      <div class="info-list">
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></div><div><div class="k">Call us</div><div class="v"><a href="tel:+971588280346">+971 58 828 0346</a></div></div></div>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg></div><div><div class="k">Email</div><div class="v"><a href="mailto:info@vendman-uae.com">info@vendman-uae.com</a></div></div></div>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="k">Office</div><div class="v">Dubai, United Arab Emirates</div></div></div>
+        <div class="info-row"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><div class="k">Hours</div><div class="v">Mon–Fri 8am–6pm · Sat 9am–2pm</div></div></div>
+      </div>
+      <p class="hours-note">Emergency technical support available for contracted clients.</p>
+    </div>
+    <div class="form-card reveal d1">
+      <div id="formInner">
+        <h3>Request your quote</h3><p class="sub">No obligation. We'll follow up with a tailored recommendation.</p>
+        <div class="row-2"><div class="field"><label>Full name</label><input id="f-name" type="text" placeholder="Your name"></div><div class="field"><label>Company</label><input id="f-company" type="text" placeholder="Company name"></div></div>
+        <div class="row-2"><div class="field"><label>Email</label><input id="f-email" type="email" placeholder="you@company.com"></div><div class="field"><label>Phone</label><input id="f-phone" type="tel" placeholder="+971 …"></div></div>
+        <div class="row-2"><div class="field"><label>Emirate</label><select id="f-emirate"><option value="" disabled selected>Select…</option><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option><option>Al Ain</option></select></div><div class="field"><label>Interested in</label><select id="f-interest"><option value="" disabled selected>Select…</option><option>Snack &amp; drink machine</option><option>Fresh bean coffee machine</option><option>Protein shake machine</option><option>Not sure yet</option></select></div></div>
+        <div class="field"><label>Anything else?</label><textarea id="f-msg" placeholder="Location type, footfall, timeframe…"></textarea></div>
+        <button class="btn btn-primary" id="submitBtn" style="width:100%;justify-content:center">Request my quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div>
+      <div class="form-success" id="formSuccess"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Request sent</h3><p>Thanks — we've got your details and will be in touch within one business day. For anything urgent, call <strong>+971 58 828 0346</strong>.</p></div>
+    </div>
+  </div></div></section>
+  <section class="section" style="background:#fff"><div class="wrap"><div class="faq-grid">
+    <div class="reveal"><span class="eyebrow">Good to know</span><h2 class="h-lg">Questions,<br>answered</h2><p class="lead" style="margin-top:16px">Everything hosts ask before we install.</p></div>
+    <div class="faq-list reveal d1">
+      <div class="faq-item"><button class="faq-q">Do you provide machines for free?<span class="ic"></span></button><div class="faq-a"><p>Yes — through qualifying free‑on‑loan programs, with revenue‑share options depending on your location and footfall.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Do you maintain the machines?<span class="ic"></span></button><div class="faq-a"><p>Yes. Servicing, cleaning and technical support are included, with emergency support for contracted clients.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Do you refill the products?<span class="ic"></span></button><div class="faq-a"><p>Yes — scheduled replenishment keeps machines stocked, and real‑time monitoring flags anything running low.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Which payment methods are supported?<span class="ic"></span></button><div class="faq-a"><p>Cards, Apple Pay, Google Pay and NFC via Nayax — the leading cashless provider in the UAE.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Can the product mix be customized?<span class="ic"></span></button><div class="faq-a"><p>Yes. We tailor snacks, drinks and coffee to your audience, including healthy options and seasonal demand.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Which areas do you serve?<span class="ic"></span></button><div class="faq-a"><p>All emirates of the UAE — plus Al Ain — with local service teams.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Do you also sell vending machines?<span class="ic"></span></button><div class="faq-a"><p>Yes — outright sales alongside rental, free‑on‑loan and fully managed programs.</p></div></div>
+    </div>
+  </div></div></section>
+</section>
+
+<!-- ================= PRIVACY POLICY ================= -->
+<section class="page" id="page-privacy">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">Legal</span><h1>Privacy Policy</h1><p class="lead">How Vendman collects, uses and protects your information.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap">
+    <div class="legal reveal">
+      <p class="updated">Last updated: 1 August 2026</p>
+      <p>Vendman Vending Machines LLC ("Vendman", "we", "us") operates the vendman-uae.com website and provides smart vending machines and related services across the UAE and GCC. This Privacy Policy explains what information we collect, how we use it, and the choices you have.</p>
+
+      <h2>1. Information we collect</h2>
+      <p>We collect information you provide directly to us, such as when you submit a quote request or contact form. This may include your name, company name, email address, phone number, emirate and any details you share about your location or requirements.</p>
+      <p>We may also automatically collect limited technical information — such as browser type, device type and general usage data — to help us understand how the website is used and to keep it secure.</p>
+
+      <h2>2. How we use your information</h2>
+      <ul>
+        <li>To respond to quote requests and enquiries, and to arrange site surveys or installations</li>
+        <li>To provide, maintain and improve our machines, products and services</li>
+        <li>To communicate with you about your account, request or an existing installation</li>
+        <li>To comply with legal obligations and protect against fraud or misuse</li>
+      </ul>
+
+      <h2>3. Payments at our machines</h2>
+      <p>Cashless payments made at Vendman machines (cards, Apple Pay, Google Pay, Samsung Pay and tap &amp; go) are processed by Nayax and other regulated third‑party payment providers. Vendman does not receive or store your full card details — these are handled directly by the payment processor under its own security standards and privacy terms.</p>
+
+      <h2>4. Cookies</h2>
+      <p>Our website may use essential cookies and similar technologies to ensure the site functions correctly. We do not use cookies for third‑party advertising.</p>
+
+      <h2>5. Sharing your information</h2>
+      <p>We do not sell your personal information. We may share information with trusted service providers who support our operations (such as payment processing, IT hosting or logistics), and where required by UAE law or a valid legal request.</p>
+
+      <h2>6. Data retention</h2>
+      <p>We retain the information you provide for as long as necessary to respond to your enquiry, deliver our services, or as required by law, after which it is securely deleted or anonymised.</p>
+
+      <h2>7. Your rights</h2>
+      <p>You may ask us to access, correct or delete the personal information we hold about you, or to stop contacting you about a request, by emailing us at the address below.</p>
+
+      <h2>8. Data security</h2>
+      <p>We take reasonable technical and organisational measures to protect your information against unauthorised access, loss or misuse. No method of transmission over the internet is completely secure, and we cannot guarantee absolute security.</p>
+
+      <h2>9. Changes to this policy</h2>
+      <p>We may update this Privacy Policy from time to time. The "Last updated" date above reflects the most recent revision.</p>
+
+      <h2>10. Contact us</h2>
+      <p>For any privacy questions or requests, contact us at <strong>info@vendman-uae.com</strong> or <strong>+971 58 828 0346</strong>. Vendman Vending Machines LLC, Dubai, United Arab Emirates.</p>
+    </div>
+  </div></section>
+</section>
+
+<!-- ================= TERMS & CONDITIONS ================= -->
+<section class="page" id="page-terms">
+  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">Legal</span><h1>Terms &amp; Conditions</h1><p class="lead">The terms that apply when you use our website or work with Vendman.</p></div></div>
+  <section class="section" style="background:linear-gradient(180deg,var(--paper),#fff)"><div class="wrap">
+    <div class="legal reveal">
+      <p class="updated">Last updated: 1 August 2026</p>
+      <p>These Terms &amp; Conditions govern your use of the vendman-uae.com website and any vending machine, installation or service arrangement with Vendman Vending Machines LLC ("Vendman"). By using our website or services, you agree to these terms.</p>
+
+      <h2>1. Our services</h2>
+      <p>Vendman supplies, installs, stocks and maintains smart cashless vending machines — including snack &amp; beverage, fresh‑bean coffee, protein shake and fresh smoothie machines — for businesses across the UAE and GCC, on a free‑on‑loan, rental, revenue‑share or outright sale basis depending on the arrangement agreed with each client.</p>
+
+      <h2>2. Site surveys &amp; quotes</h2>
+      <p>Quote requests submitted through this website are non‑binding. Final machine selection, product mix, placement and pricing are confirmed after a site survey and a written agreement between Vendman and the host location.</p>
+
+      <h2>3. Free‑on‑loan &amp; rental machines</h2>
+      <p>Where a machine is provided free‑on‑loan or on a rental basis, ownership of the machine remains with Vendman at all times. The host location agrees to provide reasonable access, power and a suitable, secure placement for the machine, and to notify Vendman promptly of any fault, damage or relocation need.</p>
+
+      <h2>4. Payments</h2>
+      <p>Cashless payments at our machines are processed via Nayax and other regulated third‑party payment providers, in accordance with their own terms. Pricing for installation, rental or purchase arrangements is provided as a customised quotation and confirmed in writing before work begins.</p>
+
+      <h2>5. Service &amp; maintenance</h2>
+      <p>Every managed placement includes scheduled restocking, cleaning and preventive maintenance. Emergency technical support is available for contracted clients during the hours listed on our Contact page.</p>
+
+      <h2>6. Website use</h2>
+      <p>Content on this website — including text, images, machine photography and specifications — is provided for general information and is the property of Vendman or its licensors. Machine dimensions, capacities and specifications are provided by our suppliers and may vary slightly between production batches; we'll always confirm exact specifications for your chosen model before installation.</p>
+
+      <h2>7. Limitation of liability</h2>
+      <p>Vendman is not liable for indirect or consequential loss arising from use of this website. Our liability in connection with any installed machine or service is governed by the written agreement signed with each client.</p>
+
+      <h2>8. Governing law</h2>
+      <p>These terms are governed by the laws of the United Arab Emirates. Any dispute arising from these terms or our services will be subject to the exclusive jurisdiction of the courts of Dubai, UAE.</p>
+
+      <h2>9. Changes to these terms</h2>
+      <p>We may update these Terms &amp; Conditions from time to time. The "Last updated" date above reflects the most recent revision.</p>
+
+      <h2>10. Contact us</h2>
+      <p>Questions about these terms can be sent to <strong>info@vendman-uae.com</strong> or <strong>+971 58 828 0346</strong>. Vendman Vending Machines LLC, Dubai, United Arab Emirates.</p>
+    </div>
+  </div></section>
+</section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand" data-page="home" style="color:#fff"><img src="assets/vendman-logo-clean-transparent.png" alt="Vendman" class="footer-logo"></div>
+        <p>Smart, cashless vending &amp; fresh‑bean coffee solutions for modern spaces across the UAE.</p>
+        <div class="foot-social"><a href="https://instagram.com/vendman.uae" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a href="mailto:info@vendman-uae.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg></a><a href="tel:+971588280346" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a></div>
+      </div>
+      <div class="foot-col"><h4>Machines</h4><a data-page="machines">Snack &amp; drink</a><a data-page="machines">Fresh bean coffee</a><a data-page="machines">Protein shakes</a><a data-page="machines">Fresh smoothies</a></div>
+      <div class="foot-col"><h4>Company</h4><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a></div>
+      <div class="foot-col"><h4>Service areas</h4><p>Dubai · Abu Dhabi · Sharjah</p><p>Ajman · Ras Al Khaimah</p><p>Fujairah · Umm Al Quwain</p><p>Al Ain</p></div>
+    </div>
+    <div class="foot-bottom"><div>© 2026 Vendman Vending Machines LLC. All rights reserved.</div><div class="foot-legal"><a data-page="privacy">Privacy Policy</a><a data-page="terms">Terms &amp; Conditions</a></div><div>info@vendman-uae.com · +971 58 828 0346</div></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var hdr=document.getElementById('hdr');
+  var pages=document.querySelectorAll('.page');
+  var links=document.querySelectorAll('[data-page]');
+  var darkTop={home:true,machines:true,solutions:true,services:true,about:true,contact:true};
+  function setHeader(){ var atTop=window.scrollY<30; hdr.classList.toggle('scrolled',!atTop); }
+  function go(page){
+    pages.forEach(function(p){p.classList.toggle('active',p.id==='page-'+page)});
+    document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.toggle('active',a.dataset.page===page)});
+    document.documentElement.scrollTop=0; document.body.scrollTop=0;
+    // header starts transparent over each page's dark hero
+    hdr.classList.remove('solid'); setHeader(); if(typeof onScrollChrome==='function') onScrollChrome();
+    var active=document.getElementById('page-'+page);
+    // trigger reveals for this page
+    active.querySelectorAll('.reveal').forEach(function(el){el.classList.remove('in')});
+    requestAnimationFrame(function(){
+      document.documentElement.scrollTop=0; document.body.scrollTop=0;
+      observeAll(active);
+    });
+    runCounters(active); runSteps(active);
+  }
+  links.forEach(function(l){ l.addEventListener('click',function(e){ e.preventDefault(); var p=l.dataset.page; if(p){ go(p); closeMenu(); } }); });
+
+  // reveal observer (per page)
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});
+  function observeAll(scope){ (scope||document).querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el)}); }
+  var stepIO=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in')}})},{threshold:.3});
+  function runSteps(scope){ (scope||document).querySelectorAll('.step').forEach(function(el){stepIO.observe(el)}); }
+
+  // counters
+  function runCounters(scope){
+    var once=false;
+    var cio=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting&&!once){ once=true;
+      (scope||document).querySelectorAll('.num').forEach(function(el){ var target=+el.dataset.count,suf=el.dataset.suffix||'',t0=null;
+        function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1);var e2=1-Math.pow(1-p,3);el.textContent=Math.round(e2*target)+suf;if(p<1)requestAnimationFrame(step)} requestAnimationFrame(step); });
+    }})},{threshold:.5});
+    var st=(scope||document).querySelector('.stats'); if(st)cio.observe(st);
+  }
+
+  // scroll progress + back to top
+  var progressBar=document.getElementById('scrollProgress'), backBtn=document.getElementById('backToTop');
+  function onScrollChrome(){
+    var doc=document.documentElement;
+    var h=doc.scrollHeight-doc.clientHeight;
+    var p=h>0?(window.scrollY/h)*100:0;
+    progressBar.style.width=p+'%';
+    backBtn.classList.toggle('show', window.scrollY>600);
+  }
+  backBtn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  window.addEventListener('scroll',onScrollChrome,{passive:true});
+
+  // lightbox for full-size machine photos
+  var lightbox=document.getElementById('lightbox'), lightboxImg=document.getElementById('lightboxImg');
+  function openLightbox(src,alt){ lightboxImg.src=src; lightboxImg.alt=alt||''; lightbox.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLightbox(){ lightbox.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('lightboxClose').addEventListener('click',closeLightbox);
+  lightbox.addEventListener('click',function(e){ if(e.target===lightbox) closeLightbox(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeLightbox(); });
+  document.querySelectorAll('.m-media img').forEach(function(img){
+    img.addEventListener('click',function(){ openLightbox(img.currentSrc||img.src, img.alt); });
+  });
+
+  // subtle 3D tilt on product cards
+  function addTilt(el,strength){
+    strength=strength||8;
+    el.addEventListener('mousemove',function(e){
+      var r=el.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-0.5, y=(e.clientY-r.top)/r.height-0.5;
+      el.style.transform='perspective(900px) rotateX('+(-y*strength)+'deg) rotateY('+(x*strength)+'deg) translateY(-6px)';
+    });
+    el.addEventListener('mouseleave',function(){ el.style.transform=''; });
+  }
+  document.querySelectorAll('.mach-card').forEach(function(el){ addTilt(el,7); });
+  document.querySelectorAll('.cc-slide').forEach(function(el){ addTilt(el,6); });
+
+  // hero background video — mobile source swap, lazy reveal, pause offscreen
+  (function(){
+    var v=document.getElementById('heroVideo'); if(!v) return;
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var saveData=(navigator.connection||{}).saveData;
+    // reduced-motion / data-saver: keep the poster frame, never fetch the video
+    if(reduce||saveData){ v.removeAttribute('autoplay'); v.pause(); v.classList.add('ready'); return; }
+
+    // portrait crop on phones — better framing than cropping the 16:9 master
+    if(window.matchMedia('(max-width: 700px)').matches){
+      while(v.firstChild) v.removeChild(v.firstChild);
+      var s=document.createElement('source');
+      s.src='assets/video/vendman-hero-mobile-1080x1350.mp4'; s.type='video/mp4';
+      v.appendChild(s); v.load();
+    }
+
+    function reveal(){ v.classList.add('ready'); }
+    if(v.readyState>=2) reveal(); else v.addEventListener('loadeddata',reveal,{once:true});
+    // if the network stalls, still fade in so the poster isn't stuck at 0 opacity
+    setTimeout(reveal,2500);
+
+    v.play().catch(function(){});
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ v.play().catch(function(){}); } else { v.pause(); } });
+      },{threshold:.1}).observe(v);
+    }
+  })();
+
+  // machine model carousels — drag, arrows, dots, autoplay (one instance per .coffee-carousel)
+  document.querySelectorAll('.coffee-carousel').forEach(function(root){
+    var track=root.querySelector('[data-carousel]'); if(!track) return;
+    var dotsWrap=root.querySelector('[data-dots]');
+    var slides=Array.prototype.slice.call(track.children);
+    slides.forEach(function(_,i){
+      var d=document.createElement('button'); d.className='cc-dot'+(i===0?' active':''); d.setAttribute('aria-label','Go to slide '+(i+1));
+      d.addEventListener('click',function(){ scrollToSlide(i); });
+      dotsWrap.appendChild(d);
+    });
+    var dots=Array.prototype.slice.call(dotsWrap.children);
+    function step(){ return slides[0].getBoundingClientRect().width+20; }
+    function scrollToSlide(i){ track.scrollTo({left:i*step(),behavior:'smooth'}); }
+    function updateDots(){ var i=Math.round(track.scrollLeft/step()); dots.forEach(function(d,idx){ d.classList.toggle('active',idx===i); }); }
+    track.addEventListener('scroll',function(){ requestAnimationFrame(updateDots); },{passive:true});
+    root.querySelectorAll('.cc-arrow').forEach(function(b){ b.addEventListener('click',function(){ track.scrollBy({left:(+b.dataset.dir)*step(),behavior:'smooth'}); }); });
+
+    var isDown=false,startX=0,startScroll=0,moved=false;
+    track.addEventListener('pointerdown',function(e){ isDown=true; moved=false; paused=true; track.classList.add('dragging'); startX=e.clientX; startScroll=track.scrollLeft; track.setPointerCapture(e.pointerId); });
+    track.addEventListener('pointermove',function(e){ if(!isDown)return; var dx=e.clientX-startX; if(Math.abs(dx)>4)moved=true; track.scrollLeft=startScroll-dx; });
+    function endDrag(){ isDown=false; track.classList.remove('dragging'); requestAnimationFrame(updateDots); }
+    track.addEventListener('pointerup',endDrag); track.addEventListener('pointercancel',endDrag);
+    track.addEventListener('click',function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); moved=false; } },true);
+
+    var autoTimer,paused=false;
+    function nextSlide(){ if(paused)return; var i=Math.round(track.scrollLeft/step()); scrollToSlide((i+1)%slides.length); }
+    function startAuto(){ stopAuto(); autoTimer=setInterval(nextSlide,4200); }
+    function stopAuto(){ if(autoTimer)clearInterval(autoTimer); }
+    track.addEventListener('mouseenter',function(){ paused=true; });
+    track.addEventListener('mouseleave',function(){ paused=false; });
+    startAuto();
+  });
+
+  // menu
+  var burger=document.getElementById('burger'),panel=document.getElementById('mpanel');
+  function closeMenu(){burger.classList.remove('open');panel.classList.remove('open');document.body.style.overflow=''}
+  burger.addEventListener('click',function(){var o=!panel.classList.contains('open');burger.classList.toggle('open',o);panel.classList.toggle('open',o);document.body.style.overflow=o?'hidden':''});
+
+  // tabs (generic)
+  document.querySelectorAll('.tab').forEach(function(tab){tab.addEventListener('click',function(){var set=tab.dataset.set,grp=tab.closest('section');grp.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t===tab)});grp.querySelectorAll('.mach-set').forEach(function(s){s.classList.toggle('active',s.dataset.set===set)})})});
+
+  // faq
+  document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){var it=q.parentElement,a=q.nextElementSibling,open=it.classList.contains('open');it.parentElement.querySelectorAll('.faq-item').forEach(function(x){x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight=null});if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
+
+  // form
+  var btn=document.getElementById('submitBtn');
+  if(btn)btn.addEventListener('click',function(){var n=document.getElementById('f-name').value.trim(),em=document.getElementById('f-email').value.trim();if(!n||!em){[['f-name',n],['f-email',em]].forEach(function(f){document.getElementById(f[0]).style.borderColor=f[1]?'':'#e05252'});return}document.getElementById('formInner').style.display='none';document.getElementById('formSuccess').classList.add('show')});
+
+  window.addEventListener('scroll',setHeader,{passive:true});
+  observeAll(document.getElementById('page-home')); runCounters(document.getElementById('page-home')); runSteps(document.getElementById('page-home'));
+  setHeader(); onScrollChrome();
+})();
+</script>
+</body>
+</html>
