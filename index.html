@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vendman — Smart Cashless Vending & Fresh Bean Coffee | UAE</title>
-<meta name="description" content="Vendman installs, stocks and maintains smart cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hospitality across the UAE.">
+<title>Vendman | Vending Machines for UAE Workplaces</title>
+<meta name="description" content="Vendman installs, stocks and services cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hotels across the UAE.">
+<link rel="canonical" href="https://vendman-uae.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vendman">
+<meta property="og:url" content="https://vendman-uae.com/">
+<meta property="og:title" content="Vendman | Vending Machines for UAE Workplaces">
+<meta property="og:description" content="Vendman installs, stocks and services cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hotels across the UAE.">
+<meta property="og:image" content="https://vendman-uae.com/assets/video/vendman-hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -106,7 +114,7 @@ header.solid .burger span,header.scrolled .burger span{background:var(--navy)}
 .hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(6,15,42,.82) 0%,rgba(6,15,42,.74) 30%,rgba(6,15,42,.60) 48%,rgba(6,15,42,.30) 60%,rgba(6,15,42,.15) 72%,rgba(6,15,42,.14) 85%,rgba(6,15,42,.45) 100%)}
 .hero-scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,15,42,.55) 0%,transparent 22%,transparent 72%,rgba(6,15,42,.75) 100%)}
 .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;z-index:3}
-.hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan-2);background:rgba(34,184,220,.1);border:1px solid rgba(34,184,220,.28);padding:8px 15px;border-radius:100px;margin-bottom:24px}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-size:.86rem;font-weight:500;letter-spacing:0;color:rgba(255,255,255,.8);background:rgba(34,184,220,.08);border:1px solid rgba(34,184,220,.22);padding:7px 15px 7px 13px;border-radius:100px;margin-bottom:24px}
 .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2.4s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(155,214,46,.55)}70%{box-shadow:0 0 0 10px rgba(155,214,46,0)}100%{box-shadow:0 0 0 0 rgba(155,214,46,0)}}
 .hero h1{font-size:clamp(2.5rem,5.4vw,4.2rem);font-weight:700;margin-bottom:20px}
@@ -460,9 +468,9 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
     <div class="hero-glow a"></div><div class="hero-glow b"></div>
     <div class="wrap"><div class="hero-grid">
       <div>
-        <span class="hero-badge"><span class="dot"></span>Smart cashless vending • UAE</span>
-        <h1><span class="line"><span>Smart vending,</span></span><span class="line"><span>fully managed —</span></span><span class="line"><span class="grad-text">across the UAE.</span></span></h1>
-        <p class="lead">Vendman installs, stocks and maintains cashless snack, drink and fresh‑bean coffee machines for hospitals, gyms, offices and hospitality — at zero cost to your location.</p>
+        <span class="hero-badge"><span class="dot"></span>Cashless vending across the UAE</span>
+        <h1><span class="line"><span>Smart vending,</span></span><span class="line"><span>fully managed</span></span><span class="line"><span class="grad-text">across the UAE.</span></span></h1>
+        <p class="lead">Vendman installs, stocks and maintains cashless snack, drink and fresh‑bean coffee machines for hospitals, gyms, offices and hospitality at zero cost to your location.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" data-page="contact">Get a free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           <a class="btn btn-ghost on-dark" data-page="machines">See the machines</a>
@@ -872,7 +880,63 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
   var links=document.querySelectorAll('[data-page]');
   var darkTop={home:true,machines:true,solutions:true,services:true,about:true,contact:true};
   function setHeader(){ var atTop=window.scrollY<30; hdr.classList.toggle('scrolled',!atTop); }
-  function go(page){
+
+  /* ---------- routing ----------
+     BASE is the path the site is served from. '/' for a root domain;
+     change to '/subfolder/' if you deploy into one. Clean URLs need the
+     host to serve index.html for unknown paths (see _redirects / vercel.json
+     / .htaccess in this folder). */
+  var BASE='/';
+  var ORIGIN='https://vendman-uae.com';
+  var ROUTES={
+    home:{slug:'',
+      title:'Vendman | Vending Machines for UAE Workplaces',
+      desc:'Vendman installs, stocks and services cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hotels across the UAE.'},
+    machines:{slug:'machines',
+      title:'Vending Machines: Snack, Coffee & Protein | Vendman',
+      desc:'Our full range of cashless vending machines for UAE sites: 36 and 48 select snack and drink units, fresh bean coffee, protein shake and fresh smoothie machines, with specs.'},
+    solutions:{slug:'solutions',
+      title:'Vending for Hospitals, Gyms & Offices | Vendman',
+      desc:'Machines, product mix and placement matched to your site, whether that is a hospital atrium, a gym floor, an office breakroom, a hotel back of house or a factory.'},
+    services:{slug:'services',
+      title:'Installation, Stocking & Machine Servicing | Vendman',
+      desc:'Site survey, delivery and install, restocking, cleaning, cashless payment setup and repairs. Vendman runs the whole operation so your team never touches a machine.'},
+    about:{slug:'about',
+      title:'About Vendman | UAE Vending Company',
+      desc:'Vendman Vending Machines LLC supplies and operates cashless vending and automated retail across Dubai, Abu Dhabi, Sharjah and the rest of the UAE.'},
+    contact:{slug:'contact',
+      title:'Contact Vendman | Get a Free Vending Quote',
+      desc:'Tell us about your location and we will come back with a machine recommendation and quote, usually within one business day. Call +971 58 828 0346.'},
+    privacy:{slug:'privacy-policy',
+      title:'Privacy Policy | Vendman',
+      desc:'How Vendman Vending Machines LLC collects, uses, stores and protects the information you share with us.'},
+    terms:{slug:'terms',
+      title:'Terms & Conditions | Vendman',
+      desc:'The terms that apply when you use the Vendman website or work with us on vending machine supply and service.'}
+  };
+  var SLUGS={}; for(var k in ROUTES){ SLUGS[ROUTES[k].slug]=k; }
+
+  function urlFor(page){ return BASE+((ROUTES[page]||ROUTES.home).slug); }
+  function pageFromPath(path){
+    var s=String(path||'').replace(/^\/+|\/+$/g,'');
+    var b=BASE.replace(/^\/+|\/+$/g,'');
+    if(b&&s.indexOf(b)===0) s=s.slice(b.length).replace(/^\/+/,'');
+    s=s.replace(/\.html$/,'');
+    if(s===''||s==='index') return 'home';
+    return SLUGS[s]||null;
+  }
+  function setMeta(sel,attr,val){ var el=document.querySelector(sel); if(el) el.setAttribute(attr,val); }
+  function applyMeta(page){
+    var r=ROUTES[page]||ROUTES.home, url=ORIGIN+urlFor(page);
+    document.title=r.title;
+    setMeta('meta[name="description"]','content',r.desc);
+    setMeta('link[rel="canonical"]','href',url);
+    setMeta('meta[property="og:url"]','content',url);
+    setMeta('meta[property="og:title"]','content',r.title);
+    setMeta('meta[property="og:description"]','content',r.desc);
+  }
+
+  function go(page,push){
     pages.forEach(function(p){p.classList.toggle('active',p.id==='page-'+page)});
     document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.toggle('active',a.dataset.page===page)});
     document.documentElement.scrollTop=0; document.body.scrollTop=0;
@@ -886,8 +950,25 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
       observeAll(active);
     });
     runCounters(active); runSteps(active);
+    applyMeta(page);
+    if(push!==false && window.history && history.pushState) history.pushState({page:page},'',urlFor(page));
   }
-  links.forEach(function(l){ l.addEventListener('click',function(e){ e.preventDefault(); var p=l.dataset.page; if(p){ go(p); closeMenu(); } }); });
+
+  // real hrefs so links are crawlable, middle-clickable and show a status-bar URL
+  links.forEach(function(l){
+    var p=l.dataset.page;
+    if(p && ROUTES[p] && l.tagName==='A' && !l.getAttribute('href')) l.setAttribute('href',urlFor(p));
+    l.addEventListener('click',function(e){
+      if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return; // let the browser open a new tab
+      e.preventDefault(); var pg=l.dataset.page; if(pg){ go(pg); closeMenu(); }
+    });
+  });
+
+  window.addEventListener('popstate',function(e){
+    var page=(e.state&&e.state.page)||pageFromPath(location.pathname)||'home';
+    go(page,false);
+  });
+
 
   // reveal observer (per page)
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});
@@ -1021,6 +1102,15 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
   window.addEventListener('scroll',setHeader,{passive:true});
   observeAll(document.getElementById('page-home')); runCounters(document.getElementById('page-home')); runSteps(document.getElementById('page-home'));
   setHeader(); onScrollChrome();
+
+  // initial route: honour a deep link, and clean up any legacy .html URL
+  (function(){
+    var page=pageFromPath(location.pathname);
+    if(page===null){ page='home'; if(history.replaceState) history.replaceState({page:page},'',urlFor(page)); }
+    else if(/\.html$/.test(location.pathname)&&history.replaceState){ history.replaceState({page:page},'',urlFor(page)); }
+    else if(history.replaceState){ history.replaceState({page:page},'',location.pathname+location.search); }
+    if(page!=='home') go(page,false); else applyMeta('home');
+  })();
 })();
 </script>
 </body>

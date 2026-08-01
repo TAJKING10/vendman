@@ -1,0 +1,14 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/vendman-full-site.html", "destination": "/", "permanent": true },
+    { "source": "/index.html", "destination": "/", "permanent": true }
+  ],
+  "rewrites": [
+    {
+      "source": "/(machines|solutions|services|about|contact|privacy-policy|terms)",
+      "destination": "/index.html"
+    }
+  ]
+}

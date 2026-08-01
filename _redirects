@@ -1,0 +1,13 @@
+# Netlify / Cloudflare Pages
+# Old file URL -> homepage
+/vendman-full-site.html   /   301!
+
+# Clean slugs are handled by the router in index.html, so every unknown
+# path must be served the app shell instead of a 404.
+/machines         /index.html   200
+/solutions        /index.html   200
+/services         /index.html   200
+/about            /index.html   200
+/contact          /index.html   200
+/privacy-policy   /index.html   200
+/terms            /index.html   200

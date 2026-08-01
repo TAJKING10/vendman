@@ -1,0 +1,14 @@
+# Apache / cPanel shared hosting
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Old file URL -> homepage
+  RewriteRule ^vendman-full-site\.html$ / [R=301,L]
+  RewriteRule ^index\.html$ / [R=301,L]
+
+  # Serve the app shell for the clean slugs; the router in index.html
+  # picks the right section from the path.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(machines|solutions|services|about|contact|privacy-policy|terms)/?$ /index.html [L]
+</IfModule>
