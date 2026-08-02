@@ -53,7 +53,11 @@
   --cyan:#22B8DC; --cyan-2:#4FD3EF; --blue:#1B4DB1; --lime:#9BD62E;
   --paper:#F4F7F9; --paper-2:#EAF0F3; --card:#FFFFFF; --card-2:#FBFDFE;
   --media-a:#FFFFFF; --media-b:#EEF3F6; --media-c:#E9EFF3;
-  --nav-bg:rgba(255,255,255,.85);
+  /* The wordmark ships as a single light PNG — there is no dark variant. On the
+     old white nav pill it rendered at roughly 1.2:1, so the brand name vanished
+     the moment you scrolled. Keeping the solid nav dark in both themes fixes
+     that and lets one set of nav colours serve every state. */
+  --nav-bg:rgba(9,20,44,.82);
   /* --muted-2 was #7B8A98 — 3.3:1 on --paper, below AA for the 9.5–10.5px caps
      it carries (spec keys, field labels, timestamps). It now clears 4.5:1 on
      every surface it can land on. The tertiary tier is carried by type
@@ -86,8 +90,10 @@ img{display:block;max-width:100%}
 .grad-text{background:linear-gradient(100deg,var(--cyan-2),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent}
 .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:600;font-size:.98rem;padding:14px 26px;border-radius:100px;border:1.5px solid transparent;cursor:pointer;transition:.25s cubic-bezier(.4,0,.2,1);white-space:nowrap}
 .btn svg{width:17px;height:17px;transition:transform .25s}
-.btn-primary{background:linear-gradient(100deg,var(--cyan),var(--blue));color:#fff;box-shadow:0 10px 30px -10px rgba(34,184,220,.6)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px -10px rgba(34,184,220,.7)}
+/* solid accent with dark ink. A gradient fill reads as stock template, and cyan
+   on navy clears 8:1 where cyan on white never could. */
+.btn-primary{background:var(--cyan);color:var(--navy-deep);box-shadow:0 8px 24px -12px rgba(34,184,220,.55)}
+.btn-primary:hover{background:var(--cyan-2);transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(34,184,220,.6)}
 .btn-primary:hover svg{transform:translateX(4px)}
 .btn-ghost{border-color:var(--line);color:var(--ink);background:transparent}
 .btn-ghost:hover{border-color:var(--cyan);color:var(--teal)}
@@ -98,13 +104,17 @@ img{display:block;max-width:100%}
 
 /* header */
 header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:100;transition:.3s ease}
-.nav{display:flex;align-items:center;justify-content:space-between;height:72px;margin-top:12px;padding:0 22px;border-radius:100px;border:1px solid transparent;transition:.3s ease}
-header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:blur(16px) saturate(1.4);border-color:var(--line);box-shadow:var(--shadow-sm);margin-top:10px;height:64px}
+/* While the nav is transparent the page scrolls underneath it, and headline
+   type was colliding with the links. A soft scrim behind the bar keeps whatever
+   passes under it readable, then fades out once the solid pill takes over. */
+header::before{content:"";position:absolute;left:0;right:0;top:0;height:132px;pointer-events:none;background:linear-gradient(180deg,rgba(5,14,26,.78) 0%,rgba(5,14,26,.42) 45%,transparent 100%);opacity:1;transition:opacity .35s ease}
+header.solid::before,header.scrolled::before{opacity:0}
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px;margin-top:14px;padding:0 26px;border-radius:100px;border:1px solid transparent;transition:.3s ease}
+header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:blur(16px) saturate(1.4);border-color:rgba(255,255,255,.10);box-shadow:0 10px 34px -18px rgba(0,0,0,.7);margin-top:10px;height:72px}
 .brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:700;font-size:1.22rem;letter-spacing:.02em;color:#fff;transition:color .3s,transform .3s;cursor:pointer}
 .brand:hover{transform:translateY(-1px)}
-header.solid .brand,header.scrolled .brand{color:var(--ink)}
 .brand .logo{width:32px;height:30px;flex:none}
-.site-logo{display:block;width:150px;max-width:150px;height:auto;object-fit:contain;flex-shrink:0}
+.site-logo{display:block;width:170px;max-width:170px;height:auto;object-fit:contain;flex-shrink:0}
 .footer-logo{display:block;width:170px;max-width:170px;height:auto;object-fit:contain}
 @media(max-width:768px){
   .site-logo{width:125px}
@@ -120,18 +130,13 @@ header.solid .brand,header.scrolled .brand{color:var(--ink)}
   .nav-cta .btn{padding:11px 16px;font-size:.88rem;gap:7px}
   .nav-cta .btn svg{width:15px;height:15px}
 }
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-links a{font-family:var(--disp);font-weight:500;font-size:.93rem;color:rgba(255,255,255,.82);padding:9px 14px;border-radius:100px;transition:.2s;cursor:pointer}
-header.solid .nav-links a,header.scrolled .nav-links a{color:var(--muted)}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-links a{font-family:var(--disp);font-weight:500;font-size:1rem;color:rgba(255,255,255,.86);padding:11px 18px;border-radius:100px;transition:.2s;cursor:pointer}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.12)}
-header.solid .nav-links a:hover,header.scrolled .nav-links a:hover{color:var(--teal);background:var(--paper-2)}
 .nav-links a.active{color:var(--cyan-2)}
-header.solid .nav-links a.active,header.scrolled .nav-links a.active{color:var(--teal);background:var(--paper-2)}
 .nav-cta{display:flex;align-items:center;gap:10px}
 .burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);background:transparent;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
-header.solid .burger,header.scrolled .burger{border-color:var(--line)}
 .burger span{width:20px;height:2px;background:#fff;transition:.3s;border-radius:2px}
-header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .burger.open span:nth-child(2){opacity:0}
 .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
@@ -150,54 +155,42 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .hero-glow.a{background:var(--cyan);top:-140px;right:-40px}
 .hero-glow.b{background:var(--teal);bottom:-200px;left:-120px;opacity:.4}
 
-/* home hero */
-.hero{background:#050e1a;color:#fff;padding:148px 0 76px;min-height:min(92vh,900px);display:flex;align-items:center;position:relative;overflow:hidden;isolation:isolate}
-/* no CSS grid overlay here — the video carries its own */
-/* melts into the marquee band instead of cutting hard */
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:160px;z-index:2;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--navy) 92%)}
-/* hero background video — object-position pins the machine right, so a taller
-   viewport crops the empty left side instead of decapitating the machine */
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% center;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+/* ===== home hero =====
+   One story per screen: headline, one sentence, one primary action, one proof
+   line. The decorative layer is deliberately thin — a single ground colour and
+   one scrim to protect the copy. The machine already carries its own shadow and
+   floor in the render, so nothing is stacked on top of it. */
+.hero{background:#050e1a;color:#fff;padding:clamp(150px,17vh,196px) 0 clamp(40px,6vh,64px);min-height:min(94vh,940px);display:flex;align-items:center;position:relative;overflow:hidden;isolation:isolate}
+/* object-position pins the machine right, so a taller viewport crops the empty
+   left side instead of decapitating the machine */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% center;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
 .hero-video.ready{opacity:1}
-/* held near-solid out to 55% so body copy never sits on glass */
-.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(5,14,26,.96) 0%,rgba(5,14,26,.94) 32%,rgba(5,14,26,.78) 55%,rgba(5,14,26,.18) 76%,rgba(5,14,26,.42) 100%),radial-gradient(90% 70% at 20% 50%,rgba(5,14,26,.55),transparent 70%)}
-.hero-scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,14,26,.45) 0%,transparent 18%,transparent 100%)}
+/* a single horizontal wipe: solid where the type sits, then left alone over the
+   machine rather than lighting it from behind */
+.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(5,14,26,.97) 0%,rgba(5,14,26,.93) 38%,rgba(5,14,26,.72) 58%,rgba(5,14,26,.10) 80%,rgba(5,14,26,.30) 100%)}
 .hero>.wrap{width:100%}
-.hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;z-index:3}
-.hero-copy{max-width:min(600px,46vw)}
-.hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-size:.86rem;font-weight:500;letter-spacing:0;color:rgba(255,255,255,.8);background:rgba(34,184,220,.08);border:1px solid rgba(34,184,220,.22);padding:7px 15px 7px 13px;border-radius:100px;margin-bottom:24px}
-.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2.4s infinite}
-@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(155,214,46,.55)}70%{box-shadow:0 0 0 10px rgba(155,214,46,0)}100%{box-shadow:0 0 0 0 rgba(155,214,46,0)}}
-.hero h1{font-size:clamp(2.5rem,5.4vw,4.2rem);font-weight:700;margin-bottom:20px}
-.hero h1 .line{display:block;overflow:hidden}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;z-index:3}
+.hero-copy{max-width:min(640px,48vw)}
+/* 0.95 leading binds three sentences into one confident block */
+.hero h1{font-size:clamp(2.6rem,6.1vw,5.25rem);font-weight:700;line-height:.95;letter-spacing:-.028em;margin-bottom:clamp(26px,3.4vw,40px)}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.05em}
 .hero h1 .line span{display:block;transform:translateY(105%);animation:riseIn .9s cubic-bezier(.19,1,.22,1) forwards}
 .hero h1 .line:nth-child(2) span{animation-delay:.12s}.hero h1 .line:nth-child(3) span{animation-delay:.24s}
+.hero h1 .accent{color:var(--cyan-2)}
 @keyframes riseIn{to{transform:translateY(0)}}
-.hero p.lead{color:rgba(255,255,255,.76);margin-bottom:32px;opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero p.lead{color:rgba(255,255,255,.74);font-size:clamp(1.04rem,1.35vw,1.18rem);max-width:36ch;margin-bottom:clamp(30px,3.6vw,40px);opacity:0;animation:fadeUp .8s ease .5s forwards}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .66s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.hero-trust{margin-top:36px;font-size:.82rem;color:rgba(255,255,255,.5);font-family:var(--mono);opacity:0;animation:fadeUp .8s ease .8s forwards}
+.hero-facts{display:flex;flex-wrap:wrap;gap:10px 30px;margin:clamp(28px,3.6vw,42px) 0 0;padding:0;list-style:none;opacity:0;animation:fadeUp .8s ease .8s forwards}
+.hero-facts li{display:flex;align-items:center;gap:10px;font-size:.94rem;color:rgba(255,255,255,.78)}
+.hero-facts svg{width:15px;height:15px;flex:none;color:var(--lime)}
 .hero-stage{position:relative;min-height:470px}
-/* dark-glass chips anchored to the machine's silhouette — depth cues sitting
-   IN the scene rather than the loudest thing on it */
-.hero-badges{position:absolute;inset:0;z-index:3;pointer-events:none}
-.chip{position:absolute;display:inline-flex;align-items:center;gap:10px;color:#dceefc;font-weight:500;font-size:.9rem;letter-spacing:-.01em;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(6,20,34,.62);border:1px solid rgba(34,211,238,.22);box-shadow:0 8px 32px -8px rgba(0,0,0,.65);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);opacity:0;animation:chipIn .7s cubic-bezier(.19,1,.22,1) forwards,float 6s ease-in-out infinite}
-.chip .d{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);flex:none}
-.chip.c1{top:26%;left:56%;animation-delay:.9s,1.6s}
-.chip.c2{top:52%;right:6%;animation-delay:1.05s,1.75s}
-.chip.c3{top:76%;left:52%;animation-delay:1.2s,1.9s}
-@keyframes chipIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* proof sits with the CTA where the decision is made, not in a band below it */
+.hero-proof{position:relative;z-index:3;display:flex;align-items:center;gap:clamp(14px,3vw,40px);flex-wrap:wrap;margin-top:clamp(44px,7vh,80px);padding-top:24px;border-top:1px solid rgba(255,255,255,.09);opacity:0;animation:fadeUp .8s ease .95s forwards}
+.hero-proof .lbl{flex:none;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.hero-proof ul{display:flex;flex-wrap:wrap;gap:8px clamp(16px,2.8vw,38px);margin:0;padding:0;list-style:none}
+.hero-proof li{font-family:var(--disp);font-weight:500;font-size:clamp(.86rem,1vw,1rem);color:rgba(255,255,255,.76)}
 
-/* marquee */
-.marquee-band{background:var(--navy);padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
-.marquee-label{text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:16px}
-.marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marquee-track{display:flex;gap:52px;padding-right:52px;flex:none;animation:scroll 34s linear infinite}
-.marquee:hover .marquee-track{animation-play-state:paused}
-.marquee-track span{font-family:var(--disp);font-weight:500;font-size:1.05rem;color:rgba(255,255,255,.62);white-space:nowrap;display:flex;align-items:center;gap:52px}
-.marquee-track span::after{content:"›";color:var(--cyan);opacity:.5}
-@keyframes scroll{to{transform:translateX(-50%)}}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.19,1,.22,1),transform .7s cubic-bezier(.19,1,.22,1)}
@@ -494,9 +487,11 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
      right on top of the machine — so the stage read as an empty black block.
      Solid where the type is, then opens up over the product. */
   .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.95) 0%,rgba(5,14,26,.90) 34%,rgba(5,14,26,.62) 52%,rgba(5,14,26,.24) 70%,rgba(5,14,26,.20) 88%,rgba(5,14,26,.55) 100%)}
-  /* this line now sits over the machine rather than flat black — lift it so it
-     stays legible against steam and highlights */
-  .hero-trust{color:rgba(255,255,255,.74)}
+  /* stacked order is copy → facts → machine → proof, so the proof line needs to
+     read against the machine rather than flat ground */
+  .hero-proof{margin-top:clamp(28px,5vh,44px);flex-direction:column;align-items:flex-start;gap:12px}
+  .hero-proof li{color:rgba(255,255,255,.84)}
+  .hero-facts{gap:8px 22px}
   .hero-badges{display:none}   /* nowhere for them to live on mobile */
   .mach-grid,.grid-3,.grid-4,.steps,.stats-grid{grid-template-columns:1fr 1fr}
   .foot-top{grid-template-columns:1fr 1fr}
@@ -520,8 +515,6 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 /* ===== theme toggle ===== */
 .theme-toggle{width:42px;height:42px;flex:none;border-radius:50%;border:1px solid var(--line-2);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;cursor:pointer;transition:.25s;padding:0}
 .theme-toggle:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
-header.solid .theme-toggle,header.scrolled .theme-toggle{border-color:var(--line);background:var(--paper-2);color:var(--ink)}
-header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(--teal)}
 .theme-toggle svg{width:19px;height:19px;transition:transform .45s cubic-bezier(.19,1,.22,1),opacity .25s}
 .theme-toggle .moon{display:none}
 [data-theme="dark"] .theme-toggle .moon{display:block}
@@ -552,7 +545,7 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
 [data-theme="dark"] .dark-sec{background:radial-gradient(120% 100% at 20% 0%,#16224A,#0E1730 55%,#080E1C)}
 [data-theme="dark"] .cta-band{background:radial-gradient(120% 140% at 80% 0%,#16224A,#0E1730 55%,#080E1C);border:1px solid rgba(255,255,255,.07)}
 [data-theme="dark"] .phero{background:radial-gradient(120% 130% at 80% 0%,#16224A 0%,#0E1730 48%,#080E1C 100%)}
-[data-theme="dark"] .marquee-band,[data-theme="dark"] .stats{background:#0D1424}
+[data-theme="dark"] .stats{background:#0D1424}
 [data-theme="dark"] footer{background:#070C18}
 [data-theme="dark"] .mach-media::after,[data-theme="dark"] .m-media::after{background:linear-gradient(0deg,rgba(0,0,0,.42),transparent 45%)}
 [data-theme="dark"] .mach-card:hover,[data-theme="dark"] .cc-slide:hover,[data-theme="dark"] .card:hover{border-color:rgba(34,184,220,.35)}
@@ -568,8 +561,6 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
 /* ===== language toggle ===== */
 .lang-toggle{height:42px;min-width:42px;flex:none;padding:0 13px;border-radius:100px;border:1px solid var(--line-2);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:.86rem;letter-spacing:.02em;transition:.25s}
 .lang-toggle:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
-header.solid .lang-toggle,header.scrolled .lang-toggle{border-color:var(--line);background:var(--paper-2);color:var(--ink)}
-header.solid .lang-toggle:hover,header.scrolled .lang-toggle:hover{color:var(--teal)}
 .lang-toggle .lt-ar{font-family:'IBM Plex Sans Arabic',sans-serif;font-size:1.02rem}
 html[lang="ar"] .lang-toggle .lt-ar{display:none}
 html:not([lang="ar"]) .lang-toggle .lt-en{display:none}
@@ -593,7 +584,7 @@ html[lang="ar"] .h-lg{font-size:clamp(1.75rem,3.9vw,2.7rem)}
 html[lang="ar"] body{line-height:1.85}
 html[lang="ar"] .eyebrow,html[lang="ar"] .mach-kicker,html[lang="ar"] .spec .k,
 html[lang="ar"] .field label,html[lang="ar"] .info-row .k,html[lang="ar"] .foot-col h4,
-html[lang="ar"] .sector-h,html[lang="ar"] .marquee-label,html[lang="ar"] .legal .updated,
+html[lang="ar"] .sector-h,html[lang="ar"] .legal .updated,
 html[lang="ar"] .mach-led,html[lang="ar"] .stat .lbl{text-transform:none}
 /* the h1 rise-in animation clips descenders on Arabic glyphs */
 html[lang="ar"] .hero h1 .line{overflow:visible}
@@ -621,8 +612,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 /* forward arrows point the way the language reads */
 [dir="rtl"] .btn svg{transform:scaleX(-1)}
 [dir="rtl"] .btn-primary:hover svg{transform:scaleX(-1) translateX(4px)}
-/* the logo marquee and the carousel are pure Latin/positional — keep them LTR */
-[dir="rtl"] .marquee{direction:ltr}
+/* the carousel is positional rather than linguistic — keep it LTR */
 [dir="rtl"] .cc-track,[dir="rtl"] .cc-arrows{direction:ltr}
 [dir="rtl"] .cc-info{direction:rtl}
 /* hero art is composed with the machine on one side and copy on the other */
@@ -688,32 +678,29 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <source src="assets/video/vendman-hero-2560x1080-ultrawide.mp4" type="video/mp4">
     </video>
     <div class="hero-scrim"></div>
-    <div class="hero-badges">
-      <span class="chip c1"><span class="d"></span>Zero cost to host</span>
-      <span class="chip c2"><span class="d"></span>Apple Pay · Cards · NFC</span>
-      <span class="chip c3"><span class="d"></span>Stocked &amp; monitored 24/7</span>
-    </div>
-    <div class="wrap"><div class="hero-grid">
-      <div class="hero-copy">
-        <span class="hero-badge"><span class="dot"></span>Cashless vending across the UAE</span>
-        <h1><span class="line"><span>Smart vending,</span></span><span class="line"><span>fully managed</span></span><span class="line"><span class="grad-text">across the UAE.</span></span></h1>
-        <p class="lead">Vendman installs, stocks and maintains cashless snack, drink and fresh‑bean coffee machines for hospitals, gyms, offices and hospitality at zero cost to your location.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" data-page="contact">Get a free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a class="btn btn-ghost on-dark" data-page="machines">See the machines</a>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <h1><span class="line"><span>Smart vending.</span></span><span class="line"><span>Fully managed.</span></span><span class="line"><span class="accent">Across the UAE.</span></span></h1>
+          <p class="lead">We install, stock and maintain snack, drink and fresh coffee machines at zero cost to your business.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" data-page="contact">Get a quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost on-dark" data-page="machines">View machines</a>
+          </div>
+          <ul class="hero-facts">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Installed in 7 days</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero cost to your business</li>
+          </ul>
         </div>
-        <p class="hero-trust">Trusted by leading UAE hospitals, clinics, gyms &amp; universities</p>
+        <div class="hero-stage"></div>
       </div>
-      <div class="hero-stage"></div>
-    </div></div>
+      <div class="hero-proof">
+        <span class="lbl">Trusted by</span>
+        <ul><li>Mediclinic</li><li>King's College Hospital</li><li>Anytime Fitness</li><li>HULT University</li></ul>
+      </div>
+    </div>
   </div>
 
-  <div class="marquee-band"><div class="marquee-label">Powering breakrooms &amp; lobbies for</div>
-    <div class="marquee"><div class="marquee-track">
-      <span>Medcare Hospitals</span><span>Mediclinic</span><span>King's College Hospital Dubai</span><span>Anytime Fitness</span><span>HULT University</span><span>FIFA Medical Centre</span><span>Mayweather Boxing &amp; Fitness</span><span>HealthBay</span>
-      <span aria-hidden="true">Medcare Hospitals</span><span aria-hidden="true">Mediclinic</span><span aria-hidden="true">King's College Hospital Dubai</span><span aria-hidden="true">Anytime Fitness</span><span aria-hidden="true">HULT University</span><span aria-hidden="true">FIFA Medical Centre</span><span aria-hidden="true">Mayweather Boxing &amp; Fitness</span><span aria-hidden="true">HealthBay</span>
-    </div></div>
-  </div>
 
   <section class="section" style="background:linear-gradient(180deg,var(--paper),var(--card))">
     <div class="wrap">
@@ -735,7 +722,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="grid-3">
         <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg></div><h3>Hospitals &amp; Clinics</h3><p>24/7 refreshment for staff, patients and visitors — quiet, hygienic, always stocked.</p></div>
         <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9v6M7 5v14M17 5v14M21 9v6M7 12h10"/></svg></div><h3>Gyms &amp; Fitness</h3><p>Protein shakes, drinks and healthy snacks members reach for before and after training.</p></div>
-        <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4" stroke-linecap="round"/></svg></div><h3>Offices &amp; Corporate</h3><p>Barista‑style coffee stations and snack machines that lift breakrooms with zero admin.</p></div>
+        <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V6a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15M14 21V10h4a1 1 0 0 1 1 1v10M8 9h3M8 13h3M8 17h3"/></svg></div><h3>Offices &amp; Corporate</h3><p>Barista‑style coffee stations and snack machines that lift breakrooms with zero admin.</p></div>
       </div>
     </div>
   </section>
@@ -1101,8 +1088,11 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   var hdr=document.getElementById('hdr');
   var pages=document.querySelectorAll('.page');
   var links=document.querySelectorAll('[data-page]');
-  var darkTop={home:true,machines:true,solutions:true,services:true,about:true,contact:true};
-  function setHeader(){ var atTop=window.scrollY<30; hdr.classList.toggle('scrolled',!atTop); }
+  /* Transparent only while the page is at rest at the top; the solid pill takes
+     over as soon as anything scrolls. Holding it transparent for the whole hero
+     was tried and reverted — the 84px headline passes directly under the bar and
+     collided with the nav links, which is worse than chrome over the artwork. */
+  function setHeader(){ hdr.classList.toggle('scrolled',window.scrollY>40); }
 
   /* ---------- routing ----------
      BASE is the path the site is served from. '/' for a root domain;
