@@ -106,14 +106,20 @@ header.solid .burger span,header.scrolled .burger span{background:var(--navy)}
 .hero-glow.b{background:var(--teal);bottom:-200px;left:-120px;opacity:.4}
 
 /* home hero */
-.hero{background:radial-gradient(120% 120% at 80% 0%,#123069 0%,var(--navy) 45%,#060F2A 100%);color:#fff;padding:148px 0 76px;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;z-index:2;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(80% 70% at 60% 30%,#000,transparent 78%);pointer-events:none}
-/* hero background video */
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.hero{background:#050e1a;color:#fff;padding:148px 0 76px;min-height:min(92vh,900px);display:flex;align-items:center;position:relative;overflow:hidden;isolation:isolate}
+/* no CSS grid overlay here — the video carries its own */
+/* melts into the marquee band instead of cutting hard */
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:160px;z-index:2;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--navy) 92%)}
+/* hero background video — object-position pins the machine right, so a taller
+   viewport crops the empty left side instead of decapitating the machine */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% center;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
 .hero-video.ready{opacity:1}
-.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(6,15,42,.82) 0%,rgba(6,15,42,.74) 30%,rgba(6,15,42,.60) 48%,rgba(6,15,42,.30) 60%,rgba(6,15,42,.15) 72%,rgba(6,15,42,.14) 85%,rgba(6,15,42,.45) 100%)}
-.hero-scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,15,42,.55) 0%,transparent 22%,transparent 72%,rgba(6,15,42,.75) 100%)}
+/* held near-solid out to 55% so body copy never sits on glass */
+.hero-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(5,14,26,.96) 0%,rgba(5,14,26,.94) 32%,rgba(5,14,26,.78) 55%,rgba(5,14,26,.18) 76%,rgba(5,14,26,.42) 100%),radial-gradient(90% 70% at 20% 50%,rgba(5,14,26,.55),transparent 70%)}
+.hero-scrim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,14,26,.45) 0%,transparent 18%,transparent 100%)}
+.hero>.wrap{width:100%}
 .hero-grid{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;z-index:3}
+.hero-copy{max-width:min(600px,46vw)}
 .hero-badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-size:.86rem;font-weight:500;letter-spacing:0;color:rgba(255,255,255,.8);background:rgba(34,184,220,.08);border:1px solid rgba(34,184,220,.22);padding:7px 15px 7px 13px;border-radius:100px;margin-bottom:24px}
 .hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);animation:pulse 2.4s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(155,214,46,.55)}70%{box-shadow:0 0 0 10px rgba(155,214,46,0)}100%{box-shadow:0 0 0 0 rgba(155,214,46,0)}}
@@ -126,17 +132,17 @@ header.solid .burger span,header.scrolled .burger span{background:var(--navy)}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .66s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .hero-trust{margin-top:36px;font-size:.82rem;color:rgba(255,255,255,.5);font-family:var(--mono);opacity:0;animation:fadeUp .8s ease .8s forwards}
-.hero-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:470px}
-.chip{position:absolute;z-index:3;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);color:var(--navy);font-weight:600;font-size:.83rem;padding:9px 14px;border-radius:100px;box-shadow:var(--shadow);opacity:0;animation:chipIn .7s cubic-bezier(.19,1,.22,1) forwards}
-.chip .d{width:9px;height:9px;border-radius:50%;background:var(--teal)}
-.chip.c1{top:12%;left:-4%;animation-delay:.9s}.chip.c2{top:44%;right:-8%;animation-delay:1.05s}.chip.c3{bottom:14%;left:-6%;animation-delay:1.2s}
+.hero-stage{position:relative;min-height:470px}
+/* dark-glass chips anchored to the machine's silhouette — depth cues sitting
+   IN the scene rather than the loudest thing on it */
+.hero-badges{position:absolute;inset:0;z-index:3;pointer-events:none}
+.chip{position:absolute;display:inline-flex;align-items:center;gap:10px;color:#dceefc;font-weight:500;font-size:.9rem;letter-spacing:-.01em;white-space:nowrap;padding:11px 18px;border-radius:999px;background:rgba(6,20,34,.62);border:1px solid rgba(34,211,238,.22);box-shadow:0 8px 32px -8px rgba(0,0,0,.65);backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);opacity:0;animation:chipIn .7s cubic-bezier(.19,1,.22,1) forwards,float 6s ease-in-out infinite}
+.chip .d{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);flex:none}
+.chip.c1{top:26%;left:56%;animation-delay:.9s,1.6s}
+.chip.c2{top:52%;right:6%;animation-delay:1.05s,1.75s}
+.chip.c3{top:76%;left:52%;animation-delay:1.2s,1.9s}
 @keyframes chipIn{from{opacity:0;transform:translateY(14px) scale(.9)}to{opacity:1;transform:none}}
-.nfc{position:absolute;z-index:3;right:6%;top:26%;width:64px;height:64px;display:grid;place-items:center;opacity:0;animation:chipIn .7s ease 1.35s forwards}
-.nfc .core{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;box-shadow:0 8px 20px -6px rgba(34,184,220,.7);color:#fff}
-.nfc .core svg{width:20px;height:20px}
-.nfc .ring{position:absolute;inset:0;border-radius:50%;border:2px solid var(--cyan);animation:ripple 2.4s ease-out infinite}
-.nfc .ring:nth-child(2){animation-delay:.8s}.nfc .ring:nth-child(3){animation-delay:1.6s}
-@keyframes ripple{0%{transform:scale(.55);opacity:.8}100%{transform:scale(1.6);opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 
 /* marquee */
 .marquee-band{background:var(--navy);padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
@@ -408,8 +414,12 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 @media(max-width:960px){
   .hero-grid,.why-grid,.coffee-grid,.faq-grid,.contact-grid,.mrow{grid-template-columns:1fr}
   .mrow.flip .m-media{order:0}
+  .hero{min-height:0}
+  .hero-copy{max-width:100%}
   .hero-stage{min-height:300px;margin-top:20px}
-  .hero-scrim{background:linear-gradient(180deg,rgba(6,15,42,.90) 0%,rgba(6,15,42,.72) 45%,rgba(6,15,42,.55) 70%,rgba(6,15,42,.88) 100%)}
+  .hero-video{object-position:center}
+  .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.90) 0%,rgba(5,14,26,.70) 45%,rgba(5,14,26,.94) 100%)}
+  .hero-badges{display:none}   /* nowhere for them to live on mobile */
   .mach-grid,.grid-3,.grid-4,.steps,.stats-grid{grid-template-columns:1fr 1fr}
   .foot-top{grid-template-columns:1fr 1fr}
   .nav-links{display:none}.burger{display:flex}
@@ -422,7 +432,7 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1;transform:none}.hero h1 .line span{transform:none}
   .hero-video{display:none}
-  .hero{background:var(--navy) url("assets/video/vendman-hero-poster.jpg") center/cover}}
+  .hero{background:#050e1a url("assets/video/vendman-hero-ultrawide-poster.jpg") 72% center/cover}}
 :focus-visible{outline:2.5px solid var(--cyan);outline-offset:3px;border-radius:4px}
 </style>
 </head>
@@ -460,14 +470,18 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 <section class="page active" id="page-home">
   <div class="hero">
     <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata"
-           poster="assets/video/vendman-hero-poster.jpg" aria-hidden="true" tabindex="-1">
-      <source src="assets/video/vendman-hero-1920x1080.webm" type="video/webm">
-      <source src="assets/video/vendman-hero-1920x1080.mp4" type="video/mp4">
+           poster="assets/video/vendman-hero-ultrawide-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="assets/video/vendman-hero-2560x1080-ultrawide.webm" type="video/webm">
+      <source src="assets/video/vendman-hero-2560x1080-ultrawide.mp4" type="video/mp4">
     </video>
     <div class="hero-scrim"></div>
-    <div class="hero-glow a"></div><div class="hero-glow b"></div>
+    <div class="hero-badges">
+      <span class="chip c1"><span class="d"></span>Zero cost to host</span>
+      <span class="chip c2"><span class="d"></span>Apple Pay · Cards · NFC</span>
+      <span class="chip c3"><span class="d"></span>Stocked &amp; monitored 24/7</span>
+    </div>
     <div class="wrap"><div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <span class="hero-badge"><span class="dot"></span>Cashless vending across the UAE</span>
         <h1><span class="line"><span>Smart vending,</span></span><span class="line"><span>fully managed</span></span><span class="line"><span class="grad-text">across the UAE.</span></span></h1>
         <p class="lead">Vendman installs, stocks and maintains cashless snack, drink and fresh‑bean coffee machines for hospitals, gyms, offices and hospitality at zero cost to your location.</p>
@@ -477,12 +491,7 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
         </div>
         <p class="hero-trust">Trusted by leading UAE hospitals, clinics, gyms &amp; universities</p>
       </div>
-      <div class="hero-stage">
-        <div class="chip c1"><span class="d"></span>Zero cost to host</div>
-        <div class="chip c2"><span class="d"></span>Apple Pay · Cards · NFC</div>
-        <div class="chip c3"><span class="d"></span>Stocked &amp; monitored 24/7</div>
-        <div class="nfc"><span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="core"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8.8a10 10 0 0 1 0 6.4M9.5 6.5a15 15 0 0 1 0 11M13 4.5a20 20 0 0 1 0 15"/></svg></span></div>
-      </div>
+      <div class="hero-stage"></div>
     </div></div>
   </div>
 
