@@ -492,18 +492,29 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
   .mrow.flip .m-media{order:0}
   .hero{min-height:0}
   .hero-copy{max-width:100%}
-  .hero-stage{min-height:300px;margin-top:20px}
+  /* The portrait clip frames the machine across roughly 25–80% of its height,
+     and cover shows that full height here — so the machine already sits behind
+     the copy. The old 300px stage was reserving room below it that the machine
+     never reaches, which read as an empty block. A short gap is enough to let
+     the lower part of the machine breathe under the text. */
+  .hero-stage{min-height:120px;margin-top:0}
   .hero-video{object-position:center}
   /* Stacked layout: the copy sits over the top half and the machine lands around
      two thirds down, inside .hero-stage. The old ramp finished at 94% opacity —
      right on top of the machine — so the stage read as an empty black block.
      Solid where the type is, then opens up over the product. */
-  .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.95) 0%,rgba(5,14,26,.90) 34%,rgba(5,14,26,.62) 52%,rgba(5,14,26,.24) 70%,rgba(5,14,26,.20) 88%,rgba(5,14,26,.55) 100%)}
-  /* stacked order is copy → facts → machine → proof, so the proof line needs to
-     read against the machine rather than flat ground */
+  /* Solid enough behind the headline and body copy to keep them readable over a
+     busy frame, then eased off so the machine reads as a real background rather
+     than being blacked out. */
+  .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.93) 0%,rgba(5,14,26,.87) 30%,rgba(5,14,26,.78) 52%,rgba(5,14,26,.58) 72%,rgba(5,14,26,.42) 86%,rgba(5,14,26,.72) 100%)}
+  /* every line here now sits over the machine rather than flat ground, so the
+     softer greys are lifted to hold up against the brightest frames of the loop */
   .hero-proof{margin-top:clamp(28px,5vh,44px);flex-direction:column;align-items:flex-start;gap:12px}
-  .hero-proof li{color:rgba(255,255,255,.84)}
+  .hero-proof li{color:#fff}
+  .hero-proof .lbl{color:rgba(255,255,255,.8)}
+  .hero p.lead{color:rgba(255,255,255,.88)}
   .hero-facts{gap:8px 22px}
+  .hero-facts li{color:rgba(255,255,255,.9)}
   .hero-badges{display:none}   /* nowhere for them to live on mobile */
   .mach-grid,.grid-3,.grid-4,.steps,.stats-grid{grid-template-columns:1fr 1fr}
   .foot-top{grid-template-columns:1fr 1fr}
@@ -1270,12 +1281,12 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       var s=document.createElement('source');
       s.src='assets/video/vendman-hero-mobile-1080x1350.mp4'; s.type='video/mp4';
       v.appendChild(s);
-      /* The poster is the 2.37:1 master. Phone CSS centres the video, and the
-         centre of that frame is empty background — so the poster rendered as a
-         blank hero until the portrait clip arrived. There is no portrait poster
-         in /assets, so drop it and let the hero's own dark ground show through
-         until the video fades in. */
-      v.removeAttribute('poster');
+      /* The default poster is the 2.37:1 master, whose centre is empty
+         background — cropped to a phone that rendered as a blank hero. The 16:9
+         still keeps the machine across most of its height, so it survives the
+         portrait crop. object-position serves the poster and the video frames
+         alike, so this stays centred to suit the portrait clip that replaces it. */
+      v.setAttribute('poster','assets/video/vendman-hero-poster.jpg');
       v.load();
     }
 
@@ -1287,6 +1298,25 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     var visible=true;
     function tryPlay(){ if(visible&&v.paused) return v.play().catch(function(){}); }
     tryPlay();
+
+    /* Frame 0 of the loop is a fade up from black, so a phone that refuses
+       autoplay (iOS Low Power Mode, Data Saver, some in-app browsers) parks on
+       an almost empty frame and the hero reads as a flat dark block. If we are
+       still stopped at the very start once the clip is seekable, jump to a frame
+       where the machine is properly lit — the hero then shows the product as a
+       still, and playback picks up from there on the first interaction. */
+    /* 14s lands mid-smoothie, measured as roughly 2.5x brighter than the snack
+       and coffee segments — the machine reads clearly there, whereas 6s falls on
+       a crossfade between machines and is nearly black. */
+    function parkOnLitFrame(){
+      if(!v.paused || v.currentTime > .5 || v.readyState < 1) return;
+      var target=14;
+      if(v.duration && v.duration > target){
+        try{ v.currentTime=target; }catch(e){}
+      }
+    }
+    setTimeout(parkOnLitFrame,1200);
+    setTimeout(parkOnLitFrame,3000);
 
     if('IntersectionObserver' in window){
       new IntersectionObserver(function(es){
