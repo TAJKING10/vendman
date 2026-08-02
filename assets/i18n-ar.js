@@ -374,6 +374,7 @@ strings: {
 "Anything else?": "أي تفاصيل أخرى؟",
 "Location type, footfall, timeframe…": "نوع الموقع، حجم الحركة، الإطار الزمني…",
 "Request my quote": "اطلب عرض السعر",
+"Please complete:": "يرجى إكمال:",
 "Request sent": "تم إرسال الطلب",
 "Thanks - we've got your details and will be in touch within one business day. For anything urgent, call": "شكرًا لك — وصلتنا بياناتك وسنتواصل معك خلال يوم عمل واحد. وللأمور العاجلة، اتصل على",
 "Good to know": "معلومات مفيدة",

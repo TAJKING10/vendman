@@ -8,19 +8,17 @@
      gets a white flash, and an Arabic visitor never gets a flash of English. -->
 <script>
 (function(){
+  /* First visit always opens English + light — the brand's default presentation.
+     The OS colour scheme and the browser's language headers are deliberately
+     NOT consulted here. Once a visitor uses either toggle their choice is
+     stored and wins on every later visit. */
   var d=document.documentElement, t, l;
   try{ t=localStorage.getItem('vendman-theme'); }catch(e){}
-  if(t!=='dark'&&t!=='light'){
-    t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
-  }
+  if(t!=='dark'&&t!=='light') t='light';
   d.setAttribute('data-theme',t);
 
   try{ l=localStorage.getItem('vendman-lang'); }catch(e){}
-  if(l!=='ar'&&l!=='en'){
-    /* no stored choice — follow the browser's preferred languages */
-    var nav=(navigator.languages||[navigator.language||'']).join(',');
-    l=/(^|,)ar\b/i.test(nav)?'ar':'en';
-  }
+  if(l!=='ar'&&l!=='en') l='en';
   if(l==='ar'){
     d.lang='ar'; d.dir='rtl'; d.setAttribute('data-cloak','');
     /* failsafe: never leave the page hidden if the translation pass cannot run */
@@ -56,7 +54,12 @@
   --paper:#F4F7F9; --paper-2:#EAF0F3; --card:#FFFFFF; --card-2:#FBFDFE;
   --media-a:#FFFFFF; --media-b:#EEF3F6; --media-c:#E9EFF3;
   --nav-bg:rgba(255,255,255,.85);
-  --ink:#0A1A3F; --muted:#5A6B7B; --muted-2:#7B8A98;
+  /* --muted-2 was #7B8A98 — 3.3:1 on --paper, below AA for the 9.5–10.5px caps
+     it carries (spec keys, field labels, timestamps). It now clears 4.5:1 on
+     every surface it can land on. The tertiary tier is carried by type
+     treatment (mono, uppercase, small, tracked) rather than by washing the
+     colour out, which is the accessible way to express that level. */
+  --ink:#0A1A3F; --muted:#5A6B7B; --muted-2:#5D6C79;
   --line:rgba(10,26,63,.10); --line-2:rgba(255,255,255,.14);
   --shadow:0 18px 50px -24px rgba(10,26,63,.35); --shadow-sm:0 8px 24px -14px rgba(10,26,63,.30);
   --r:18px; --r-sm:12px;
@@ -106,6 +109,16 @@ header.solid .brand,header.scrolled .brand{color:var(--ink)}
 @media(max-width:768px){
   .site-logo{width:125px}
   .footer-logo{width:145px}
+}
+/* Below ~560px the logo, the CTA and the burger stop fitting the nav pill and
+   the wordmark collides with the button. Everything steps down together so the
+   brand keeps clear space instead of the CTA being dropped. */
+@media(max-width:560px){
+  .nav{padding:0 14px;height:64px;gap:12px}
+  .site-logo{width:104px}
+  .nav-cta{gap:8px}
+  .nav-cta .btn{padding:11px 16px;font-size:.88rem;gap:7px}
+  .nav-cta .btn svg{width:15px;height:15px}
 }
 .nav-links{display:flex;align-items:center;gap:4px}
 .nav-links a{font-family:var(--disp);font-weight:500;font-size:.93rem;color:rgba(255,255,255,.82);padding:9px 14px;border-radius:100px;transition:.2s;cursor:pointer}
@@ -178,7 +191,7 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 
 /* marquee */
 .marquee-band{background:var(--navy);padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
-.marquee-label{text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);margin-bottom:16px}
+.marquee-label{text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:16px}
 .marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .marquee-track{display:flex;gap:52px;padding-right:52px;flex:none;animation:scroll 34s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
@@ -211,7 +224,9 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .mach-led i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:blink 1.8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 .mach-body{padding:24px;display:flex;flex-direction:column;flex:1}
-.mach-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+/* cyan on a white card is 2.3:1 — far below AA. --teal reads as the same brand
+   accent and is brightened for dark mode, so one value serves both themes. */
+.mach-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
 .mach-body h3{font-size:1.28rem;margin-bottom:8px}
 .mach-body p{font-size:.92rem;color:var(--muted);margin:0 0 18px}
 .specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;margin-top:auto}
@@ -260,7 +275,10 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .cc-info h4{font-size:.98rem;margin-bottom:6px;font-family:var(--disp);font-weight:600;color:var(--ink)}
 .cc-info p{font-size:.82rem;color:var(--muted);margin:0}
 .cc-dots{display:flex;gap:7px;justify-content:center;margin-top:8px}
-.cc-dot{width:7px;height:7px;border-radius:50%;background:var(--line);transition:.3s;cursor:pointer;border:none;padding:0}
+/* the dot stays 7px visually; the hit area is grown with a pseudo-element so
+   the control clears the 24px minimum without changing the design */
+.cc-dot{position:relative;width:7px;height:7px;border-radius:50%;background:var(--line);transition:.3s;cursor:pointer;border:none;padding:0}
+.cc-dot::after{content:"";position:absolute;inset:-15px -7px}
 .cc-dot.active{background:var(--teal);width:24px;border-radius:4px}
 @media(max-width:600px){.cc-slide{width:78vw}}
 
@@ -377,6 +395,14 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .field input,.field select,.field textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:var(--r-sm);font-family:var(--body);font-size:.96rem;color:var(--ink);background:var(--paper);transition:.2s;outline:none}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);background:var(--card);box-shadow:0 0 0 4px rgba(34,184,220,.12)}
 .field textarea{resize:vertical;min-height:96px}
+/* invalid state carries a border AND an icon-free text summary, so it does not
+   rely on colour alone (WCAG 1.4.1) */
+.field .invalid,.field input.invalid,.field select.invalid{border-color:#D6455C}
+.field .invalid:focus{box-shadow:0 0 0 4px rgba(214,69,92,.16)}
+.form-error{margin:0 0 16px;font-size:.9rem;font-weight:500;color:#C33A50;display:flex;align-items:center;gap:8px}
+.form-error::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+[data-theme="dark"] .form-error{color:#FF8FA0}
+[data-theme="dark"] .field .invalid{border-color:#FF8FA0}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-success{display:none;text-align:center;padding:30px 10px}
 .form-success.show{display:block;animation:fadeUp .5s ease}
@@ -427,15 +453,17 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 .foot-brand .brand{margin-bottom:16px}
 .foot-brand p{color:rgba(255,255,255,.6);font-size:.92rem;max-width:34ch;margin:0 0 20px}
 .foot-social{display:flex;gap:10px}
-.foot-social a{width:40px;height:40px;border-radius:11px;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:rgba(255,255,255,.75);transition:.25s;cursor:pointer}
+.foot-social a{width:44px;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;color:rgba(255,255,255,.75);transition:.25s;cursor:pointer}
 .foot-social a:hover{background:var(--cyan);border-color:var(--cyan);color:#fff;transform:translateY(-2px)}
 .foot-social svg{width:18px;height:18px}
 .foot-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan-2);font-weight:400;margin-bottom:18px}
 .foot-col a,.foot-col p{display:block;color:rgba(255,255,255,.62);font-size:.9rem;padding:5px 0;margin:0;transition:.2s;cursor:pointer}
+/* touch-first devices get full-size tap targets on the footer nav */
+@media(hover:none){.foot-col a{padding:11px 0}.foot-legal a{padding:12px 0}}
 .foot-col a:hover{color:#fff;padding-left:4px}
-.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;font-size:.82rem;color:rgba(255,255,255,.42);font-family:var(--mono)}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;font-size:.82rem;color:rgba(255,255,255,.58);font-family:var(--mono)}
 .foot-legal{display:flex;gap:20px}
-.foot-legal a{color:rgba(255,255,255,.42);cursor:pointer;transition:.2s}
+.foot-legal a{color:rgba(255,255,255,.58);cursor:pointer;transition:.2s;padding:8px 0}
 .foot-legal a:hover{color:#fff}
 
 .mobile-panel{position:fixed;inset:0;z-index:99;background:rgba(6,15,42,.97);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:center;gap:6px;padding:40px;transform:translateX(100%);transition:.4s cubic-bezier(.19,1,.22,1);visibility:hidden}
@@ -461,6 +489,10 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
   .mach-grid,.grid-3,.grid-4,.steps,.stats-grid,.row-2,.why-list,.foot-top,.payment-feats{grid-template-columns:1fr}
   .stat:not(:last-child)::after{display:none}.stat{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.1)}
   .mach-head{flex-direction:column;align-items:flex-start}
+  /* stacked pills at ~200px wide read as an afterthought and are a small target
+     for a thumb; full-width makes the primary action unmissable */
+  .hero-actions,.cta-actions,.why-cta{display:grid;grid-template-columns:1fr;gap:10px}
+  .hero-actions .btn,.cta-actions .btn,.why-cta .btn{width:100%;justify-content:center}
 }
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.reveal{opacity:1;transform:none}.hero h1 .line span{transform:none}
   .hero-video{display:none}
@@ -915,10 +947,11 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     <div class="form-card reveal d1">
       <div id="formInner">
         <h3>Request your quote</h3><p class="sub">No obligation. We'll follow up with a tailored recommendation.</p>
-        <div class="row-2"><div class="field"><label>Full name</label><input id="f-name" type="text" placeholder="Your name"></div><div class="field"><label>Company</label><input id="f-company" type="text" placeholder="Company name"></div></div>
-        <div class="row-2"><div class="field"><label>Email</label><input id="f-email" type="email" placeholder="you@company.com"></div><div class="field"><label>Phone</label><input id="f-phone" type="tel" placeholder="+971 …"></div></div>
-        <div class="row-2"><div class="field"><label>Emirate</label><select id="f-emirate"><option value="" disabled selected>Select…</option><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option><option>Al Ain</option></select></div><div class="field"><label>Interested in</label><select id="f-interest"><option value="" disabled selected>Select…</option><option>Snack &amp; drink machine</option><option>Fresh bean coffee machine</option><option>Protein shake machine</option><option>Not sure yet</option></select></div></div>
-        <div class="field"><label>Anything else?</label><textarea id="f-msg" placeholder="Location type, footfall, timeframe…"></textarea></div>
+        <div class="row-2"><div class="field"><label for="f-name">Full name</label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="Your name"></div><div class="field"><label for="f-company">Company</label><input id="f-company" name="company" type="text" autocomplete="organization" placeholder="Company name"></div></div>
+        <div class="row-2"><div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@company.com"></div><div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+971 …"></div></div>
+        <div class="row-2"><div class="field"><label for="f-emirate">Emirate</label><select id="f-emirate" name="emirate"><option value="" disabled selected>Select…</option><option>Dubai</option><option>Abu Dhabi</option><option>Sharjah</option><option>Ajman</option><option>Ras Al Khaimah</option><option>Fujairah</option><option>Umm Al Quwain</option><option>Al Ain</option></select></div><div class="field"><label for="f-interest">Interested in</label><select id="f-interest" name="interest"><option value="" disabled selected>Select…</option><option>Snack &amp; drink machine</option><option>Fresh bean coffee machine</option><option>Protein shake machine</option><option>Not sure yet</option></select></div></div>
+        <div class="field"><label for="f-msg">Anything else?</label><textarea id="f-msg" name="message" placeholder="Location type, footfall, timeframe…"></textarea></div>
+        <p class="form-error" id="formError" role="alert" hidden></p>
         <button class="btn btn-primary" id="submitBtn" style="width:100%;justify-content:center">Request my quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
       <div class="form-success" id="formSuccess"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Request sent</h3><p>Thanks — we've got your details and will be in touch within one business day. For anything urgent, call <strong>+971 58 828 0346</strong>.</p></div>
@@ -1208,7 +1241,14 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       while(v.firstChild) v.removeChild(v.firstChild);
       var s=document.createElement('source');
       s.src='assets/video/vendman-hero-mobile-1080x1350.mp4'; s.type='video/mp4';
-      v.appendChild(s); v.load();
+      v.appendChild(s);
+      /* The poster is the 2.37:1 master. Phone CSS centres the video, and the
+         centre of that frame is empty background — so the poster rendered as a
+         blank hero until the portrait clip arrived. There is no portrait poster
+         in /assets, so drop it and let the hero's own dark ground show through
+         until the video fades in. */
+      v.removeAttribute('poster');
+      v.load();
     }
 
     function reveal(){ v.classList.add('ready'); }
@@ -1264,8 +1304,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 
   /* ---------- theme ----------
      The initial value is set by the inline script in <head> so there is no
-     flash. This only handles switching and remembering the choice. Until the
-     visitor picks one, the OS preference keeps winning, live. */
+     flash. This only handles switching and remembering the choice. */
   /* The dictionary is built on first use rather than at a fixed point in this
      file: several widgets (the theme toggle, the carousel dots) label themselves
      during setup, and they must not depend on where the language block sits. */
@@ -1294,8 +1333,6 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 
   var THEME_KEY='vendman-theme';
   var themeMeta=document.querySelector('meta[name="theme-color"]');
-  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
-  function storedTheme(){ try{ return localStorage.getItem(THEME_KEY); }catch(e){ return null; } }
   function applyTheme(t){
     document.documentElement.setAttribute('data-theme',t);
     if(themeMeta) themeMeta.setAttribute('content',t==='dark'?'#0A1020':'#0A1A3F');
@@ -1312,9 +1349,6 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       applyTheme(next);
       try{ localStorage.setItem(THEME_KEY,next); }catch(e){}
     });
-  });
-  if(mq&&mq.addEventListener) mq.addEventListener('change',function(e){
-    if(!storedTheme()) applyTheme(e.matches?'dark':'light');
   });
 
   /* ---------- language ----------
@@ -1388,9 +1422,40 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   // faq
   document.querySelectorAll('.faq-q').forEach(function(q){q.addEventListener('click',function(){var it=q.parentElement,a=q.nextElementSibling,open=it.classList.contains('open');it.parentElement.querySelectorAll('.faq-item').forEach(function(x){x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight=null});if(!open){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}})});
 
-  // form
-  var btn=document.getElementById('submitBtn');
-  if(btn)btn.addEventListener('click',function(){var n=document.getElementById('f-name').value.trim(),em=document.getElementById('f-email').value.trim();if(!n||!em){[['f-name',n],['f-email',em]].forEach(function(f){document.getElementById(f[0]).style.borderColor=f[1]?'':'#e05252'});return}document.getElementById('formInner').style.display='none';document.getElementById('formSuccess').classList.add('show')});
+  /* ---------- form ----------
+     Validity is announced, not just tinted: a red border alone is invisible to
+     screen readers and to anyone with a red/green deficiency. Invalid fields get
+     aria-invalid, the summary is a live region, and focus moves to the first
+     problem so keyboard users are not left hunting for it. */
+  var btn=document.getElementById('submitBtn'), formErr=document.getElementById('formError');
+  var REQUIRED=[['f-name','Full name'],['f-email','Email']];
+  function clearError(el){ el.removeAttribute('aria-invalid'); el.classList.remove('invalid'); }
+  REQUIRED.forEach(function(f){
+    var el=document.getElementById(f[0]);
+    if(el) el.addEventListener('input',function(){ if(el.value.trim()) clearError(el); });
+  });
+  if(btn) btn.addEventListener('click',function(){
+    var missing=[];
+    REQUIRED.forEach(function(f){
+      var el=document.getElementById(f[0]), ok=el.value.trim();
+      if(el.type==='email'&&ok) ok=/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim());
+      if(ok){ clearError(el); } else { el.setAttribute('aria-invalid','true'); el.classList.add('invalid'); missing.push(f[1]); }
+    });
+    if(missing.length){
+      if(formErr){
+        var sep=document.documentElement.lang==='ar'?'، ':', ';
+        formErr.textContent=T('Please complete:')+' '+missing.map(T).join(sep);
+        formErr.hidden=false;
+      }
+      var first=document.querySelector('.field .invalid'); if(first) first.focus();
+      return;
+    }
+    if(formErr) formErr.hidden=true;
+    document.getElementById('formInner').style.display='none';
+    var ok=document.getElementById('formSuccess');
+    ok.classList.add('show');
+    ok.setAttribute('tabindex','-1'); ok.focus();   // move focus to the confirmation
+  });
 
   window.addEventListener('scroll',setHeader,{passive:true});
   observeAll(document.getElementById('page-home')); runCounters(document.getElementById('page-home')); runSteps(document.getElementById('page-home'));
