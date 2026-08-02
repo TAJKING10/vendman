@@ -97,7 +97,7 @@ img{display:block;max-width:100%}
 .btn-lime:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(155,214,46,.7)}
 
 /* header */
-header{position:fixed;top:0;left:0;right:0;z-index:100;transition:.3s ease}
+header{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:100;transition:.3s ease}
 .nav{display:flex;align-items:center;justify-content:space-between;height:72px;margin-top:12px;padding:0 22px;border-radius:100px;border:1px solid transparent;transition:.3s ease}
 header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:blur(16px) saturate(1.4);border-color:var(--line);box-shadow:var(--shadow-sm);margin-top:10px;height:64px}
 .brand{display:flex;align-items:center;gap:12px;font-family:var(--disp);font-weight:700;font-size:1.22rem;letter-spacing:.02em;color:#fff;transition:color .3s,transform .3s;cursor:pointer}
@@ -420,7 +420,7 @@ header.solid .burger span,header.scrolled .burger span{background:var(--ink)}
 .scroll-progress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--cyan),var(--lime));z-index:200;transition:width .1s linear}
 
 /* back to top */
-.back-to-top{position:fixed;right:24px;bottom:24px;width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;border:none;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);z-index:90;opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;transition:opacity .3s,transform .3s,background .25s}
+.back-to-top{position:fixed;right:calc(env(safe-area-inset-right,0px) + 24px);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);width:48px;height:48px;border-radius:50%;background:var(--navy);color:#fff;border:none;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow);z-index:90;opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;transition:opacity .3s,transform .3s,background .25s}
 .back-to-top.show{opacity:1;transform:none;pointer-events:auto}
 .back-to-top:hover{background:var(--teal)}
 .back-to-top svg{width:19px;height:19px}
@@ -466,10 +466,21 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 .foot-legal a{color:rgba(255,255,255,.58);cursor:pointer;transition:.2s;padding:8px 0}
 .foot-legal a:hover{color:#fff}
 
-.mobile-panel{position:fixed;inset:0;z-index:99;background:rgba(6,15,42,.97);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:center;gap:6px;padding:40px;transform:translateX(100%);transition:.4s cubic-bezier(.19,1,.22,1);visibility:hidden}
+/* The menu is centred when it fits and scrolls when it does not. Plain
+   `justify-content:center` clipped the first item above the viewport on a 667px
+   phone with no way to reach it — `safe center` keeps the start edge reachable,
+   and the insets keep the list clear of the notch and the home indicator. */
+.mobile-panel{position:fixed;inset:0;z-index:99;background:rgba(6,15,42,.97);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:flex-start;justify-content:safe center;gap:4px;padding:calc(env(safe-area-inset-top,0px) + 92px) clamp(24px,7vw,40px) calc(env(safe-area-inset-bottom,0px) + 32px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;transform:translateX(100%);transition:.4s cubic-bezier(.19,1,.22,1);visibility:hidden}
 .mobile-panel.open{transform:none;visibility:visible}
-.mobile-panel a{font-family:var(--disp);font-weight:600;font-size:1.6rem;color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
-.mobile-panel a:last-of-type{border:none}.mobile-panel .btn{margin-top:24px;justify-content:center}
+.mobile-panel a{font-family:var(--disp);font-weight:600;font-size:clamp(1.3rem,5.4vw,1.6rem);color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
+.mobile-panel a:last-of-type{border:none}.mobile-panel .btn{margin-top:22px;justify-content:center}
+/* short phones: tighten the rhythm so the list still fits without scrolling */
+@media(max-height:720px){
+  .mobile-panel a{font-size:1.28rem;padding:10px 0}
+  .mobile-panel .btn{margin-top:14px}
+  .mobile-panel .theme-toggle{margin-top:12px;padding:10px 18px}
+  .mobile-panel .lang-toggle{margin-top:8px;padding:10px 18px}
+}
 
 @media(max-width:960px){
   .hero-grid,.why-grid,.coffee-grid,.faq-grid,.contact-grid,.mrow{grid-template-columns:1fr}
@@ -478,7 +489,14 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
   .hero-copy{max-width:100%}
   .hero-stage{min-height:300px;margin-top:20px}
   .hero-video{object-position:center}
-  .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.90) 0%,rgba(5,14,26,.70) 45%,rgba(5,14,26,.94) 100%)}
+  /* Stacked layout: the copy sits over the top half and the machine lands around
+     two thirds down, inside .hero-stage. The old ramp finished at 94% opacity —
+     right on top of the machine — so the stage read as an empty black block.
+     Solid where the type is, then opens up over the product. */
+  .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.95) 0%,rgba(5,14,26,.90) 34%,rgba(5,14,26,.62) 52%,rgba(5,14,26,.24) 70%,rgba(5,14,26,.20) 88%,rgba(5,14,26,.55) 100%)}
+  /* this line now sits over the machine rather than flat black — lift it so it
+     stays legible against steam and highlights */
+  .hero-trust{color:rgba(255,255,255,.74)}
   .hero-badges{display:none}   /* nowhere for them to live on mobile */
   .mach-grid,.grid-3,.grid-4,.steps,.stats-grid{grid-template-columns:1fr 1fr}
   .foot-top{grid-template-columns:1fr 1fr}
@@ -589,7 +607,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 
 /* --- directional flips --- */
 [dir="rtl"] .scroll-progress{left:auto;right:0}
-[dir="rtl"] .back-to-top{right:auto;left:24px}
+[dir="rtl"] .back-to-top{right:auto;left:calc(env(safe-area-inset-left,0px) + 24px)}
 [dir="rtl"] .lightbox-close{right:auto;left:26px}
 [dir="rtl"] .card::before{inset:0 0 0 auto}
 [dir="rtl"] .step-line::after{left:auto;right:0}
@@ -1256,12 +1274,25 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     // if the network stalls, still fade in so the poster isn't stuck at 0 opacity
     setTimeout(reveal,2500);
 
-    v.play().catch(function(){});
+    var visible=true;
+    function tryPlay(){ if(visible&&v.paused) return v.play().catch(function(){}); }
+    tryPlay();
+
     if('IntersectionObserver' in window){
       new IntersectionObserver(function(es){
-        es.forEach(function(e){ if(e.isIntersecting){ v.play().catch(function(){}); } else { v.pause(); } });
+        es.forEach(function(e){ visible=e.isIntersecting; if(visible){ tryPlay(); } else { v.pause(); } });
       },{threshold:.1}).observe(v);
     }
+
+    /* Autoplay is refused outright in iOS Low Power Mode and by some data
+       settings, even for a muted video — the hero would then sit frozen on one
+       frame for the whole visit with nothing to explain it. These listeners
+       retry on the first thing the visitor does and then get out of the way. */
+    var kick=['pointerdown','touchstart','keydown','scroll'];
+    function retry(){ tryPlay(); if(!v.paused) kick.forEach(function(t){ window.removeEventListener(t,retry); }); }
+    kick.forEach(function(t){ window.addEventListener(t,retry,{passive:true}); });
+    // returning to the tab should resume rather than leave it parked
+    document.addEventListener('visibilitychange',function(){ if(!document.hidden) tryPlay(); });
   })();
 
   // machine model carousels — drag, arrows, dots, autoplay (one instance per .coffee-carousel)

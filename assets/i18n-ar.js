@@ -48,6 +48,14 @@ strings: {
 "See the machines": "تعرّف على الماكينات",
 "Trusted by leading UAE hospitals, clinics, gyms & universities": "موضع ثقة كبرى المستشفيات والعيادات والصالات الرياضية والجامعات في الإمارات",
 "Powering breakrooms & lobbies for": "نخدم استراحات الموظفين والمداخل لدى",
+/* kept so the dictionary still resolves if the shorter hero copy is used */
+"Smart vending.": "بيع ذاتي ذكي.",
+"Fully managed.": "بإدارة متكاملة.",
+"Across the UAE.": "في جميع أنحاء الإمارات.",
+"We install, stock and maintain snack, drink and fresh coffee machines at zero cost to your business.": "نركّب ونعبّئ ونصون ماكينات الوجبات الخفيفة والمشروبات والقهوة الطازجة، دون أي تكلفة على منشأتك.",
+"View machines": "عرض الماكينات",
+"Installed in 7 days": "التركيب خلال 7 أيام",
+"Zero cost to your business": "دون أي تكلفة على منشأتك",
 
 /* ---------- home: range ---------- */
 "The range": "تشكيلتنا",
