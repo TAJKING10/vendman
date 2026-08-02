@@ -161,6 +161,8 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
    one scrim to protect the copy. The machine already carries its own shadow and
    floor in the render, so nothing is stacked on top of it. */
 .hero{background:#050e1a;color:#fff;padding:clamp(150px,17vh,196px) 0 clamp(40px,6vh,64px);min-height:min(94vh,940px);display:flex;align-items:center;position:relative;overflow:hidden;isolation:isolate}
+/* melts into the navy client band below instead of cutting hard */
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:150px;z-index:2;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--navy) 94%)}
 /* object-position pins the machine right, so a taller viewport crops the empty
    left side instead of decapitating the machine */
 .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:74% center;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
@@ -191,6 +193,16 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
 .hero-proof ul{display:flex;flex-wrap:wrap;gap:8px clamp(16px,2.8vw,38px);margin:0;padding:0;list-style:none}
 .hero-proof li{font-family:var(--disp);font-weight:500;font-size:clamp(.86rem,1vw,1rem);color:rgba(255,255,255,.76)}
 
+
+/* client ticker — the hero fades into this navy band above it */
+.marquee-band{background:var(--navy);padding:24px 0;border-top:1px solid rgba(255,255,255,.06)}
+.marquee-label{text-align:center;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:16px}
+.marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;gap:52px;padding-right:52px;flex:none;animation:scroll 34s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-track span{font-family:var(--disp);font-weight:500;font-size:1.05rem;color:rgba(255,255,255,.62);white-space:nowrap;display:flex;align-items:center;gap:52px}
+.marquee-track span::after{content:"›";color:var(--cyan);opacity:.5}
+@keyframes scroll{to{transform:translateX(-50%)}}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.19,1,.22,1),transform .7s cubic-bezier(.19,1,.22,1)}
@@ -545,7 +557,7 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 [data-theme="dark"] .dark-sec{background:radial-gradient(120% 100% at 20% 0%,#16224A,#0E1730 55%,#080E1C)}
 [data-theme="dark"] .cta-band{background:radial-gradient(120% 140% at 80% 0%,#16224A,#0E1730 55%,#080E1C);border:1px solid rgba(255,255,255,.07)}
 [data-theme="dark"] .phero{background:radial-gradient(120% 130% at 80% 0%,#16224A 0%,#0E1730 48%,#080E1C 100%)}
-[data-theme="dark"] .stats{background:#0D1424}
+[data-theme="dark"] .marquee-band,[data-theme="dark"] .stats{background:#0D1424}
 [data-theme="dark"] footer{background:#070C18}
 [data-theme="dark"] .mach-media::after,[data-theme="dark"] .m-media::after{background:linear-gradient(0deg,rgba(0,0,0,.42),transparent 45%)}
 [data-theme="dark"] .mach-card:hover,[data-theme="dark"] .cc-slide:hover,[data-theme="dark"] .card:hover{border-color:rgba(34,184,220,.35)}
@@ -584,7 +596,7 @@ html[lang="ar"] .h-lg{font-size:clamp(1.75rem,3.9vw,2.7rem)}
 html[lang="ar"] body{line-height:1.85}
 html[lang="ar"] .eyebrow,html[lang="ar"] .mach-kicker,html[lang="ar"] .spec .k,
 html[lang="ar"] .field label,html[lang="ar"] .info-row .k,html[lang="ar"] .foot-col h4,
-html[lang="ar"] .sector-h,html[lang="ar"] .legal .updated,
+html[lang="ar"] .sector-h,html[lang="ar"] .marquee-label,html[lang="ar"] .legal .updated,
 html[lang="ar"] .mach-led,html[lang="ar"] .stat .lbl{text-transform:none}
 /* the h1 rise-in animation clips descenders on Arabic glyphs */
 html[lang="ar"] .hero h1 .line{overflow:visible}
@@ -612,7 +624,8 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 /* forward arrows point the way the language reads */
 [dir="rtl"] .btn svg{transform:scaleX(-1)}
 [dir="rtl"] .btn-primary:hover svg{transform:scaleX(-1) translateX(4px)}
-/* the carousel is positional rather than linguistic — keep it LTR */
+/* the ticker is all Latin brand names and the carousel is positional — LTR both */
+[dir="rtl"] .marquee{direction:ltr}
 [dir="rtl"] .cc-track,[dir="rtl"] .cc-arrows{direction:ltr}
 [dir="rtl"] .cc-info{direction:rtl}
 /* hero art is composed with the machine on one side and copy on the other */
@@ -699,6 +712,13 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
         <ul><li>Mediclinic</li><li>King's College Hospital</li><li>Anytime Fitness</li><li>HULT University</li></ul>
       </div>
     </div>
+  </div>
+
+  <div class="marquee-band"><div class="marquee-label">Powering breakrooms &amp; lobbies for</div>
+    <div class="marquee"><div class="marquee-track">
+      <span>Medcare Hospitals</span><span>Mediclinic</span><span>King's College Hospital Dubai</span><span>Anytime Fitness</span><span>HULT University</span><span>FIFA Medical Centre</span><span>Mayweather Boxing &amp; Fitness</span><span>HealthBay</span>
+      <span aria-hidden="true">Medcare Hospitals</span><span aria-hidden="true">Mediclinic</span><span aria-hidden="true">King's College Hospital Dubai</span><span aria-hidden="true">Anytime Fitness</span><span aria-hidden="true">HULT University</span><span aria-hidden="true">FIFA Medical Centre</span><span aria-hidden="true">Mayweather Boxing &amp; Fitness</span><span aria-hidden="true">HealthBay</span>
+    </div></div>
   </div>
 
 
