@@ -4,17 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0A1A3F">
-<!-- runs before first paint so a dark-mode visitor never gets a white flash -->
+<!-- Theme and language are resolved before first paint: a dark-mode visitor never
+     gets a white flash, and an Arabic visitor never gets a flash of English. -->
 <script>
 (function(){
-  var t;
+  var d=document.documentElement, t, l;
   try{ t=localStorage.getItem('vendman-theme'); }catch(e){}
   if(t!=='dark'&&t!=='light'){
     t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
   }
-  document.documentElement.setAttribute('data-theme',t);
+  d.setAttribute('data-theme',t);
+
+  try{ l=localStorage.getItem('vendman-lang'); }catch(e){}
+  if(l!=='ar'&&l!=='en'){
+    /* no stored choice — follow the browser's preferred languages */
+    var nav=(navigator.languages||[navigator.language||'']).join(',');
+    l=/(^|,)ar\b/i.test(nav)?'ar':'en';
+  }
+  if(l==='ar'){
+    d.lang='ar'; d.dir='rtl'; d.setAttribute('data-cloak','');
+    /* failsafe: never leave the page hidden if the translation pass cannot run */
+    setTimeout(function(){ d.removeAttribute('data-cloak'); },1500);
+  }
 })();
 </script>
+<!-- body stays hidden for the one pass it takes to swap the copy into Arabic -->
+<style>html[data-cloak] body{visibility:hidden}</style>
 <title>Vendman | Vending Machines for UAE Workplaces</title>
 <meta name="description" content="Vendman installs, stocks and services cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hotels across the UAE.">
 <link rel="canonical" href="https://vendman-uae.com/">
@@ -30,6 +45,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- Arabic face: Space Grotesk / Inter / Space Mono have no Arabic coverage -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="assets/i18n-ar.js"></script>
 <style>
 :root{
   --navy:#0A1A3F; --navy-2:#0E2350; --navy-3:#122C63; --navy-deep:#060F2A;
@@ -496,6 +514,78 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
 [data-theme="dark"] .logo-chip:hover{color:var(--teal);border-color:var(--teal)}
 [data-theme="dark"] .btn-ghost:hover{border-color:var(--cyan-2);color:var(--cyan-2)}
 [data-theme="dark"] .site-logo,[data-theme="dark"] .footer-logo{filter:brightness(1.06)}
+
+/* ===== language toggle ===== */
+.lang-toggle{height:42px;min-width:42px;flex:none;padding:0 13px;border-radius:100px;border:1px solid var(--line-2);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:.86rem;letter-spacing:.02em;transition:.25s}
+.lang-toggle:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
+header.solid .lang-toggle,header.scrolled .lang-toggle{border-color:var(--line);background:var(--paper-2);color:var(--ink)}
+header.solid .lang-toggle:hover,header.scrolled .lang-toggle:hover{color:var(--teal)}
+.lang-toggle .lt-ar{font-family:'IBM Plex Sans Arabic',sans-serif;font-size:1.02rem}
+html[lang="ar"] .lang-toggle .lt-ar{display:none}
+html:not([lang="ar"]) .lang-toggle .lt-en{display:none}
+.mobile-panel .lang-toggle{height:auto;padding:12px 22px;justify-self:start;font-size:1rem;margin-top:12px}
+@media(max-width:768px){.nav-cta .lang-toggle,.nav-cta .theme-toggle{display:none}}
+
+/* ===== Arabic / RTL =====
+   Every font-family on the page resolves through these three variables, so one
+   override re-types the whole site. Latin tracking is removed because Arabic is
+   a connected script — letter-spacing visually breaks the joins. */
+html[lang="ar"]{
+  --disp:'IBM Plex Sans Arabic',sans-serif;
+  --body:'IBM Plex Sans Arabic',sans-serif;
+  --mono:'IBM Plex Sans Arabic',sans-serif;
+}
+html[lang="ar"] *{letter-spacing:normal!important}
+html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,html[lang="ar"] h4{line-height:1.34}
+html[lang="ar"] .hero h1,html[lang="ar"] .phero h1{line-height:1.3}
+html[lang="ar"] .h-xl,html[lang="ar"] .hero h1{font-size:clamp(2.1rem,4.8vw,3.5rem)}
+html[lang="ar"] .h-lg{font-size:clamp(1.75rem,3.9vw,2.7rem)}
+html[lang="ar"] body{line-height:1.85}
+html[lang="ar"] .eyebrow,html[lang="ar"] .mach-kicker,html[lang="ar"] .spec .k,
+html[lang="ar"] .field label,html[lang="ar"] .info-row .k,html[lang="ar"] .foot-col h4,
+html[lang="ar"] .sector-h,html[lang="ar"] .marquee-label,html[lang="ar"] .legal .updated,
+html[lang="ar"] .mach-led,html[lang="ar"] .stat .lbl{text-transform:none}
+/* the h1 rise-in animation clips descenders on Arabic glyphs */
+html[lang="ar"] .hero h1 .line{overflow:visible}
+/* mixed Arabic/Latin values decide their own direction from the first strong character */
+[dir="rtl"] .spec .v,[dir="rtl"] .num,[dir="rtl"] .card h3,[dir="rtl"] .m-tag,
+[dir="rtl"] .cc-info p,[dir="rtl"] .foot-col p,[dir="rtl"] .info-row .v,
+[dir="rtl"] .coffee-tag .n,[dir="rtl"] .foot-bottom{unicode-bidi:plaintext}
+/* plaintext lets a Latin value align itself left; keep the column edge with the label */
+[dir="rtl"] .spec .v,[dir="rtl"] .spec .k{text-align:right}
+[dir="rtl"] a[href^="tel:"],[dir="rtl"] a[href^="mailto:"]{direction:ltr;unicode-bidi:embed;display:inline-block}
+
+/* --- directional flips --- */
+[dir="rtl"] .scroll-progress{left:auto;right:0}
+[dir="rtl"] .back-to-top{right:auto;left:24px}
+[dir="rtl"] .lightbox-close{right:auto;left:26px}
+[dir="rtl"] .card::before{inset:0 0 0 auto}
+[dir="rtl"] .step-line::after{left:auto;right:0}
+[dir="rtl"] .mach-led{right:auto;left:18px}
+[dir="rtl"] .m-zoom{right:auto;left:18px}
+[dir="rtl"] .coffee-tag{left:auto;right:-8px}
+[dir="rtl"] .foot-col a:hover{padding-left:0;padding-right:4px}
+[dir="rtl"] .legal ul{padding-left:0;padding-right:22px}
+[dir="rtl"] .mobile-panel{transform:translateX(-100%)}
+[dir="rtl"] .mobile-panel.open{transform:none}
+/* forward arrows point the way the language reads */
+[dir="rtl"] .btn svg{transform:scaleX(-1)}
+[dir="rtl"] .btn-primary:hover svg{transform:scaleX(-1) translateX(4px)}
+/* the logo marquee and the carousel are pure Latin/positional — keep them LTR */
+[dir="rtl"] .marquee{direction:ltr}
+[dir="rtl"] .cc-track,[dir="rtl"] .cc-arrows{direction:ltr}
+[dir="rtl"] .cc-info{direction:rtl}
+/* hero art is composed with the machine on one side and copy on the other */
+[dir="rtl"] .hero-video{transform:scaleX(-1)}
+[dir="rtl"] .hero-scrim{background:linear-gradient(270deg,rgba(5,14,26,.96) 0%,rgba(5,14,26,.94) 32%,rgba(5,14,26,.78) 55%,rgba(5,14,26,.18) 76%,rgba(5,14,26,.42) 100%),radial-gradient(90% 70% at 80% 50%,rgba(5,14,26,.55),transparent 70%)}
+[dir="rtl"] .chip.c1{left:auto;right:56%}
+[dir="rtl"] .chip.c2{right:auto;left:6%}
+[dir="rtl"] .chip.c3{left:auto;right:52%}
+/* email and phone read left-to-right even inside an RTL form */
+[dir="rtl"] input[type="email"],[dir="rtl"] input[type="tel"]{direction:ltr;text-align:right}
+@media(max-width:960px){
+  [dir="rtl"] .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.90) 0%,rgba(5,14,26,.70) 45%,rgba(5,14,26,.94) 100%)}
+}
 </style>
 </head>
 <body>
@@ -515,6 +605,7 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
         <a data-page="home">Home</a><a data-page="machines">Machines</a><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
       </div>
       <div class="nav-cta">
+        <button class="lang-toggle" data-lang-toggle aria-label="Switch to Arabic" title="العربية / English"><span class="lt-ar">ع</span><span class="lt-en">EN</span></button>
         <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch theme">
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/></svg>
@@ -533,6 +624,7 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
     <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/></svg>
     <span class="tt-label">Dark mode</span>
   </button>
+  <button class="lang-toggle" data-lang-toggle aria-label="Switch to Arabic"><span class="lt-ar">العربية</span><span class="lt-en">English</span></button>
 </div>
 
 <main id="app">
@@ -1008,6 +1100,7 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
   function setMeta(sel,attr,val){ var el=document.querySelector(sel); if(el) el.setAttribute(attr,val); }
   function applyMeta(page){
     var r=ROUTES[page]||ROUTES.home, url=ORIGIN+urlFor(page);
+    if(document.documentElement.lang==='ar'&&window.VENDMAN_AR&&VENDMAN_AR.routes[page]) r=VENDMAN_AR.routes[page];
     document.title=r.title;
     setMeta('meta[name="description"]','content',r.desc);
     setMeta('link[rel="canonical"]','href',url);
@@ -1137,7 +1230,7 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
     var dotsWrap=root.querySelector('[data-dots]');
     var slides=Array.prototype.slice.call(track.children);
     slides.forEach(function(_,i){
-      var d=document.createElement('button'); d.className='cc-dot'+(i===0?' active':''); d.setAttribute('aria-label','Go to slide '+(i+1));
+      var d=document.createElement('button'); d.className='cc-dot'+(i===0?' active':''); d.setAttribute('aria-label',T('Go to slide')+' '+(i+1));
       d.addEventListener('click',function(){ scrollToSlide(i); });
       dotsWrap.appendChild(d);
     });
@@ -1173,6 +1266,32 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
      The initial value is set by the inline script in <head> so there is no
      flash. This only handles switching and remembering the choice. Until the
      visitor picks one, the OS preference keeps winning, live. */
+  /* The dictionary is built on first use rather than at a fixed point in this
+     file: several widgets (the theme toggle, the carousel dots) label themselves
+     during setup, and they must not depend on where the language block sits. */
+  var LANG_KEY='vendman-lang';
+  var ARN=null;   // dictionary re-keyed on normalised English
+  function dict(){
+    if(!ARN){
+      ARN={};
+      var src=(window.VENDMAN_AR&&VENDMAN_AR.strings)||{};
+      for(var k in src) ARN[norm(k)]=src[k];
+    }
+    return ARN;
+  }
+
+  /* typographic characters vary between the markup and the dictionary; fold the
+     variants together so a curly quote or a non-breaking hyphen still matches */
+  function norm(s){
+    return String(s)
+      .replace(/[‘’]/g,"'")
+      .replace(/[“”″]/g,'"')
+      .replace(/[‐‑‒–—]/g,'-')
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+  function T(en){ var a=dict()[norm(en)]; return (document.documentElement.lang==='ar'&&a)?a:en; }
+
   var THEME_KEY='vendman-theme';
   var themeMeta=document.querySelector('meta[name="theme-color"]');
   var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
@@ -1181,8 +1300,9 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
     document.documentElement.setAttribute('data-theme',t);
     if(themeMeta) themeMeta.setAttribute('content',t==='dark'?'#0A1020':'#0A1A3F');
     document.querySelectorAll('[data-theme-toggle]').forEach(function(b){
-      b.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode');
-      var lbl=b.querySelector('.tt-label'); if(lbl) lbl.textContent=t==='dark'?'Light mode':'Dark mode';
+      b.setAttribute('aria-label',T(t==='dark'?'Switch to light mode':'Switch to dark mode'));
+      if(b.hasAttribute('title')) b.setAttribute('title',T('Switch theme'));
+      var lbl=b.querySelector('.tt-label'); if(lbl) lbl.textContent=T(t==='dark'?'Light mode':'Dark mode');
     });
   }
   applyTheme(document.documentElement.getAttribute('data-theme')||'light');
@@ -1195,6 +1315,71 @@ header.solid .theme-toggle:hover,header.scrolled .theme-toggle:hover{color:var(-
   });
   if(mq&&mq.addEventListener) mq.addEventListener('change',function(e){
     if(!storedTheme()) applyTheme(e.matches?'dark':'light');
+  });
+
+  /* ---------- language ----------
+     Arabic is applied over the live DOM rather than served as a duplicate page,
+     so the markup stays a single source of truth. Every text node and a fixed
+     set of attributes are matched against the dictionary in assets/i18n-ar.js by
+     their normalised English, and the English original is kept alongside so the
+     switch works both ways. */
+  var i18nText=null,i18nAttr=null;
+  function i18nCollect(){
+    if(i18nText) return;
+    i18nText=[]; i18nAttr=[];
+    var skip={SCRIPT:1,STYLE:1,NOSCRIPT:1};
+    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode;
+      if(skip[p.nodeName]) return NodeFilter.FILTER_REJECT;
+      /* the theme/language buttons relabel themselves — leave them to applyTheme */
+      if(p.closest&&p.closest('[data-theme-toggle],[data-lang-toggle]')) return NodeFilter.FILTER_REJECT;
+      return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    var D=dict(),n,m,ar;
+    while(n=w.nextNode()){
+      m=/^(\s*)([\s\S]*?)(\s*)$/.exec(n.nodeValue);
+      ar=D[norm(m[2])];
+      if(ar) i18nText.push({n:n,en:n.nodeValue,ar:m[1]+ar+m[3]});
+    }
+    ['placeholder','aria-label','alt','title'].forEach(function(a){
+      document.querySelectorAll('['+a+']').forEach(function(el){
+        if(el.closest('[data-theme-toggle],[data-lang-toggle]')) return;
+        var v=el.getAttribute(a); if(!v||!v.trim()) return;
+        var t=D[norm(v)];
+        if(t) i18nAttr.push({el:el,a:a,en:v,ar:t});
+      });
+    });
+  }
+
+  function currentPage(){
+    var p=document.querySelector('.page.active');
+    return p?p.id.replace('page-',''):'home';
+  }
+
+  function applyLang(lang){
+    var d=document.documentElement, ar=(lang==='ar');
+    i18nCollect();
+    d.lang=ar?'ar':'en';
+    d.dir=ar?'rtl':'ltr';
+    i18nText.forEach(function(o){ o.n.nodeValue=ar?o.ar:o.en; });
+    i18nAttr.forEach(function(o){ o.el.setAttribute(o.a,ar?o.ar:o.en); });
+    document.querySelectorAll('[data-lang-toggle]').forEach(function(b){
+      b.setAttribute('aria-label',ar?'التبديل إلى الإنجليزية':'Switch to Arabic');
+    });
+    applyTheme(d.getAttribute('data-theme')||'light');  // relabels in the new language
+    applyMeta(currentPage());
+    /* an open answer was measured against the other language's text height */
+    document.querySelectorAll('.faq-item.open .faq-a').forEach(function(a){ a.style.maxHeight=a.scrollHeight+'px'; });
+    d.removeAttribute('data-cloak');
+  }
+
+  applyLang(document.documentElement.lang==='ar'?'ar':'en');
+  document.querySelectorAll('[data-lang-toggle]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var next=document.documentElement.lang==='ar'?'en':'ar';
+      applyLang(next);
+      try{ localStorage.setItem(LANG_KEY,next); }catch(e){}
+    });
   });
 
   // tabs (generic)
