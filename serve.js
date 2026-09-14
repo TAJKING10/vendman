@@ -7,7 +7,7 @@ const path = require('path');
 
 const ROOT = __dirname;
 const PORT = process.env.PORT || 8000;
-const SLUGS = ['machines', 'solutions', 'services', 'about', 'contact', 'privacy-policy', 'terms'];
+const SLUGS = ['machines', 'services', 'about', 'contact', 'privacy-policy', 'terms'];
 const TYPES = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.json': 'application/json',

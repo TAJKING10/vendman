@@ -7,7 +7,7 @@
   ],
   "rewrites": [
     {
-      "source": "/(machines|solutions|services|about|contact|privacy-policy|terms)",
+      "source": "/(machines|services|about|contact|privacy-policy|terms)",
       "destination": "/index.html"
     }
   ]

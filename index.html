@@ -4,30 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0A1A3F">
-<!-- Theme and language are resolved before first paint: a dark-mode visitor never
-     gets a white flash, and an Arabic visitor never gets a flash of English. -->
+<!-- Theme is resolved before first paint so a dark-mode visitor never gets a white flash. -->
 <script>
 (function(){
-  /* First visit always opens English + light — the brand's default presentation.
-     The OS colour scheme and the browser's language headers are deliberately
-     NOT consulted here. Once a visitor uses either toggle their choice is
-     stored and wins on every later visit. */
-  var d=document.documentElement, t, l;
+  /* First visit always opens light — the brand's default presentation. The OS
+     colour scheme is deliberately NOT consulted here. Once a visitor uses the
+     toggle their choice is stored and wins on every later visit. */
+  var d=document.documentElement, t;
   try{ t=localStorage.getItem('vendman-theme'); }catch(e){}
   if(t!=='dark'&&t!=='light') t='light';
   d.setAttribute('data-theme',t);
-
-  try{ l=localStorage.getItem('vendman-lang'); }catch(e){}
-  if(l!=='ar'&&l!=='en') l='en';
-  if(l==='ar'){
-    d.lang='ar'; d.dir='rtl'; d.setAttribute('data-cloak','');
-    /* failsafe: never leave the page hidden if the translation pass cannot run */
-    setTimeout(function(){ d.removeAttribute('data-cloak'); },1500);
-  }
 })();
 </script>
-<!-- body stays hidden for the one pass it takes to swap the copy into Arabic -->
-<style>html[data-cloak] body{visibility:hidden}</style>
 <title>Vendman | Vending Machines for UAE Workplaces</title>
 <meta name="description" content="Vendman installs, stocks and services cashless snack, drink, fresh bean coffee, protein shake and smoothie machines for hospitals, gyms, offices and hotels across the UAE.">
 <link rel="canonical" href="https://vendman-uae.com/">
@@ -42,10 +30,7 @@
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<!-- Arabic face: Space Grotesk / Inter / Space Mono have no Arabic coverage -->
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="assets/i18n-ar.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#0A1A3F; --navy-2:#0E2350; --navy-3:#122C63; --navy-deep:#060F2A;
@@ -63,11 +48,11 @@
      every surface it can land on. The tertiary tier is carried by type
      treatment (mono, uppercase, small, tracked) rather than by washing the
      colour out, which is the accessible way to express that level. */
-  --ink:#0A1A3F; --muted:#5A6B7B; --muted-2:#5D6C79;
+  --ink:#0A1A3F; --muted:#43505C; --muted-2:#5D6C79;
   --line:rgba(10,26,63,.10); --line-2:rgba(255,255,255,.14);
   --shadow:0 18px 50px -24px rgba(10,26,63,.35); --shadow-sm:0 8px 24px -14px rgba(10,26,63,.30);
   --r:18px; --r-sm:12px;
-  --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'Space Mono',monospace;
+  --disp:'Manrope',sans-serif; --body:'Inter',sans-serif; --mono:'Space Mono',monospace;
   --maxw:1180px;
 }
 *{box-sizing:border-box}
@@ -134,6 +119,23 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
 .nav-links a{font-family:var(--disp);font-weight:500;font-size:1rem;color:rgba(255,255,255,.86);padding:11px 18px;border-radius:100px;transition:.2s;cursor:pointer}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.12)}
 .nav-links a.active{color:var(--cyan-2)}
+
+/* nav "Machines" dropdown — the trigger never navigates; only the category
+   links inside the menu do. Opens on hover for mouse users and on click/tap
+   (via .open) so it also works for touch and keyboard. */
+.nav-drop{position:relative}
+.nav-drop-trigger{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-weight:500;font-size:1rem;color:rgba(255,255,255,.86);padding:11px 16px 11px 18px;border-radius:100px;border:none;background:none;transition:.2s;cursor:pointer}
+.nav-drop-trigger:hover{color:#fff;background:rgba(255,255,255,.12)}
+.nav-drop.open .nav-drop-trigger{color:#fff;background:rgba(255,255,255,.12)}
+.nav-drop.active .nav-drop-trigger{color:var(--cyan-2)}
+.nav-drop-trigger .nav-caret{width:14px;height:14px;flex:none;transition:transform .25s}
+.nav-drop.open .nav-caret,.nav-drop:hover .nav-caret{transform:rotate(180deg)}
+.nav-drop-menu{position:absolute;top:calc(100% + 10px);left:0;min-width:230px;background:#0A1633;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:8px;box-shadow:0 20px 40px -16px rgba(0,0,0,.55);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .22s ease,transform .22s ease,visibility .22s;z-index:110}
+.nav-drop:hover .nav-drop-menu,.nav-drop.open .nav-drop-menu{opacity:1;visibility:visible;transform:none}
+.nav-drop-menu a{display:block;padding:11px 14px;border-radius:10px;font-family:var(--disp);font-weight:500;font-size:.94rem;color:rgba(255,255,255,.82);cursor:pointer;white-space:nowrap;transition:background .18s,color .18s}
+.nav-drop-menu a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-drop-menu a.active{color:var(--cyan-2)}
+.nav-drop-menu .nav-drop-viewall{margin-top:4px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);color:var(--cyan-2);font-weight:600}
 .nav-cta{display:flex;align-items:center;gap:10px}
 .burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line-2);background:transparent;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
 .burger span{width:20px;height:2px;background:#fff;transition:.3s;border-radius:2px}
@@ -214,11 +216,14 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
 
 /* machines cards */
 .mach-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
-.tabs{display:inline-flex;background:var(--paper-2);border-radius:100px;padding:5px;gap:4px}
-.tab{font-family:var(--disp);font-weight:600;font-size:.92rem;padding:10px 20px;border-radius:100px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:.25s}
+.tabs{display:inline-flex;flex-wrap:wrap;justify-content:center;background:var(--paper-2);border-radius:100px;padding:5px;gap:4px;max-width:100%}
+.tab{font-family:var(--disp);font-weight:600;font-size:.92rem;padding:10px 20px;border-radius:100px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:.25s;white-space:nowrap}
+@media(max-width:400px){.tab{padding:9px 14px;font-size:.86rem}}
 .tab.active{background:var(--card);color:var(--teal);box-shadow:var(--shadow-sm)}
 .mach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .mach-set{display:none}.mach-set.active{display:grid}
+#page-machines .mach-set{display:none}
+#page-machines .mach-set.active{display:block}
 .mach-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.19,1,.22,1),box-shadow .35s}
 .mach-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
 .mach-media{position:relative;background:linear-gradient(160deg,var(--media-a),var(--media-b));height:290px;overflow:hidden}
@@ -430,6 +435,13 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
 .back-to-top:hover{background:var(--teal)}
 .back-to-top svg{width:19px;height:19px}
 
+/* whatsapp fab */
+.whatsapp-fab{position:fixed;left:calc(env(safe-area-inset-left,0px) + 24px);bottom:calc(env(safe-area-inset-bottom,0px) + 24px);width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:none;place-items:center;cursor:pointer;box-shadow:var(--shadow);z-index:90;transition:transform .25s,box-shadow .25s}
+.whatsapp-fab.show{display:grid}
+.whatsapp-fab:hover{transform:translateY(-3px);box-shadow:0 20px 40px -16px rgba(37,211,102,.6)}
+.whatsapp-fab svg{width:28px;height:28px}
+@media(max-width:560px){.whatsapp-fab{width:50px;height:50px;left:calc(env(safe-area-inset-left,0px) + 16px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}.whatsapp-fab svg{width:25px;height:25px}}
+
 /* lightbox */
 .lightbox{position:fixed;inset:0;z-index:300;background:rgba(6,10,20,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:6vh 5vw;opacity:0;visibility:hidden;transition:opacity .3s ease}
 .lightbox.open{opacity:1;visibility:visible}
@@ -454,7 +466,7 @@ header.solid .nav,header.scrolled .nav{background:var(--nav-bg);backdrop-filter:
 
 /* footer */
 footer{background:#060F2A;color:#fff;padding:72px 0 30px}
-.foot-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.09)}
+.foot-top{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.09)}
 .foot-brand .brand{margin-bottom:16px}
 .foot-brand p{color:rgba(255,255,255,.6);font-size:.92rem;max-width:34ch;margin:0 0 20px}
 .foot-social{display:flex;gap:10px}
@@ -479,12 +491,21 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 .mobile-panel.open{transform:none;visibility:visible}
 .mobile-panel a{font-family:var(--disp);font-weight:600;font-size:clamp(1.3rem,5.4vw,1.6rem);color:#fff;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.08);cursor:pointer}
 .mobile-panel a:last-of-type{border:none}.mobile-panel .btn{margin-top:22px;justify-content:center}
+/* mobile "Machines" accordion — same rule as desktop: the trigger only expands
+   the category list, it never navigates on its own. */
+.mnav-drop{border-bottom:1px solid rgba(255,255,255,.08)}
+.mnav-drop-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--disp);font-weight:600;font-size:clamp(1.3rem,5.4vw,1.6rem);color:#fff;padding:14px 0;border:none;background:none;cursor:pointer;text-align:left}
+.mnav-drop-trigger .nav-caret{width:20px;height:20px;flex:none;transition:transform .25s}
+.mnav-drop.open .nav-caret{transform:rotate(180deg)}
+.mnav-drop-menu{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.mnav-drop.open .mnav-drop-menu{max-height:340px}
+.mnav-drop-menu a{display:block;font-family:var(--disp);font-weight:500;font-size:1.05rem;color:rgba(255,255,255,.78);padding:10px 0 10px 16px;border:none;cursor:pointer}
+.mnav-drop-menu a:last-child{padding-bottom:16px}
 /* short phones: tighten the rhythm so the list still fits without scrolling */
 @media(max-height:720px){
   .mobile-panel a{font-size:1.28rem;padding:10px 0}
   .mobile-panel .btn{margin-top:14px}
   .mobile-panel .theme-toggle{margin-top:12px;padding:10px 18px}
-  .mobile-panel .lang-toggle{margin-top:8px;padding:10px 18px}
 }
 
 @media(max-width:960px){
@@ -581,81 +602,13 @@ footer{background:#060F2A;color:#fff;padding:72px 0 30px}
 [data-theme="dark"] .btn-ghost:hover{border-color:var(--cyan-2);color:var(--cyan-2)}
 [data-theme="dark"] .site-logo,[data-theme="dark"] .footer-logo{filter:brightness(1.06)}
 
-/* ===== language toggle ===== */
-.lang-toggle{height:42px;min-width:42px;flex:none;padding:0 13px;border-radius:100px;border:1px solid var(--line-2);background:rgba(255,255,255,.06);color:#fff;display:grid;place-items:center;cursor:pointer;font-family:var(--disp);font-weight:600;font-size:.86rem;letter-spacing:.02em;transition:.25s}
-.lang-toggle:hover{background:rgba(255,255,255,.14);transform:translateY(-1px)}
-.lang-toggle .lt-ar{font-family:'IBM Plex Sans Arabic',sans-serif;font-size:1.02rem}
-html[lang="ar"] .lang-toggle .lt-ar{display:none}
-html:not([lang="ar"]) .lang-toggle .lt-en{display:none}
-.mobile-panel .lang-toggle{height:auto;padding:12px 22px;justify-self:start;font-size:1rem;margin-top:12px}
-@media(max-width:768px){.nav-cta .lang-toggle,.nav-cta .theme-toggle{display:none}}
-
-/* ===== Arabic / RTL =====
-   Every font-family on the page resolves through these three variables, so one
-   override re-types the whole site. Latin tracking is removed because Arabic is
-   a connected script — letter-spacing visually breaks the joins. */
-html[lang="ar"]{
-  --disp:'IBM Plex Sans Arabic',sans-serif;
-  --body:'IBM Plex Sans Arabic',sans-serif;
-  --mono:'IBM Plex Sans Arabic',sans-serif;
-}
-html[lang="ar"] *{letter-spacing:normal!important}
-html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3,html[lang="ar"] h4{line-height:1.34}
-html[lang="ar"] .hero h1,html[lang="ar"] .phero h1{line-height:1.3}
-html[lang="ar"] .h-xl,html[lang="ar"] .hero h1{font-size:clamp(2.1rem,4.8vw,3.5rem)}
-html[lang="ar"] .h-lg{font-size:clamp(1.75rem,3.9vw,2.7rem)}
-html[lang="ar"] body{line-height:1.85}
-html[lang="ar"] .eyebrow,html[lang="ar"] .mach-kicker,html[lang="ar"] .spec .k,
-html[lang="ar"] .field label,html[lang="ar"] .info-row .k,html[lang="ar"] .foot-col h4,
-html[lang="ar"] .sector-h,html[lang="ar"] .marquee-label,html[lang="ar"] .legal .updated,
-html[lang="ar"] .mach-led,html[lang="ar"] .stat .lbl{text-transform:none}
-/* the h1 rise-in animation clips descenders on Arabic glyphs */
-html[lang="ar"] .hero h1 .line{overflow:visible}
-/* mixed Arabic/Latin values decide their own direction from the first strong character */
-[dir="rtl"] .spec .v,[dir="rtl"] .num,[dir="rtl"] .card h3,[dir="rtl"] .m-tag,
-[dir="rtl"] .cc-info p,[dir="rtl"] .foot-col p,[dir="rtl"] .info-row .v,
-[dir="rtl"] .coffee-tag .n,[dir="rtl"] .foot-bottom{unicode-bidi:plaintext}
-/* plaintext lets a Latin value align itself left; keep the column edge with the label */
-[dir="rtl"] .spec .v,[dir="rtl"] .spec .k{text-align:right}
-[dir="rtl"] a[href^="tel:"],[dir="rtl"] a[href^="mailto:"]{direction:ltr;unicode-bidi:embed;display:inline-block}
-
-/* --- directional flips --- */
-[dir="rtl"] .scroll-progress{left:auto;right:0}
-[dir="rtl"] .back-to-top{right:auto;left:calc(env(safe-area-inset-left,0px) + 24px)}
-[dir="rtl"] .lightbox-close{right:auto;left:26px}
-[dir="rtl"] .card::before{inset:0 0 0 auto}
-[dir="rtl"] .step-line::after{left:auto;right:0}
-[dir="rtl"] .mach-led{right:auto;left:18px}
-[dir="rtl"] .m-zoom{right:auto;left:18px}
-[dir="rtl"] .coffee-tag{left:auto;right:-8px}
-[dir="rtl"] .foot-col a:hover{padding-left:0;padding-right:4px}
-[dir="rtl"] .legal ul{padding-left:0;padding-right:22px}
-[dir="rtl"] .mobile-panel{transform:translateX(-100%)}
-[dir="rtl"] .mobile-panel.open{transform:none}
-/* forward arrows point the way the language reads */
-[dir="rtl"] .btn svg{transform:scaleX(-1)}
-[dir="rtl"] .btn-primary:hover svg{transform:scaleX(-1) translateX(4px)}
-/* the ticker is all Latin brand names and the carousel is positional — LTR both */
-[dir="rtl"] .marquee{direction:ltr}
-[dir="rtl"] .cc-track,[dir="rtl"] .cc-arrows{direction:ltr}
-[dir="rtl"] .cc-info{direction:rtl}
-/* hero art is composed with the machine on one side and copy on the other */
-[dir="rtl"] .hero-video{transform:scaleX(-1)}
-[dir="rtl"] .hero-scrim{background:linear-gradient(270deg,rgba(5,14,26,.96) 0%,rgba(5,14,26,.94) 32%,rgba(5,14,26,.78) 55%,rgba(5,14,26,.18) 76%,rgba(5,14,26,.42) 100%),radial-gradient(90% 70% at 80% 50%,rgba(5,14,26,.55),transparent 70%)}
-[dir="rtl"] .chip.c1{left:auto;right:56%}
-[dir="rtl"] .chip.c2{right:auto;left:6%}
-[dir="rtl"] .chip.c3{left:auto;right:52%}
-/* email and phone read left-to-right even inside an RTL form */
-[dir="rtl"] input[type="email"],[dir="rtl"] input[type="tel"]{direction:ltr;text-align:right}
-@media(max-width:960px){
-  [dir="rtl"] .hero-scrim{background:linear-gradient(180deg,rgba(5,14,26,.90) 0%,rgba(5,14,26,.70) 45%,rgba(5,14,26,.94) 100%)}
-}
 </style>
 </head>
 <body>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<a class="whatsapp-fab" id="whatsappFab" href="https://wa.me/971588280346" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.44.79 3.06 1.2 4.72 1.2h.01c5.46 0 9.91-4.45 9.91-9.91C21.94 6.45 17.5 2 12.04 2zm5.8 14.02c-.24.68-1.4 1.3-1.93 1.38-.49.08-1.11.11-1.79-.11-.41-.13-.95-.31-1.63-.6-2.87-1.24-4.74-4.12-4.88-4.31-.14-.19-1.17-1.55-1.17-2.96s.73-2.1 1-2.39c.24-.26.53-.33.71-.33.18 0 .35 0 .5.01.16.01.38-.06.6.45.24.56.8 1.94.87 2.08.07.14.12.31.02.5-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.22 1.37.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.27.36-.22.6-.13.24.09 1.53.72 1.79.85.26.13.44.19.5.3.07.11.07.62-.17 1.3z"/></svg></a>
 <div class="lightbox" id="lightbox"><button class="lightbox-close" id="lightboxClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button><img id="lightboxImg" src="" alt=""></div>
 
 <!-- ===== HEADER ===== -->
@@ -666,10 +619,20 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
         <img src="assets/vendman-logo-clean-transparent.png" alt="Vendman" class="site-logo">
       </div>
       <div class="nav-links">
-        <a data-page="home">Home</a><a data-page="machines">Machines</a><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
+        <a data-page="home">Home</a>
+        <div class="nav-drop">
+          <button class="nav-drop-trigger" type="button" aria-haspopup="true" aria-expanded="false">Machines<svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+          <div class="nav-drop-menu">
+            <a data-page="machines" data-set="snack" data-scroll-to="mtype-snack">Snack &amp; Drink</a>
+            <a data-page="machines" data-set="coffee" data-scroll-to="mtype-coffee">Fresh Bean Coffee</a>
+            <a data-page="machines" data-set="protein" data-scroll-to="mtype-protein">Protein Shakes</a>
+            <a data-page="machines" data-set="other" data-scroll-to="mtype-other">Fresh Smoothies</a>
+            <a data-page="machines" class="nav-drop-viewall">View all machines</a>
+          </div>
+        </div>
+        <a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
       </div>
       <div class="nav-cta">
-        <button class="lang-toggle" data-lang-toggle aria-label="Switch to Arabic" title="العربية / English"><span class="lt-ar">ع</span><span class="lt-en">EN</span></button>
         <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" title="Switch theme">
           <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
           <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/></svg>
@@ -681,14 +644,24 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   </div>
 </header>
 <div class="mobile-panel" id="mpanel">
-  <a data-page="home">Home</a><a data-page="machines">Machines</a><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
+  <a data-page="home">Home</a>
+  <div class="mnav-drop">
+    <button class="mnav-drop-trigger" type="button" aria-expanded="false">Machines<svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+    <div class="mnav-drop-menu">
+      <a data-page="machines" data-set="snack" data-scroll-to="mtype-snack">Snack &amp; Drink</a>
+      <a data-page="machines" data-set="coffee" data-scroll-to="mtype-coffee">Fresh Bean Coffee</a>
+      <a data-page="machines" data-set="protein" data-scroll-to="mtype-protein">Protein Shakes</a>
+      <a data-page="machines" data-set="other" data-scroll-to="mtype-other">Fresh Smoothies</a>
+      <a data-page="machines">View all machines</a>
+    </div>
+  </div>
+  <a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a>
   <a class="btn btn-primary" data-page="contact">Get a free quote</a>
   <button class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
     <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.4 12h2.2M19.4 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
     <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/></svg>
     <span class="tt-label">Dark mode</span>
   </button>
-  <button class="lang-toggle" data-lang-toggle aria-label="Switch to Arabic"><span class="lt-ar">العربية</span><span class="lt-en">English</span></button>
 </div>
 
 <main id="app">
@@ -706,15 +679,10 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="hero-grid">
         <div class="hero-copy">
           <h1><span class="line"><span>Smart vending.</span></span><span class="line"><span>Fully managed.</span></span><span class="line"><span class="accent">Across the UAE.</span></span></h1>
-          <p class="lead">We install, stock and maintain snack, drink and fresh coffee machines at zero cost to your business.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" data-page="contact">Get a quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             <a class="btn btn-ghost on-dark" data-page="machines">View machines</a>
           </div>
-          <ul class="hero-facts">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Installed in 7 days</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Zero cost to your business</li>
-          </ul>
         </div>
         <div class="hero-stage"></div>
       </div>
@@ -725,13 +693,12 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     </div>
   </div>
 
-  <div class="marquee-band"><div class="marquee-label">Powering breakrooms &amp; lobbies for</div>
+  <div class="marquee-band"><div class="marquee-label">What we offer</div>
     <div class="marquee"><div class="marquee-track">
-      <span>Medcare Hospitals</span><span>Mediclinic</span><span>King's College Hospital Dubai</span><span>Anytime Fitness</span><span>HULT University</span><span>FIFA Medical Centre</span><span>Mayweather Boxing &amp; Fitness</span><span>HealthBay</span>
-      <span aria-hidden="true">Medcare Hospitals</span><span aria-hidden="true">Mediclinic</span><span aria-hidden="true">King's College Hospital Dubai</span><span aria-hidden="true">Anytime Fitness</span><span aria-hidden="true">HULT University</span><span aria-hidden="true">FIFA Medical Centre</span><span aria-hidden="true">Mayweather Boxing &amp; Fitness</span><span aria-hidden="true">HealthBay</span>
+      <span>Snack &amp; Beverage Vending</span><span>Fresh Bean Coffee</span><span>Protein Shake Machines</span><span>Fresh Smoothie Machines</span><span>Cashless Payments</span><span>Installation &amp; Maintenance</span><span>24/7 Remote Monitoring</span><span>UAE‑Wide Coverage</span>
+      <span aria-hidden="true">Snack &amp; Beverage Vending</span><span aria-hidden="true">Fresh Bean Coffee</span><span aria-hidden="true">Protein Shake Machines</span><span aria-hidden="true">Fresh Smoothie Machines</span><span aria-hidden="true">Cashless Payments</span><span aria-hidden="true">Installation &amp; Maintenance</span><span aria-hidden="true">24/7 Remote Monitoring</span><span aria-hidden="true">UAE‑Wide Coverage</span>
     </div></div>
   </div>
-
 
   <section class="section" style="background:linear-gradient(180deg,var(--paper),var(--card))">
     <div class="wrap">
@@ -740,58 +707,11 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
         <a class="btn btn-ghost reveal d1" data-page="machines">View all machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="mach-grid">
-        <article class="mach-card reveal"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing machine"></div><div class="mach-body"><div class="mach-kicker">Snack &amp; Beverage · 6 Facings</div><h3>Compact 36‑Select</h3><p>For lobbies, clinics and smaller breakrooms — chilled snacks and drinks in one unit.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">36</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">731 mm</div></div><div class="spec"><div class="k">Temp</div><div class="v">4–25 °C</div></div></div></div></article>
-        <article class="mach-card reveal d1"><div class="mach-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="coffee machine"></div><div class="mach-body"><div class="mach-kicker">Fresh Bean Coffee · Tabletop</div><h3>Countertop Barista</h3><p>A 10.1″ touch machine for reception desks and small offices — up to 12 drinks.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">Up to 12</div></div><div class="spec"><div class="k">Screen</div><div class="v">10.1″</div></div><div class="spec"><div class="k">Canisters</div><div class="v">3</div></div><div class="spec"><div class="k">Weight</div><div class="v">40 kg</div></div></div></div></article>
-        <article class="mach-card reveal d2"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-48.jpg" alt="8-facing machine"></div><div class="mach-body"><div class="mach-kicker">Snack &amp; Beverage · 8 Facings</div><h3>High‑Capacity 48‑Select</h3><p>Wider bays and 48 selections for hospitals, gyms and offices with serious footfall.</p><div class="specs"><div class="spec"><div class="k">Selections</div><div class="v">48</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">240 kg</div></div></div></div></article>
+        <article class="mach-card reveal" data-page="machines" data-scroll-to="m-compact36" data-set="snack" role="link" tabindex="0" style="cursor:pointer"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing machine"></div><div class="mach-body"><div class="mach-kicker">Snack</div><h3>Compact 36‑Select</h3><p>For lobbies, clinics and smaller breakrooms — chilled snacks and drinks in one unit.</p></div></article>
+        <article class="mach-card reveal d1" data-page="machines" data-scroll-to="m-barista" data-set="coffee" role="link" tabindex="0" style="cursor:pointer"><div class="mach-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="coffee machine"></div><div class="mach-body"><div class="mach-kicker">Coffee</div><h3>Countertop Barista</h3><p>A 10.1″ touch machine for reception desks and small offices — up to 12 drinks.</p></div></article>
+        <article class="mach-card reveal d2" data-page="machines" data-scroll-to="mtype-protein" data-set="protein" role="link" tabindex="0" style="cursor:pointer"><div class="mach-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/protein-machine.jpg" alt="Protein shake machine"></div><div class="mach-body"><div class="mach-kicker">Protein</div><h3>Shakes on Tap</h3><p>Fresh‑blended protein shakes for gyms and fitness spaces — ready in seconds.</p></div></article>
       </div>
     </div>
-  </section>
-
-  <section class="section" style="background:var(--card)">
-    <div class="wrap">
-      <div class="sec-head center reveal"><span class="eyebrow center">By industry</span><h2 class="h-lg">Fitted to the way your space runs</h2><p class="lead">We tailor the machine, product mix and placement to each environment — from a hospital atrium to a factory floor.</p></div>
-      <div class="grid-3">
-        <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg></div><h3>Hospitals &amp; Clinics</h3><p>24/7 refreshment for staff, patients and visitors — quiet, hygienic, always stocked.</p></div>
-        <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9v6M7 5v14M17 5v14M21 9v6M7 12h10"/></svg></div><h3>Gyms &amp; Fitness</h3><p>Protein shakes, drinks and healthy snacks members reach for before and after training.</p></div>
-        <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V6a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v15M14 21V10h4a1 1 0 0 1 1 1v10M8 9h3M8 13h3M8 17h3"/></svg></div><h3>Offices &amp; Corporate</h3><p>Barista‑style coffee stations and snack machines that lift breakrooms with zero admin.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" style="background:linear-gradient(180deg,var(--card),var(--paper))">
-    <div class="wrap">
-      <div class="sec-head reveal"><span class="eyebrow">From survey to sip</span><h2 class="h-lg">Live in your space in four steps</h2></div>
-      <div class="steps">
-        <div class="step reveal"><div class="step-n">01</div><div class="step-line"></div><h3>Free site survey</h3><p>We assess footfall, space and the product mix that fits your audience.</p></div>
-        <div class="step reveal d1"><div class="step-n">02</div><div class="step-line"></div><h3>Install &amp; connect</h3><p>We deliver, place and connect the machine — cashless from day one.</p></div>
-        <div class="step reveal d2"><div class="step-n">03</div><div class="step-line"></div><h3>Stock &amp; service</h3><p>Scheduled replenishment, cleaning and preventive maintenance.</p></div>
-        <div class="step reveal d3"><div class="step-n">04</div><div class="step-line"></div><h3>Monitor 24/7</h3><p>Nayax payments and real‑time alerts keep it always on.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section dark-sec">
-    <div class="hero-glow a" style="top:-120px;left:-80px;right:auto"></div>
-    <div class="wrap"><div class="why-grid">
-      <div class="reveal"><span class="eyebrow on-dark">Why partner with us</span><h2 class="h-lg" style="color:#fff">A vending partner, not just a machine.</h2><p class="lead on-dark" style="margin-top:18px">You get the refreshment offer without the workload. We fund, install, stock and maintain everything — you keep the space and the goodwill.</p><div class="why-cta"><a class="btn btn-primary" data-page="contact">Start a partnership <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost on-dark" data-page="services">Our services</a></div></div>
-      <div class="why-list reveal d1">
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Zero cost to host</h3><p>Free‑on‑loan &amp; revenue‑share options — no capital outlay.</p></div>
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4l-6 6 2 2 6-6a4 4 0 0 0 5.4-5.4l-2.3 2.3-2-2 2.3-2.3z"/></svg></div><h3>Fully managed</h3><p>Stocking, cleaning, maintenance and support included.</p></div>
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><h3>Cashless by default</h3><p>Cards, Apple Pay, Google Pay &amp; NFC via Nayax.</p></div>
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div><h3>Real‑time monitoring</h3><p>Smart alerts flag low stock and faults early.</p></div>
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Flexible product mix</h3><p>Healthy, local and seasonal options for your audience.</p></div>
-        <div class="why-item"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg></div><h3>UAE‑wide coverage</h3><p>All seven emirates plus Al Ain.</p></div>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="section coffee-sec">
-    <div class="wrap"><div class="coffee-grid">
-      <div class="reveal"><span class="eyebrow on-dark" style="color:var(--lime)">Fresh bean coffee</span><h2 class="h-lg" style="color:#fff">Barista‑style drinks,<br>on demand.</h2><p class="lead" style="color:rgba(255,255,255,.8);margin-top:16px">Real ground beans, a full drinks menu and a touch screen anyone can use — the café experience, without the café.</p>
-        <div class="coffee-pills"><span class="pill">Espresso</span><span class="pill">Americano</span><span class="pill">Cappuccino</span><span class="pill">Latte</span><span class="pill">Flat White</span><span class="pill">Mocha</span><span class="pill">Hot Chocolate</span><span class="pill">Karak Tea</span><span class="pill">Lemon Tea</span></div>
-      </div>
-      <div class="coffee-visual reveal d1"><img src="assets/coffee-hero.jpg" alt="coffee machine"><div class="coffee-tag"><div class="n">97°C</div><div class="l">Fresh‑brewed, every cup</div></div></div>
-    </div></div>
   </section>
 
   <div class="stats"><div class="wrap"><div class="stats-grid">
@@ -801,25 +721,33 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     <div class="stat reveal d3"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">Cashless payments</div></div>
   </div></div></div>
 
-  <section class="section" style="background:var(--paper)">
+  <section class="section" style="background:linear-gradient(180deg,var(--card),var(--paper))">
     <div class="wrap">
-      <div class="sec-head reveal"><span class="eyebrow">Trusted across the UAE</span><h2 class="h-lg">Chosen by healthcare, fitness<br>&amp; education leaders</h2></div>
-      <div class="sector reveal"><div class="sector-h">Healthcare<span></span></div><div class="logo-row"><div class="logo-chip">Medcare Hospitals</div><div class="logo-chip">Mediclinic</div><div class="logo-chip">King's College Hospital Dubai</div><div class="logo-chip">HealthBay</div><div class="logo-chip">HMS Mirdif Hospital</div><div class="logo-chip">FIFA Medical Centre</div><div class="logo-chip">Northwest Clinic</div><div class="logo-chip">Al Manara Specialized Medical Center</div></div></div>
-      <div class="sector reveal d1"><div class="sector-h">Fitness<span></span></div><div class="logo-row"><div class="logo-chip">Anytime Fitness</div><div class="logo-chip">Metrofitt</div><div class="logo-chip">Prime Fitness</div><div class="logo-chip">Yalla Fitness</div><div class="logo-chip">Sands Fitness</div><div class="logo-chip">Mayweather Boxing &amp; Fitness</div></div></div>
-      <div class="sector reveal d2"><div class="sector-h">Education<span></span></div><div class="logo-row"><div class="logo-chip">HULT University</div></div></div>
+      <div class="steps">
+        <div class="step reveal"><div class="step-n">01</div><div class="step-line"></div><h3>Free site survey</h3><p>We assess footfall, space and the product mix that fits your audience.</p></div>
+        <div class="step reveal d1"><div class="step-n">02</div><div class="step-line"></div><h3>Install &amp; connect</h3><p>We deliver, place and connect the machine — cashless from day one.</p></div>
+        <div class="step reveal d2"><div class="step-n">03</div><div class="step-line"></div><h3>Stock &amp; service</h3><p>Scheduled replenishment, cleaning and preventive maintenance.</p></div>
+        <div class="step reveal d3"><div class="step-n">04</div><div class="step-line"></div><h3>Monitor 24/7</h3><p>Cashless payments and real‑time alerts keep it always on.</p></div>
+      </div>
     </div>
   </section>
-
-  <section class="section" style="background:var(--card)"><div class="wrap"><div class="cta-band reveal"><div class="hero-glow a" style="top:-100px;right:-40px"></div><h2>Let's put a machine in your space.</h2><p>Book a free site survey and we'll recommend the machine, product mix and payment setup for your footfall — then install in days.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Get a free quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn btn-ghost on-dark" data-page="machines">Browse machines</a></div></div></div></section>
 </section>
 
 <!-- ================= MACHINES ================= -->
 <section class="page" id="page-machines">
   <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">The full range</span><h1>Every machine, spec'd for the UAE</h1><p class="lead">Smart, cashless snack, drink and fresh‑bean coffee machines — plus protein‑shake and fresh‑smoothie vending — with full installation, stocking and support.</p></div></div>
-  <section class="section" style="background:linear-gradient(180deg,var(--paper),var(--card))"><div class="wrap">
+  <div class="section" style="padding:36px 0 0"><div class="wrap" style="display:flex;justify-content:center">
+    <div class="tabs">
+      <button class="tab active" data-set="snack">Snack</button>
+      <button class="tab" data-set="coffee">Coffee</button>
+      <button class="tab" data-set="protein">Protein</button>
+      <button class="tab" data-set="other">Others</button>
+    </div>
+  </div></div>
+  <section class="section mach-set active" data-set="snack" id="mtype-snack" style="background:linear-gradient(180deg,var(--paper),var(--card))"><div class="wrap">
     <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Snack &amp; Beverage</span></div>
-    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing"></div><div class="m-info"><div class="mach-kicker">6 Facings · Brand New</div><h2>Compact 36‑Select</h2><p>The right footprint for lobbies, clinics and smaller breakrooms — chilled snacks and drinks in a single unit with cashless payment built in.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">36</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">731 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">215 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Nayax cashless</span></div></div></div>
-    <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-48.jpg" alt="8-facing"></div><div class="m-info"><div class="mach-kicker">8 Facings · Brand New</div><h2>High‑Capacity 48‑Select</h2><p>Wider bays and 48 selections for hospitals, gyms and offices with serious footfall — more capacity means fewer refills and fewer sell‑outs.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">48</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">882 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">240 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Nayax cashless</span></div></div></div>
+    <div class="mrow reveal" id="m-compact36"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-36.jpg" alt="6-facing"></div><div class="m-info"><div class="mach-kicker">6 Facings · Brand New</div><h2>Compact 36‑Select</h2><p>The right footprint for lobbies, clinics and smaller breakrooms — chilled snacks and drinks in a single unit with cashless payment built in.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">36</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">731 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">215 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Cashless</span></div></div></div>
+    <div class="mrow flip reveal" id="m-highcap48"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/snack-48.jpg" alt="8-facing"></div><div class="m-info"><div class="mach-kicker">8 Facings · Brand New</div><h2>High‑Capacity 48‑Select</h2><p>Wider bays and 48 selections for hospitals, gyms and offices with serious footfall — more capacity means fewer refills and fewer sell‑outs.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">48</div></div><div class="spec"><div class="k">Height</div><div class="v">1940 mm</div></div><div class="spec"><div class="k">Width</div><div class="v">790 mm</div></div><div class="spec"><div class="k">Depth</div><div class="v">882 mm</div></div><div class="spec"><div class="k">Weight</div><div class="v">240 kg</div></div><div class="spec"><div class="k">Temp range</div><div class="v">4 – 25 °C</div></div></div><div class="m-tags"><span class="m-tag">220V · 60Hz</span><span class="m-tag">Refrigerated 422W</span><span class="m-tag">Cashless</span></div></div></div>
 
     <div class="coffee-carousel reveal">
       <div class="cc-head"><div><h3>Compare both models side by side</h3><p>Same cashless platform, two footprints — swipe or use the arrows.</p></div><div class="cc-arrows"><button class="cc-arrow" data-dir="-1" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M15 6l-6 6 6 6"/></svg></button><button class="cc-arrow" data-dir="1" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M9 6l6 6-6 6"/></svg></button></div></div>
@@ -830,9 +758,9 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="cc-dots" data-dots></div>
     </div>
   </div></section>
-  <section class="section" style="background:var(--card)"><div class="wrap">
+  <section class="section mach-set" data-set="coffee" id="mtype-coffee" style="background:var(--card)"><div class="wrap">
     <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Fresh Bean Coffee</span></div>
-    <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="tabletop coffee"></div><div class="m-info"><div class="mach-kicker">Tabletop · 10.1″ Touch</div><h2>Countertop Barista</h2><p>A compact touch‑screen machine for reception desks and small offices — up to 12 barista‑style drinks from real ground beans.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">Up to 12</div></div><div class="spec"><div class="k">Screen</div><div class="v">10.1″ touch</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">810×500×450</div></div><div class="spec"><div class="k">Canisters</div><div class="v">3</div></div><div class="spec"><div class="k">Bean hopper</div><div class="v">1.2 kg</div></div><div class="spec"><div class="k">Weight</div><div class="v">40 kg</div></div></div><div class="m-tags"><span class="m-tag">97 °C brew</span><span class="m-tag">7–16g brewer</span><span class="m-tag">Optional payment</span></div></div></div>
+    <div class="mrow reveal" id="m-barista"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-3.jpg" alt="tabletop coffee"></div><div class="m-info"><div class="mach-kicker">Tabletop · 10.1″ Touch</div><h2>Countertop Barista</h2><p>A compact touch‑screen machine for reception desks and small offices — up to 12 barista‑style drinks from real ground beans.</p><div class="m-specs"><div class="spec"><div class="k">Selections</div><div class="v">Up to 12</div></div><div class="spec"><div class="k">Screen</div><div class="v">10.1″ touch</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">810×500×450</div></div><div class="spec"><div class="k">Canisters</div><div class="v">3</div></div><div class="spec"><div class="k">Bean hopper</div><div class="v">1.2 kg</div></div><div class="spec"><div class="k">Weight</div><div class="v">40 kg</div></div></div><div class="m-tags"><span class="m-tag">97 °C brew</span><span class="m-tag">7–16g brewer</span><span class="m-tag">Optional payment</span></div></div></div>
     <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-5.jpg" alt="tower coffee"></div><div class="m-info"><div class="mach-kicker">Floor Tower · Espresso boiler</div><h2>Floor Tower</h2><p>A freestanding tower with a dual boiler and four canisters for steady, all‑day coffee service in busier offices and lobbies.</p><div class="m-specs"><div class="spec"><div class="k">Canisters</div><div class="v">4 × 1.7 L</div></div><div class="spec"><div class="k">Boiler</div><div class="v">1.7 L + 0.5 L</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">750×420×590</div></div><div class="spec"><div class="k">Max temp</div><div class="v">97 °C</div></div><div class="spec"><div class="k">Power</div><div class="v">2.8 kW</div></div><div class="spec"><div class="k">Weight</div><div class="v">46 kg</div></div></div><div class="m-tags"><span class="m-tag">90–300V</span><span class="m-tag">Espresso + filter</span><span class="m-tag">Optional payment</span></div></div></div>
     <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh bean</span><img src="assets/coffee-6.jpg" alt="grande coffee"></div><div class="m-info"><div class="mach-kicker">Grande · 21.5″ Touch</div><h2>High‑Volume Floor Machine</h2><p>A 160‑cup machine with a large 21.5″ touch screen and up to 16 drinks — built for lobbies, campuses and high‑traffic floors.</p><div class="m-specs"><div class="spec"><div class="k">Cup capacity</div><div class="v">160 cups</div></div><div class="spec"><div class="k">Selections</div><div class="v">Up to 16</div></div><div class="spec"><div class="k">Screen</div><div class="v">21.5″ touch</div></div><div class="spec"><div class="k">Canisters</div><div class="v">6</div></div><div class="spec"><div class="k">Dimensions</div><div class="v">1940×735×790</div></div><div class="spec"><div class="k">Weight</div><div class="v">220 kg</div></div></div><div class="m-tags"><span class="m-tag">240V · 60Hz</span><span class="m-tag">7–16g brewer</span><span class="m-tag">Optional payment</span></div></div></div>
 
@@ -849,32 +777,15 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="cc-dots" data-dots></div>
     </div>
   </div></section>
-  <section class="section" style="background:linear-gradient(180deg,var(--card),var(--paper))"><div class="wrap">
+  <section class="section mach-set" data-set="protein" id="mtype-protein" style="background:linear-gradient(180deg,var(--card),var(--paper))"><div class="wrap">
     <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Protein &amp; Healthy</span></div>
     <div class="mrow flip reveal"><div class="m-media"><span class="mach-led"><i></i>Refrigerated</span><img src="assets/protein-machine.jpg" alt="Protein shake vending machine with touchscreen ordering and chilled storage"><div class="m-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div></div><div class="m-info"><div class="mach-kicker">27″ Touchscreen · Fitness‑Ready</div><h2>Shakes on tap for fitness spaces</h2><p>A cashless protein‑shake and healthy‑drink machine designed for gyms and fitness centres — fresh‑blended per serve from premium powder, in multiple flavours, with the perfect pre‑ and post‑workout grab fully stocked and managed by Vendman.</p><div class="m-specs"><div class="spec"><div class="k">Screen</div><div class="v">27″ touch</div></div><div class="spec"><div class="k">Mixing</div><div class="v">Independent system</div></div><div class="spec"><div class="k">Serving</div><div class="v">Adjustable size</div></div><div class="spec"><div class="k">Storage</div><div class="v">Refrigerated</div></div></div><div class="m-tags"><span class="m-tag">Multiple flavours</span><span class="m-tag">Fresh blend per serve</span><span class="m-tag">Easy‑clean system</span><span class="m-tag">Cashless</span></div><div style="margin-top:24px"><a class="btn btn-primary" data-page="contact">Ask about protein machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div>
   </div></section>
-  <section class="section" style="background:var(--paper)"><div class="wrap">
+  <section class="section mach-set" data-set="other" id="mtype-other" style="background:var(--paper)"><div class="wrap">
     <div class="reveal" style="margin-bottom:8px"><span class="eyebrow">Fresh Smoothies</span></div>
     <div class="mrow reveal"><div class="m-media"><span class="mach-led"><i></i>Fresh blend</span><img src="assets/smoothie-machine.jpg" alt="Fresh smoothie vending machine blending real frozen fruit on demand"><div class="m-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></div></div><div class="m-info"><div class="mach-kicker">Fresh Smoothie Machine</div><h2>Real fruit smoothies, blended on demand</h2><p>Give your team fresh, healthy smoothies made from real frozen fruit — blended to order in under a minute, with no artificial preservatives. A vibrant, compact countertop addition to any wellness area, café corner or gym floor.</p><div class="m-tags"><span class="m-tag">Real frozen fruit</span><span class="m-tag">45‑second serve</span><span class="m-tag">No preservatives</span><span class="m-tag">Self‑cleaning cycle</span><span class="m-tag">Compact countertop</span></div><div style="margin-top:24px"><a class="btn btn-primary" data-page="contact">Ask about smoothie machines <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div>
   </div></section>
   <section class="section" style="background:var(--card)"><div class="wrap"><div class="cta-band reveal"><h2>Not sure which machine fits?</h2><p>Tell us the location and footfall — we'll spec the machine, product mix and payment setup, then install in days.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Book a site survey <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div></section>
-</section>
-
-<!-- ================= SOLUTIONS ================= -->
-<section class="page" id="page-solutions">
-  <div class="phero"><div class="hero-glow a"></div><div class="wrap reveal"><span class="eyebrow on-dark">Solutions by industry</span><h1>Refreshment fitted to your world</h1><p class="lead">From hospital atriums to factory floors, we match the machine, product mix and placement to how your space actually runs.</p></div></div>
-  <section class="section" style="background:linear-gradient(180deg,var(--paper),var(--card))"><div class="wrap"><div class="grid-3">
-    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg></div><h3>Hospitals</h3><p>24/7 refreshment for staff, patients and visitors across atriums, wards and waiting areas.</p></div>
-    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 4 4.4.6-3.2 3.1.8 4.3L12 17l-3.9 2 .8-4.3L5.7 11.6 10 11z"/></svg></div><h3>Clinics</h3><p>Quiet, hygienic snack and coffee machines that keep clinics welcoming between appointments.</p></div>
-    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9v6M7 5v14M17 5v14M21 9v6M7 12h10"/></svg></div><h3>Fitness Centers</h3><p>Protein shakes, drinks and healthy snacks members reach for before and after a session.</p></div>
-    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4" stroke-linecap="round"/></svg></div><h3>Offices</h3><p>Corporate coffee stations and snack machines that lift the breakroom with zero admin.</p></div>
-    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 4 2 9l10 5 10-5-10-5zM5 11v5c0 1.2 3.1 3 7 3s7-1.8 7-3v-5"/></svg></div><h3>Universities</h3><p>Campus‑ready machines with the cashless payment students and staff already use daily.</p></div>
-    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V8l8-5 8 5v12M9 20v-6h6v6" stroke-linejoin="round"/></svg></div><h3>Schools</h3><p>Age‑appropriate healthy vending with reliable service and simple cashless payment.</p></div>
-    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 9l9-5 9 5v11H3V9zM9 20v-6h6v6"/></svg></div><h3>Warehouses</h3><p>Rugged, high‑capacity units that keep shift workers fuelled around the clock.</p></div>
-    <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5M9 11h.01M15 11h.01"/></svg></div><h3>Factories</h3><p>Manufacturing‑floor machines built for volume, durability and minimal downtime.</p></div>
-    <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 9h16M5 9l1-4h12l1 4M5 9v11h14V9M10 20v-5h4v5"/></svg></div><h3>Commercial &amp; Retail</h3><p>Guest‑friendly coffee and snacks for lobbies, malls and waiting areas — a new revenue stream.</p></div>
-  </div></div></section>
-  <section class="section" style="background:var(--card)"><div class="wrap"><div class="cta-band reveal"><h2>Every emirate. One partner.</h2><p>Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain — with local service teams.</p><div class="cta-actions"><a class="btn btn-primary" data-page="contact">Talk to us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></div></div></section>
 </section>
 
 <!-- ================= SERVICES ================= -->
@@ -918,7 +829,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="payment-row reveal d1"><img src="assets/payment-methods.png" alt="Accepted payment methods — Visa, Mastercard, Google Pay, Apple Pay and bank cards"></div>
       <div class="payment-feats reveal d2">
         <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><h3>Fast</h3><p>Tap &amp; go in under two seconds — no queues, no fumbling for change.</p></div>
-        <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Secure</h3><p>Bank‑grade encryption on every tap, powered by Nayax — the UAE's leading cashless provider.</p></div>
+        <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="9" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><h3>Secure</h3><p>Bank‑grade encryption on every tap, through a trusted cashless payment platform.</p></div>
         <div class="payment-feat"><div class="why-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div><h3>Convenient</h3><p>Cards, wallets, or coins and notes as a backup — every user, every location, covered.</p></div>
       </div>
     </div>
@@ -946,24 +857,11 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
         <div class="cap"><img src="assets/icon-installation.png" alt="" aria-hidden="true"><h3>Installation</h3><p>Delivered, placed, powered and connected — usually in a single visit.</p></div>
         <div class="cap"><img src="assets/icon-maintenance.png" alt="" aria-hidden="true"><h3>Maintenance</h3><p>Scheduled servicing, cleaning and repairs — parts and labour included.</p></div>
         <div class="cap"><img src="assets/icon-monitoring.png" alt="" aria-hidden="true"><h3>Remote Monitoring</h3><p>Live telemetry on stock, sales and machine health, 24/7.</p></div>
-        <div class="cap"><img src="assets/icon-cashless.png" alt="" aria-hidden="true"><h3>Cashless Payments</h3><p>Tap &amp; go, cards, Apple Pay, Google Pay and Samsung Pay via Nayax.</p></div>
+        <div class="cap"><img src="assets/icon-cashless.png" alt="" aria-hidden="true"><h3>Cashless Payments</h3><p>Tap &amp; go, cards, Apple Pay, Google Pay and Samsung Pay.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="section" style="background:var(--card)"><div class="wrap">
-    <div class="sec-head reveal"><span class="eyebrow">Coverage &amp; hours</span><h2 class="h-lg">Where and when we work</h2></div>
-    <div class="grid-3">
-      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><h3>Service areas</h3><p>Dubai, Abu Dhabi, Sharjah, Ajman, Ras Al Khaimah, Fujairah, Umm Al Quwain and Al Ain.</p></div>
-      <div class="card reveal d1"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div><h3>Business hours</h3><p>Mon–Fri 8:00am–6:00pm · Sat 9:00am–2:00pm. Emergency technical support for contracted clients.</p></div>
-      <div class="card reveal d2"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div><h3>Support</h3><p>One partner for installation, restocking, cleaning, maintenance and technical support.</p></div>
-    </div>
-  </div></section>
-  <section class="section" style="background:var(--paper)"><div class="wrap">
-    <div class="sec-head reveal"><span class="eyebrow">Trusted by</span><h2 class="h-lg">Clients we serve</h2></div>
-    <div class="sector reveal"><div class="sector-h">Healthcare<span></span></div><div class="logo-row"><div class="logo-chip">Medcare Hospitals</div><div class="logo-chip">Mediclinic</div><div class="logo-chip">King's College Hospital Dubai</div><div class="logo-chip">HealthBay</div><div class="logo-chip">HMS Mirdif Hospital</div><div class="logo-chip">FIFA Medical Centre</div><div class="logo-chip">Northwest Clinic</div><div class="logo-chip">Al Manara Specialized Medical Center</div></div></div>
-    <div class="sector reveal d1"><div class="sector-h">Fitness &amp; Education<span></span></div><div class="logo-row"><div class="logo-chip">Anytime Fitness</div><div class="logo-chip">Metrofitt</div><div class="logo-chip">Prime Fitness</div><div class="logo-chip">Yalla Fitness</div><div class="logo-chip">Sands Fitness</div><div class="logo-chip">Mayweather Boxing &amp; Fitness</div><div class="logo-chip">HULT University</div></div></div>
-  </div></section>
 </section>
 
 <!-- ================= CONTACT ================= -->
@@ -999,7 +897,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <div class="faq-item"><button class="faq-q">Do you provide machines for free?<span class="ic"></span></button><div class="faq-a"><p>Yes — through qualifying free‑on‑loan programs, with revenue‑share options depending on your location and footfall.</p></div></div>
       <div class="faq-item"><button class="faq-q">Do you maintain the machines?<span class="ic"></span></button><div class="faq-a"><p>Yes. Servicing, cleaning and technical support are included, with emergency support for contracted clients.</p></div></div>
       <div class="faq-item"><button class="faq-q">Do you refill the products?<span class="ic"></span></button><div class="faq-a"><p>Yes — scheduled replenishment keeps machines stocked, and real‑time monitoring flags anything running low.</p></div></div>
-      <div class="faq-item"><button class="faq-q">Which payment methods are supported?<span class="ic"></span></button><div class="faq-a"><p>Cards, Apple Pay, Google Pay and NFC via Nayax — the leading cashless provider in the UAE.</p></div></div>
+      <div class="faq-item"><button class="faq-q">Which payment methods are supported?<span class="ic"></span></button><div class="faq-a"><p>Cards, Apple Pay, Google Pay and NFC — fast, secure cashless payment on every machine.</p></div></div>
       <div class="faq-item"><button class="faq-q">Can the product mix be customized?<span class="ic"></span></button><div class="faq-a"><p>Yes. We tailor snacks, drinks and coffee to your audience, including healthy options and seasonal demand.</p></div></div>
       <div class="faq-item"><button class="faq-q">Which areas do you serve?<span class="ic"></span></button><div class="faq-a"><p>All emirates of the UAE — plus Al Ain — with local service teams.</p></div></div>
       <div class="faq-item"><button class="faq-q">Do you also sell vending machines?<span class="ic"></span></button><div class="faq-a"><p>Yes — outright sales alongside rental, free‑on‑loan and fully managed programs.</p></div></div>
@@ -1069,7 +967,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
       <p>Quote requests submitted through this website are non‑binding. Final machine selection, product mix, placement and pricing are confirmed after a site survey and a written agreement between Vendman and the host location.</p>
 
       <h2>3. Free‑on‑loan &amp; rental machines</h2>
-      <p>Where a machine is provided free‑on‑loan or on a rental basis, ownership of the machine remains with Vendman at all times. The host location agrees to provide reasonable access, power and a suitable, secure placement for the machine, and to notify Vendman promptly of any fault, damage or relocation need.</p>
+      <p>Where a machine is provided free‑on‑loan or on a rental basis, ownership of the machine remains with Vendman at all times, except for machines sold to the customer, for which ownership transfers in accordance with the applicable sale agreement. The host location agrees to provide reasonable access, power and a suitable, secure placement for the machine, and to notify Vendman promptly of any fault, damage or relocation need.</p>
 
       <h2>4. Payments</h2>
       <p>Cashless payments at our machines are processed via Nayax and other regulated third‑party payment providers, in accordance with their own terms. Pricing for installation, rental or purchase arrangements is provided as a customised quotation and confirmed in writing before work begins.</p>
@@ -1106,9 +1004,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
         <p>Smart, cashless vending &amp; fresh‑bean coffee solutions for modern spaces across the UAE.</p>
         <div class="foot-social"><a href="https://instagram.com/vendman.uae" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a href="mailto:info@vendman-uae.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg></a><a href="tel:+971588280346" aria-label="Phone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a></div>
       </div>
-      <div class="foot-col"><h4>Machines</h4><a data-page="machines">Snack &amp; drink</a><a data-page="machines">Fresh bean coffee</a><a data-page="machines">Protein shakes</a><a data-page="machines">Fresh smoothies</a></div>
-      <div class="foot-col"><h4>Company</h4><a data-page="solutions">Solutions</a><a data-page="services">Services</a><a data-page="about">About</a><a data-page="contact">Contact</a></div>
-      <div class="foot-col"><h4>Service areas</h4><p>Dubai · Abu Dhabi · Sharjah</p><p>Ajman · Ras Al Khaimah</p><p>Fujairah · Umm Al Quwain</p><p>Al Ain</p></div>
+      <div class="foot-col"><h4>Machines</h4><a data-page="machines" data-set="snack" data-scroll-to="mtype-snack">Snack &amp; drink</a><a data-page="machines" data-set="coffee" data-scroll-to="mtype-coffee">Fresh bean coffee</a><a data-page="machines" data-set="protein" data-scroll-to="mtype-protein">Protein shakes</a><a data-page="machines" data-set="other" data-scroll-to="mtype-other">Fresh smoothies</a></div>
     </div>
     <div class="foot-bottom"><div>© 2026 Vendman Vending Machines LLC. All rights reserved.</div><div class="foot-legal"><a data-page="privacy">Privacy Policy</a><a data-page="terms">Terms &amp; Conditions</a></div><div>info@vendman-uae.com · +971 58 828 0346</div></div>
   </div>
@@ -1139,9 +1035,6 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     machines:{slug:'machines',
       title:'Vending Machines: Snack, Coffee & Protein | Vendman',
       desc:'Our full range of cashless vending machines for UAE sites: 36 and 48 select snack and drink units, fresh bean coffee, protein shake and fresh smoothie machines, with specs.'},
-    solutions:{slug:'solutions',
-      title:'Vending for Hospitals, Gyms & Offices | Vendman',
-      desc:'Machines, product mix and placement matched to your site, whether that is a hospital atrium, a gym floor, an office breakroom, a hotel back of house or a factory.'},
     services:{slug:'services',
       title:'Installation, Stocking & Machine Servicing | Vendman',
       desc:'Site survey, delivery and install, restocking, cleaning, cashless payment setup and repairs. Vendman runs the whole operation so your team never touches a machine.'},
@@ -1172,7 +1065,6 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   function setMeta(sel,attr,val){ var el=document.querySelector(sel); if(el) el.setAttribute(attr,val); }
   function applyMeta(page){
     var r=ROUTES[page]||ROUTES.home, url=ORIGIN+urlFor(page);
-    if(document.documentElement.lang==='ar'&&window.VENDMAN_AR&&VENDMAN_AR.routes[page]) r=VENDMAN_AR.routes[page];
     document.title=r.title;
     setMeta('meta[name="description"]','content',r.desc);
     setMeta('link[rel="canonical"]','href',url);
@@ -1184,6 +1076,8 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   function go(page,push){
     pages.forEach(function(p){p.classList.toggle('active',p.id==='page-'+page)});
     document.querySelectorAll('.nav-links a').forEach(function(a){a.classList.toggle('active',a.dataset.page===page)});
+    document.querySelectorAll('.nav-drop,.mnav-drop').forEach(function(d){d.classList.toggle('active',page==='machines')});
+    var waFab=document.getElementById('whatsappFab'); if(waFab) waFab.classList.toggle('show',page==='home');
     document.documentElement.scrollTop=0; document.body.scrollTop=0;
     // header starts transparent over each page's dark hero
     hdr.classList.remove('solid'); setHeader(); if(typeof onScrollChrome==='function') onScrollChrome();
@@ -1200,13 +1094,29 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
   }
 
   // real hrefs so links are crawlable, middle-clickable and show a status-bar URL
+  function activateLink(l){
+    var pg=l.dataset.page; if(!pg) return;
+    go(pg); closeMenu();
+    document.querySelectorAll('.nav-drop.open').forEach(function(d){ d.classList.remove('open'); d.querySelector('.nav-drop-trigger').setAttribute('aria-expanded','false'); });
+    var target=l.dataset.scrollTo, set=l.dataset.set;
+    if(target){
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        if(set){ var tab=document.querySelector('#page-'+pg+' .tab[data-set="'+set+'"]'); if(tab) tab.click(); }
+        var el=document.getElementById(target);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      }); });
+    }
+  }
   links.forEach(function(l){
     var p=l.dataset.page;
     if(p && ROUTES[p] && l.tagName==='A' && !l.getAttribute('href')) l.setAttribute('href',urlFor(p));
     l.addEventListener('click',function(e){
       if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return; // let the browser open a new tab
-      e.preventDefault(); var pg=l.dataset.page; if(pg){ go(pg); closeMenu(); }
+      e.preventDefault(); activateLink(l);
     });
+    if(l.tagName!=='A'&&l.tagName!=='BUTTON'&&l.hasAttribute('tabindex')){
+      l.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activateLink(l); } });
+    }
   });
 
   window.addEventListener('popstate',function(e){
@@ -1370,37 +1280,44 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
 
   // menu
   var burger=document.getElementById('burger'),panel=document.getElementById('mpanel');
-  function closeMenu(){burger.classList.remove('open');panel.classList.remove('open');document.body.style.overflow=''}
+  function closeMenu(){
+    burger.classList.remove('open');panel.classList.remove('open');document.body.style.overflow='';
+    panel.querySelectorAll('.mnav-drop.open').forEach(function(d){ d.classList.remove('open'); d.querySelector('.mnav-drop-trigger').setAttribute('aria-expanded','false'); });
+  }
   burger.addEventListener('click',function(){var o=!panel.classList.contains('open');burger.classList.toggle('open',o);panel.classList.toggle('open',o);document.body.style.overflow=o?'hidden':''});
+
+  // "Machines" nav dropdown — the trigger itself never navigates, it only
+  // shows/hides the category list; only the links inside it route anywhere.
+  document.querySelectorAll('.nav-drop').forEach(function(drop){
+    var trigger=drop.querySelector('.nav-drop-trigger');
+    trigger.addEventListener('click',function(e){
+      e.stopPropagation();
+      var open=drop.classList.toggle('open');
+      trigger.setAttribute('aria-expanded',open?'true':'false');
+    });
+  });
+  document.addEventListener('click',function(e){
+    document.querySelectorAll('.nav-drop.open').forEach(function(d){
+      if(!d.contains(e.target)){ d.classList.remove('open'); d.querySelector('.nav-drop-trigger').setAttribute('aria-expanded','false'); }
+    });
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') document.querySelectorAll('.nav-drop.open').forEach(function(d){ d.classList.remove('open'); d.querySelector('.nav-drop-trigger').setAttribute('aria-expanded','false'); });
+  });
+
+  // mobile "Machines" accordion — same rule as the desktop dropdown
+  document.querySelectorAll('.mnav-drop').forEach(function(drop){
+    var trigger=drop.querySelector('.mnav-drop-trigger');
+    trigger.addEventListener('click',function(){
+      var open=drop.classList.toggle('open');
+      trigger.setAttribute('aria-expanded',open?'true':'false');
+    });
+  });
 
   /* ---------- theme ----------
      The initial value is set by the inline script in <head> so there is no
      flash. This only handles switching and remembering the choice. */
-  /* The dictionary is built on first use rather than at a fixed point in this
-     file: several widgets (the theme toggle, the carousel dots) label themselves
-     during setup, and they must not depend on where the language block sits. */
-  var LANG_KEY='vendman-lang';
-  var ARN=null;   // dictionary re-keyed on normalised English
-  function dict(){
-    if(!ARN){
-      ARN={};
-      var src=(window.VENDMAN_AR&&VENDMAN_AR.strings)||{};
-      for(var k in src) ARN[norm(k)]=src[k];
-    }
-    return ARN;
-  }
-
-  /* typographic characters vary between the markup and the dictionary; fold the
-     variants together so a curly quote or a non-breaking hyphen still matches */
-  function norm(s){
-    return String(s)
-      .replace(/[‘’]/g,"'")
-      .replace(/[“”″]/g,'"')
-      .replace(/[‐‑‒–—]/g,'-')
-      .replace(/\s+/g,' ')
-      .trim();
-  }
-  function T(en){ var a=dict()[norm(en)]; return (document.documentElement.lang==='ar'&&a)?a:en; }
+  function T(en){ return en; }
 
   var THEME_KEY='vendman-theme';
   var themeMeta=document.querySelector('meta[name="theme-color"]');
@@ -1422,70 +1339,10 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     });
   });
 
-  /* ---------- language ----------
-     Arabic is applied over the live DOM rather than served as a duplicate page,
-     so the markup stays a single source of truth. Every text node and a fixed
-     set of attributes are matched against the dictionary in assets/i18n-ar.js by
-     their normalised English, and the English original is kept alongside so the
-     switch works both ways. */
-  var i18nText=null,i18nAttr=null;
-  function i18nCollect(){
-    if(i18nText) return;
-    i18nText=[]; i18nAttr=[];
-    var skip={SCRIPT:1,STYLE:1,NOSCRIPT:1};
-    var w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
-      var p=n.parentNode;
-      if(skip[p.nodeName]) return NodeFilter.FILTER_REJECT;
-      /* the theme/language buttons relabel themselves — leave them to applyTheme */
-      if(p.closest&&p.closest('[data-theme-toggle],[data-lang-toggle]')) return NodeFilter.FILTER_REJECT;
-      return n.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
-    }});
-    var D=dict(),n,m,ar;
-    while(n=w.nextNode()){
-      m=/^(\s*)([\s\S]*?)(\s*)$/.exec(n.nodeValue);
-      ar=D[norm(m[2])];
-      if(ar) i18nText.push({n:n,en:n.nodeValue,ar:m[1]+ar+m[3]});
-    }
-    ['placeholder','aria-label','alt','title'].forEach(function(a){
-      document.querySelectorAll('['+a+']').forEach(function(el){
-        if(el.closest('[data-theme-toggle],[data-lang-toggle]')) return;
-        var v=el.getAttribute(a); if(!v||!v.trim()) return;
-        var t=D[norm(v)];
-        if(t) i18nAttr.push({el:el,a:a,en:v,ar:t});
-      });
-    });
-  }
-
   function currentPage(){
     var p=document.querySelector('.page.active');
     return p?p.id.replace('page-',''):'home';
   }
-
-  function applyLang(lang){
-    var d=document.documentElement, ar=(lang==='ar');
-    i18nCollect();
-    d.lang=ar?'ar':'en';
-    d.dir=ar?'rtl':'ltr';
-    i18nText.forEach(function(o){ o.n.nodeValue=ar?o.ar:o.en; });
-    i18nAttr.forEach(function(o){ o.el.setAttribute(o.a,ar?o.ar:o.en); });
-    document.querySelectorAll('[data-lang-toggle]').forEach(function(b){
-      b.setAttribute('aria-label',ar?'التبديل إلى الإنجليزية':'Switch to Arabic');
-    });
-    applyTheme(d.getAttribute('data-theme')||'light');  // relabels in the new language
-    applyMeta(currentPage());
-    /* an open answer was measured against the other language's text height */
-    document.querySelectorAll('.faq-item.open .faq-a').forEach(function(a){ a.style.maxHeight=a.scrollHeight+'px'; });
-    d.removeAttribute('data-cloak');
-  }
-
-  applyLang(document.documentElement.lang==='ar'?'ar':'en');
-  document.querySelectorAll('[data-lang-toggle]').forEach(function(b){
-    b.addEventListener('click',function(){
-      var next=document.documentElement.lang==='ar'?'en':'ar';
-      applyLang(next);
-      try{ localStorage.setItem(LANG_KEY,next); }catch(e){}
-    });
-  });
 
   // tabs (generic)
   document.querySelectorAll('.tab').forEach(function(tab){tab.addEventListener('click',function(){var set=tab.dataset.set,grp=tab.closest('section');grp.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t===tab)});grp.querySelectorAll('.mach-set').forEach(function(s){s.classList.toggle('active',s.dataset.set===set)})})});
@@ -1514,8 +1371,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     });
     if(missing.length){
       if(formErr){
-        var sep=document.documentElement.lang==='ar'?'، ':', ';
-        formErr.textContent=T('Please complete:')+' '+missing.map(T).join(sep);
+        formErr.textContent=T('Please complete:')+' '+missing.map(T).join(', ');
         formErr.hidden=false;
       }
       var first=document.querySelector('.field .invalid'); if(first) first.focus();
@@ -1538,7 +1394,7 @@ html[lang="ar"] .hero h1 .line{overflow:visible}
     if(page===null){ page='home'; if(history.replaceState) history.replaceState({page:page},'',urlFor(page)); }
     else if(/\.html$/.test(location.pathname)&&history.replaceState){ history.replaceState({page:page},'',urlFor(page)); }
     else if(history.replaceState){ history.replaceState({page:page},'',location.pathname+location.search); }
-    if(page!=='home') go(page,false); else applyMeta('home');
+    if(page!=='home') go(page,false); else { applyMeta('home'); var waFab=document.getElementById('whatsappFab'); if(waFab) waFab.classList.add('show'); }
   })();
 })();
 </script>
